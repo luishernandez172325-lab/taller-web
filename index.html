@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Taller — Sistema de Control</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f5f5f0;color:#111;font-size:14px;}
+.topbar{background:#fff;border-bottom:0.5px solid #ddd;padding:10px 16px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+.topbar-title{font-size:14px;font-weight:500;display:flex;align-items:center;gap:8px;}
+.sync-dot{width:8px;height:8px;border-radius:50%;background:#ccc;flex-shrink:0;}
+.sync-dot.connected{background:#639922;}
+.sync-dot.error{background:#E24B4A;}
+.tabs{display:flex;gap:5px;padding:12px 12px 0;flex-wrap:wrap;background:#f5f5f0;}
+.tab-btn{padding:7px 12px;font-size:12px;border:0.5px solid #ccc;background:#fff;color:#666;cursor:pointer;border-radius:8px;white-space:nowrap;}
+.tab-btn.active{background:#e8e8e3;color:#111;font-weight:500;border-color:#aaa;}
+.content{padding:12px;}
+.tab-pane{display:none;}
+.tab-pane.active{display:block;}
+.card{background:#fff;border:0.5px solid #ddd;border-radius:12px;padding:1rem;margin-bottom:12px;}
+.card.blue-l{border-left:3px solid #185FA5;border-radius:0 12px 12px 0;}
+.card.green-l{border-left:3px solid #3B6D11;border-radius:0 12px 12px 0;}
+.card.amber-l{border-left:3px solid #854F0B;border-radius:0 12px 12px 0;}
+.card.red-l{border-left:3px solid #A32D2D;border-radius:0 12px 12px 0;}
+.sec-title{font-size:10px;font-weight:600;color:#888;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px;}
+.fgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:8px;margin-bottom:10px;}
+.fg{display:flex;flex-direction:column;gap:3px;}
+.fg label{font-size:11px;color:#666;}
+.fg input,.fg select{font-size:12px;width:100%;padding:6px 8px;border:0.5px solid #ccc;border-radius:6px;background:#fff;color:#111;}
+.fg textarea{font-size:12px;resize:vertical;min-height:60px;padding:6px 8px;border:0.5px solid #ccc;border-radius:6px;background:#fff;color:#111;width:100%;font-family:inherit;}
+.req::after{content:" *";color:#A32D2D;}
+.btn{font-size:12px;padding:7px 14px;border:0.5px solid #ccc;background:#fff;color:#111;cursor:pointer;border-radius:8px;display:inline-flex;align-items:center;gap:5px;}
+.btn:hover{background:#f0f0ea;}
+.btn.primary{background:#EAF3DE;color:#3B6D11;border-color:#97C459;}
+.btn.primary:hover{background:#C0DD97;}
+.btn.danger{background:#FCEBEB;color:#A32D2D;border-color:#F09595;}
+.btn.danger:hover{background:#F8D0D0;}
+.btn.info{background:#E6F1FB;color:#185FA5;border-color:#85B7EB;}
+.btn:disabled{opacity:.5;cursor:not-allowed;}
+.sep{height:0.5px;background:#eee;margin:10px 0;}
+.badge{font-size:10px;padding:2px 6px;border-radius:6px;font-weight:500;display:inline-block;white-space:nowrap;}
+.b-green{background:#EAF3DE;color:#3B6D11;}
+.b-yellow{background:#FAEEDA;color:#854F0B;}
+.b-red{background:#FCEBEB;color:#A32D2D;}
+.b-blue{background:#E6F1FB;color:#185FA5;}
+.b-purple{background:#EEEDFE;color:#3C3489;}
+.b-teal{background:#E1F5EE;color:#0F6E56;}
+.role-tag{display:inline-flex;align-items:center;gap:5px;font-size:11px;padding:4px 10px;border-radius:8px;font-weight:500;margin-bottom:12px;}
+.role-blue{background:#E6F1FB;color:#185FA5;}
+.role-green{background:#EAF3DE;color:#3B6D11;}
+.role-purple{background:#EEEDFE;color:#3C3489;}
+.tbl-wrap{overflow-x:auto;border:0.5px solid #ddd;border-radius:12px;margin-bottom:12px;}
+table{width:100%;border-collapse:collapse;font-size:11px;}
+th{background:#f5f5f0;padding:7px 8px;text-align:left;font-weight:500;font-size:10px;color:#888;border-bottom:0.5px solid #ddd;white-space:nowrap;}
+td{padding:7px 8px;border-bottom:0.5px solid #eee;color:#111;vertical-align:middle;}
+tr:last-child td{border-bottom:none;}
+.icon-btn{font-size:11px;padding:3px 6px;border:0.5px solid #ccc;background:#fff;cursor:pointer;border-radius:6px;color:#666;}
+.icon-btn:hover{background:#f0f0ea;}
+.icon-btn.del:hover{background:#FCEBEB;color:#A32D2D;border-color:#F09595;}
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:8px;margin-bottom:12px;}
+.kpi{background:#f5f5f0;border-radius:8px;padding:.7rem .9rem;}
+.kpi-l{font-size:10px;color:#888;margin-bottom:2px;}
+.kpi-v{font-size:20px;font-weight:500;color:#111;}
+.kpi-s{font-size:10px;margin-top:1px;}
+.sem{display:flex;gap:8px;margin-bottom:12px;}
+.sem-i{flex:1;border-radius:8px;padding:9px;text-align:center;}
+.sem-n{font-size:20px;font-weight:500;}
+.sem-l{font-size:10px;margin-top:2px;}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;}
+@media(max-width:520px){.two{grid-template-columns:1fr;}}
+.ot-row{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:0.5px solid #eee;font-size:11px;}
+.ot-row:last-child{border-bottom:none;}
+.empty{font-size:11px;color:#aaa;text-align:center;padding:16px 0;}
+.sr-result{border:0.5px solid #ddd;border-radius:12px;overflow:hidden;margin-bottom:10px;}
+.sr-head{background:#f5f5f0;padding:6px 12px;font-size:10px;font-weight:600;color:#888;border-bottom:0.5px solid #ddd;text-transform:uppercase;letter-spacing:.04em;}
+.sr-row{display:flex;justify-content:space-between;align-items:center;padding:9px 12px;border-bottom:0.5px solid #eee;cursor:pointer;}
+.sr-row:last-child{border-bottom:none;}
+.sr-row:hover{background:#f9f9f5;}
+.sr-row.selected{background:#E6F1FB;}
+.tl-item{display:flex;gap:8px;font-size:11px;margin-bottom:6px;}
+.tl-dot{width:8px;height:8px;border-radius:50%;margin-top:3px;flex-shrink:0;}
+.br-row{display:flex;align-items:center;gap:7px;margin-bottom:7px;}
+.br-lbl{width:80px;font-size:10px;color:#888;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.br-track{flex:1;height:6px;background:#eee;border-radius:3px;overflow:hidden;}
+.br-fill{height:100%;border-radius:3px;background:#378ADD;transition:width .4s;}
+.perf-card{background:#fff;border:0.5px solid #ddd;border-radius:12px;padding:.9rem;margin-bottom:8px;}
+.avatar{width:26px;height:26px;border-radius:50%;background:#E6F1FB;color:#185FA5;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;flex-shrink:0;}
+.progress-bar{height:7px;background:#eee;border-radius:4px;overflow:hidden;margin-top:5px;}
+.progress-fill{height:100%;border-radius:4px;transition:width .5s;}
+.loading-overlay{position:fixed;inset:0;background:rgba(255,255,255,.85);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:999;gap:12px;}
+.spinner{width:32px;height:32px;border:3px solid #ddd;border-top-color:#185FA5;border-radius:50%;animation:spin .8s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg)}}
+.info-banner{background:#E6F1FB;border-radius:8px;padding:8px 12px;font-size:11px;color:#185FA5;display:flex;align-items:center;gap:6px;margin-bottom:10px;}
+.warn-banner{background:#FAEEDA;border-radius:8px;padding:8px 12px;font-size:11px;color:#854F0B;display:flex;align-items:center;gap:6px;margin-bottom:10px;}
+.tc-edit-row{background:#EEEDFE;border-radius:8px;padding:6px 10px;font-size:11px;color:#3C3489;margin-bottom:8px;display:flex;align-items:center;gap:6px;}
+</style>
+</head>
+<body>
+
+<div id="loading-overlay" class="loading-overlay">
+  <div class="spinner"></div>
+  <span style="font-size:13px;color:#666;">Conectando con Firebase...</span>
+</div>
+
+<div class="topbar">
+  <div class="topbar-title">
+    <div class="sync-dot" id="sync-dot"></div>
+    <i class="ti ti-tool" style="font-size:16px;"></i>
+    Control de Taller
+  </div>
+  <span id="sync-label" style="font-size:11px;color:#aaa;">Conectando...</span>
+</div>
+
+<div class="tabs">
+  <button class="tab-btn active" id="btn-recepcion" onclick="showTab('recepcion')"><i class="ti ti-user-plus" style="font-size:12px;margin-right:3px;vertical-align:-1px;"></i>Recepción</button>
+  <button class="tab-btn" id="btn-tecnico" onclick="showTab('tecnico')"><i class="ti ti-tool" style="font-size:12px;margin-right:3px;vertical-align:-1px;"></i>Técnico</button>
+  <button class="tab-btn" id="btn-tiempos" onclick="showTab('tiempos')"><i class="ti ti-clock" style="font-size:12px;margin-right:3px;vertical-align:-1px;"></i>Tiempos</button>
+  <button class="tab-btn" id="btn-tabla" onclick="showTab('tabla')"><i class="ti ti-table" style="font-size:12px;margin-right:3px;vertical-align:-1px;"></i>Tabla OT</button>
+  <button class="tab-btn" id="btn-dash" onclick="showTab('dash')"><i class="ti ti-layout-dashboard" style="font-size:12px;margin-right:3px;vertical-align:-1px;"></i>Dashboard</button>
+</div>
+
+<div class="content">
+
+<!-- ══ RECEPCIÓN ══ -->
+<div id="tab-recepcion" class="tab-pane active">
+  <div class="card">
+    <div class="role-tag role-blue"><i class="ti ti-user" style="font-size:13px;"></i>Recepción — Ingreso de máquina</div>
+    <p class="sec-title">Identificación</p>
+    <div class="fgrid">
+      <div class="fg"><label class="req">Código UM</label><input id="r-um" type="text" placeholder="UM-00312"></div>
+      <div class="fg"><label class="req">Código cliente</label><input id="r-codcli" type="text" placeholder="CLI-0084"></div>
+      <div class="fg"><label class="req">Boleta / trámite UM</label><input id="r-boleta" type="text" placeholder="BT-2025-441"></div>
+      <div class="fg"><label class="req">Cliente</label><input id="r-cliente" type="text" placeholder="Nombre o empresa"></div>
+    </div>
+    <div class="sep"></div>
+    <p class="sec-title">Tipo de máquina</p>
+    <div class="fgrid">
+      <div class="fg"><label class="req">Tipo</label>
+        <select id="r-tipo" onchange="tog('r-tipo','r-otros-w','Otros')">
+          <option value="">Seleccionar...</option>
+          <option>Combustión</option><option>Hidráulica</option><option>Eléctrica</option><option>Otros</option>
+        </select>
+      </div>
+      <div class="fg" id="r-otros-w" style="display:none;"><label>Descripción (otros)</label><textarea id="r-otros" placeholder="Especifique..."></textarea></div>
+    </div>
+    <div class="sep"></div>
+    <p class="sec-title">Falla reportada por el cliente</p>
+    <div class="fg" style="margin-bottom:10px;">
+      <label class="req">Descripción de falla</label>
+      <textarea id="r-falla" placeholder="Describa con detalle la falla que indica el cliente al entregar la máquina..." style="min-height:72px;"></textarea>
+    </div>
+    <div class="sep"></div>
+    <p class="sec-title">Accesorios y factura</p>
+    <div class="fgrid">
+      <div class="fg"><label>Accesorios</label>
+        <select id="r-acc" onchange="tog('r-acc','r-acc-w','Sí')"><option value="No">No</option><option value="Sí">Sí</option></select>
+      </div>
+      <div class="fg" id="r-acc-w" style="display:none;"><label>Detalle accesorios</label><textarea id="r-accdesc" placeholder="Liste los accesorios recibidos..."></textarea></div>
+      <div class="fg"><label>Ingreso con factura</label>
+        <select id="r-factura"><option value="No">No</option><option value="Sí">Sí</option></select>
+      </div>
+    </div>
+    <div class="sep"></div>
+    <p class="sec-title">Asignación</p>
+    <div class="fgrid">
+      <div class="fg"><label class="req">Fecha ingreso</label><input id="r-fechaIn" type="date"></div>
+      <div class="fg"><label class="req">Técnico asignado</label>
+        <select id="r-tec">
+          <option value="">Seleccionar...</option>
+          <option>Usuario 1</option><option>Usuario 2</option><option>Usuario 3</option><option>Usuario 4</option><option>Usuario 5</option>
+        </select>
+      </div>
+    </div>
+    <div class="info-banner"><i class="ti ti-info-circle" style="font-size:14px;"></i>Estado inicial: <strong>Asignado</strong> · Fecha de salida la completa el técnico.</div>
+    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+      <button class="btn primary" id="r-btn" onclick="addOT()"><i class="ti ti-device-floppy" style="font-size:13px;"></i>Registrar OT</button>
+      <span id="r-msg" style="font-size:12px;"></span>
+    </div>
+    <p style="font-size:10px;color:#aaa;margin-top:6px;">Campos * obligatorios</p>
+  </div>
+
+  <div class="card">
+    <p class="sec-title" style="margin-bottom:10px;"><i class="ti ti-search" style="font-size:12px;margin-right:3px;vertical-align:-1px;"></i>Recepción — Buscar y editar OT existente</p>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;align-items:flex-end;">
+      <div class="fg" style="flex:1;min-width:130px;"><label>Boleta / trámite UM</label><input id="rb-boleta" type="text" placeholder="BT-2025-441" oninput="buscar('rb')"></div>
+      <div class="fg" style="flex:1;min-width:130px;"><label>Código cliente</label><input id="rb-codcli" type="text" placeholder="CLI-0084" oninput="buscar('rb')"></div>
+      <button class="btn" onclick="limpiarB('rb')"><i class="ti ti-x" style="font-size:12px;"></i>Limpiar</button>
+    </div>
+    <div id="rb-results"></div>
+    <div id="rb-panel" style="display:none;"></div>
+  </div>
+</div>
+
+<!-- ══ TÉCNICO ══ -->
+<div id="tab-tecnico" class="tab-pane">
+  <div class="card">
+    <div class="role-tag role-green"><i class="ti ti-tool" style="font-size:13px;"></i>Técnico — Búsqueda y cierre de OT</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;align-items:flex-end;">
+      <div class="fg" style="flex:1;min-width:130px;"><label>Boleta / trámite UM</label><input id="tb-boleta" type="text" placeholder="BT-2025-441" oninput="buscar('tb')"></div>
+      <div class="fg" style="flex:1;min-width:130px;"><label>Código cliente</label><input id="tb-codcli" type="text" placeholder="CLI-0084" oninput="buscar('tb')"></div>
+      <button class="btn" onclick="limpiarB('tb')"><i class="ti ti-x" style="font-size:12px;"></i>Limpiar</button>
+    </div>
+    <div id="tb-results"></div>
+    <div id="tb-panel" style="display:none;"></div>
+  </div>
+</div>
+
+<!-- ══ TIEMPOS POR CÓDIGO ══ -->
+<div id="tab-tiempos" class="tab-pane">
+  <div class="card">
+    <div class="role-tag role-purple"><i class="ti ti-clock" style="font-size:13px;"></i>Catálogo de tiempos por código UM</div>
+    <div id="tc-edit-indicator" style="display:none;" class="tc-edit-row"><i class="ti ti-edit" style="font-size:13px;"></i><span id="tc-edit-label">Editando código</span></div>
+    <div class="fgrid">
+      <div class="fg"><label class="req">Código UM</label><input id="tc-um" type="text" placeholder="UM-001"></div>
+      <div class="fg"><label class="req">Descripción</label><input id="tc-desc" type="text" placeholder="Motor taladro 1/2"></div>
+      <div class="fg"><label class="req">Horas estimadas</label><input id="tc-horas" type="number" min="0.5" step="0.5" placeholder="4"></div>
+      <div class="fg"><label>Categoría</label>
+        <select id="tc-cat"><option>Eléctrica</option><option>Combustión</option><option>Hidráulica</option><option>General</option></select>
+      </div>
+      <div class="fg"><label>Observaciones</label><input id="tc-obs" type="text" placeholder="Opcional..."></div>
+    </div>
+    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+      <button class="btn primary" id="tc-guardar-btn" onclick="guardarCodigo()"><i class="ti ti-device-floppy" style="font-size:13px;"></i>Guardar código</button>
+      <button class="btn" id="tc-cancelar-btn" onclick="cancelarEditCodigo()" style="display:none;"><i class="ti ti-x" style="font-size:12px;"></i>Cancelar</button>
+      <span id="tc-msg" style="font-size:12px;"></span>
+    </div>
+  </div>
+  <div class="card">
+    <p class="sec-title" style="margin-bottom:8px;"><i class="ti ti-search" style="font-size:12px;margin-right:3px;vertical-align:-1px;"></i>Buscar en el catálogo</p>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;">
+      <div class="fg" style="flex:1;min-width:130px;"><label>Código o descripción</label><input id="tc-search" type="text" placeholder="Buscar..." oninput="renderCodigos()"></div>
+      <div class="fg"><label>Categoría</label>
+        <select id="tc-search-cat" onchange="renderCodigos()">
+          <option value="">Todas</option><option>Eléctrica</option><option>Combustión</option><option>Hidráulica</option><option>General</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr>
+        <th>Código UM</th><th>Descripción</th><th>Categoría</th><th>Horas est.</th><th>Días lab.</th><th>Observaciones</th><th>Acciones</th>
+      </tr></thead>
+      <tbody id="tc-tbody"><tr><td colspan="7" class="empty">Cargando...</td></tr></tbody>
+    </table>
+  </div>
+  <p style="font-size:10px;color:#aaa;">* Días laborales = horas ÷ 8 · Jornada L–V</p>
+</div>
+
+<!-- ══ TABLA OT ══ -->
+<div id="tab-tabla" class="tab-pane">
+  <div style="display:flex;gap:8px;margin-bottom:10px;align-items:center;flex-wrap:wrap;">
+    <input id="filtro-txt" type="text" placeholder="Filtrar por cualquier campo..." style="font-size:12px;flex:1;min-width:150px;padding:6px 8px;border:0.5px solid #ccc;border-radius:6px;" oninput="renderTabla()">
+    <select id="filtro-est" style="font-size:12px;padding:6px 8px;border:0.5px solid #ccc;border-radius:6px;" onchange="renderTabla()">
+      <option value="">Todos los estados</option>
+      <option>Asignado</option><option>En proceso</option><option>Reparado</option>
+      <option>Cotizado</option><option>Espera de repuesto</option><option>Cambio</option><option>Nota de crédito</option>
+    </select>
+  </div>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr>
+        <th>Cód. UM</th><th>Boleta</th><th>Cliente</th><th>Tipo</th><th>Falla</th><th>Diagnóstico</th><th>Acc.</th><th>Factura</th><th>F. Ingreso</th><th>Técnico</th><th>Estado</th><th>Retrabajo</th><th>F. Salida</th><th>Días</th><th>Est.</th><th></th>
+      </tr></thead>
+      <tbody id="ot-tbody"><tr><td colspan="16" class="empty">Cargando...</td></tr></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ══ DASHBOARD ══ -->
+<div id="tab-dash" class="tab-pane">
+  <div class="kpi-grid">
+    <div class="kpi"><p class="kpi-l">OT activas</p><p class="kpi-v" id="d-activas">—</p></div>
+    <div class="kpi"><p class="kpi-l">Cerradas</p><p class="kpi-v" id="d-cerradas">—</p></div>
+    <div class="kpi"><p class="kpi-l">Ciclo prom.</p><p class="kpi-v" id="d-ciclo">—</p><p class="kpi-s" id="d-ciclo-s"></p></div>
+    <div class="kpi"><p class="kpi-l">Tasa retrabajo</p><p class="kpi-v" id="d-retpct">—</p><p class="kpi-s" id="d-ret-s"></p></div>
+    <div class="kpi"><p class="kpi-l">Espera repuesto</p><p class="kpi-v" id="d-espera">—</p></div>
+    <div class="kpi"><p class="kpi-l">Con factura</p><p class="kpi-v" id="d-factura">—</p></div>
+    <div class="kpi"><p class="kpi-l">Códigos</p><p class="kpi-v" id="d-codigos">—</p></div>
+  </div>
+  <p class="sec-title" style="margin-bottom:7px;">Semáforo — OT activas</p>
+  <div class="sem">
+    <div class="sem-i" style="background:#EAF3DE;"><div class="sem-n" style="color:#3B6D11;" id="s-g">0</div><div class="sem-l" style="color:#3B6D11;">0–3 días</div></div>
+    <div class="sem-i" style="background:#FAEEDA;"><div class="sem-n" style="color:#854F0B;" id="s-y">0</div><div class="sem-l" style="color:#854F0B;">4–7 días</div></div>
+    <div class="sem-i" style="background:#FCEBEB;"><div class="sem-n" style="color:#A32D2D;" id="s-r">0</div><div class="sem-l" style="color:#A32D2D;">+7 días</div></div>
+  </div>
+  <div class="card" style="margin-bottom:12px;">
+    <p class="sec-title" style="margin-bottom:10px;">Rendimiento por técnico — días estimados vs reales</p>
+    <div style="font-size:10px;color:#888;margin-bottom:10px;display:flex;gap:14px;flex-wrap:wrap;">
+      <span><span style="display:inline-block;width:9px;height:9px;background:#378ADD;border-radius:2px;margin-right:3px;vertical-align:-1px;"></span>Estimado</span>
+      <span><span style="display:inline-block;width:9px;height:9px;background:#3B6D11;border-radius:2px;margin-right:3px;vertical-align:-1px;"></span>En tiempo</span>
+      <span><span style="display:inline-block;width:9px;height:9px;background:#A32D2D;border-radius:2px;margin-right:3px;vertical-align:-1px;"></span>Excede</span>
+    </div>
+    <div id="d-rendimiento"><p class="empty">Registre OT con códigos del catálogo para ver rendimiento.</p></div>
+  </div>
+  <div class="two">
+    <div class="card"><p class="sec-title">Por tipo de máquina</p><div id="d-maq"><p class="empty">—</p></div></div>
+    <div class="card"><p class="sec-title">Por estado</p><div id="d-est"><p class="empty">—</p></div></div>
+  </div>
+  <div class="two">
+    <div class="card"><p class="sec-title">Técnicos — resumen</p><div id="d-tec"><p class="empty">—</p></div></div>
+    <div class="card"><p class="sec-title">Causa de retrabajo</p><div id="d-ret"><p class="empty">—</p></div></div>
+  </div>
+  <div class="card"><p class="sec-title">OT críticas — +7 días</p><div id="d-crit"><p class="empty">—</p></div></div>
+  <p style="font-size:10px;color:#aaa;text-align:right;margin-top:6px;">Tiempo real · Jornada 8h · L–V · Taller Ferretero</p>
+</div>
+
+</div><!-- /content -->
+
+<!-- Firebase SDK -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getDatabase, ref, push, set, onValue, update, remove } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDOl9tblEjRneTu4LkDgE8n5VMeKX40HKI",
+  authDomain: "modulo-taller-4032f.firebaseapp.com",
+  databaseURL: "https://modulo-taller-4032f-default-rtdb.firebaseio.com",
+  projectId: "modulo-taller-4032f",
+  storageBucket: "modulo-taller-4032f.firebasestorage.app",
+  messagingSenderId: "375555657071",
+  appId: "1:375555657071:web:c9c29e0ee92c225f8dac9a"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+// ── Estado en memoria sincronizado desde Firebase ──
+let OTs = {};
+let CODIGOS = {};
+let editCodigoKey = null;
+
+const JORNADA = 8;
+
+// ── Helpers ──
+function g(id){ return document.getElementById(id); }
+function showTab(t){
+  ['recepcion','tecnico','tiempos','tabla','dash'].forEach(x => {
+    g('tab-'+x).classList.toggle('active', x===t);
+    g('btn-'+x).classList.toggle('active', x===t);
+  });
+  if(t==='dash') updateDash();
+  if(t==='tabla') renderTabla();
+  if(t==='tiempos') renderCodigos();
+}
+window.showTab = showTab;
+
+function tog(selId, divId, val){ g(divId).style.display = g(selId).value===val ? 'block' : 'none'; }
+window.tog = tog;
+
+function daysSince(d){
+  if(!d) return null;
+  const n = new Date(); n.setHours(0,0,0,0);
+  return Math.floor((n - new Date(d)) / 86400000);
+}
+function cycleDays(o){
+  if(!o.fechaIn) return null;
+  const e = o.fechaSal ? new Date(o.fechaSal) : new Date();
+  return Math.max(0, Math.floor((e - new Date(o.fechaIn)) / 86400000));
+}
+function isActiva(o){ return !['Reparado','Cambio','Nota de crédito'].includes(o.estado); }
+function estBadge(e){
+  const m = {'Asignado':'b-blue','En proceso':'b-purple','Reparado':'b-green','Cotizado':'b-yellow','Espera de repuesto':'b-yellow','Cambio':'b-red','Nota de crédito':'b-red'};
+  return `<span class="badge ${m[e]||'b-blue'}">${e||'—'}</span>`;
+}
+function horasADias(h){ return h>0 ? (h/JORNADA).toFixed(1) : 0; }
+function msg(id, txt, color, dur=3000){
+  const el=g(id); if(!el) return;
+  el.style.color=color; el.textContent=txt;
+  if(dur) setTimeout(()=>{ if(el) el.textContent=''; }, dur);
+}
+
+// ── Conexión Firebase ──
+const syncDot = g('sync-dot');
+const syncLabel = g('sync-label');
+
+// Escuchar OTs en tiempo real
+onValue(ref(db,'OTs'), snap => {
+  OTs = snap.val() || {};
+  renderTabla();
+  if(g('tab-dash').classList.contains('active')) updateDash();
+  g('loading-overlay').style.display = 'none';
+  syncDot.className = 'sync-dot connected';
+  syncLabel.textContent = 'En línea · ' + new Date().toLocaleTimeString('es-CR', {hour:'2-digit',minute:'2-digit'});
+}, err => {
+  syncDot.className = 'sync-dot error';
+  syncLabel.textContent = 'Error de conexión';
+  g('loading-overlay').style.display = 'none';
+});
+
+// Escuchar Códigos en tiempo real
+onValue(ref(db,'codigos'), snap => {
+  CODIGOS = snap.val() || {};
+  renderCodigos();
+  g('d-codigos').textContent = Object.keys(CODIGOS).length;
+});
+
+// ── RECEPCIÓN — Agregar OT ──
+async function addOT(){
+  const um=g('r-um').value.trim(), codcli=g('r-codcli').value.trim(),
+        boleta=g('r-boleta').value.trim(), cliente=g('r-cliente').value.trim(),
+        tipo=g('r-tipo').value, falla=g('r-falla').value.trim(),
+        fechaIn=g('r-fechaIn').value, tec=g('r-tec').value;
+  if(!um||!codcli||!boleta||!cliente||!tipo||!falla||!fechaIn||!tec){
+    msg('r-msg','Complete los campos obligatorios (*)','#A32D2D'); return;
+  }
+  const btn = g('r-btn'); btn.disabled=true;
+  const ts = new Date().toLocaleString('es-CR');
+  const ot = {
+    um,codcli,boleta,cliente,tipoMaq:tipo,
+    otrosDesc:g('r-otros').value.trim(), falla,diagnostico:'',
+    accesorios:g('r-acc').value, accdesc:g('r-accdesc').value.trim(),
+    factura:g('r-factura').value, fechaIn, tec,
+    estado:'Asignado', retrabajo:'No', fechaSal:'',
+    historial:[{ts, accion:'OT creada por Recepción · Estado: Asignado'}],
+    creadoEn: Date.now()
+  };
+  try {
+    await push(ref(db,'OTs'), ot);
+    ['r-um','r-codcli','r-boleta','r-cliente','r-otros','r-falla','r-accdesc','r-fechaIn'].forEach(id=>g(id).value='');
+    ['r-tipo','r-tec'].forEach(id=>g(id).value='');
+    g('r-acc').value='No'; g('r-factura').value='No';
+    g('r-otros-w').style.display='none'; g('r-acc-w').style.display='none';
+    msg('r-msg','OT registrada. Estado: Asignado.','#3B6D11');
+  } catch(e) {
+    msg('r-msg','Error al guardar: '+e.message,'#A32D2D',0);
+  }
+  btn.disabled=false;
+}
+window.addOT = addOT;
+
+// ── BÚSQUEDA ──
+function buscar(pfx){
+  const sb=g(pfx+'-boleta').value.trim().toLowerCase();
+  const sc=g(pfx+'-codcli').value.trim().toLowerCase();
+  const resId=pfx+'-results', panId=pfx+'-panel';
+  if(!sb&&!sc){ g(resId).innerHTML=''; g(panId).style.display='none'; return; }
+  const enc = Object.entries(OTs).filter(([k,o])=>{
+    const mb = !sb || (o.boleta||'').toLowerCase().includes(sb);
+    const mc = !sc || (o.codcli||'').toLowerCase().includes(sc);
+    return (sb||sc) && mb && mc;
+  });
+  if(!enc.length){
+    g(resId).innerHTML='<p style="font-size:12px;color:#A32D2D;padding:6px 0;">No se encontraron resultados.</p>';
+    g(panId).style.display='none'; return;
+  }
+  g(resId).innerHTML=`<div class="sr-result"><div class="sr-head">${enc.length} resultado(s) — seleccione para editar</div>${
+    enc.map(([k,o])=>`<div class="sr-row" id="sr-${panId}-${k}" onclick="selOT('${k}','${panId}')">
+      <div><span style="font-weight:500;font-size:12px;">${o.boleta}</span>
+      <span style="color:#888;font-size:11px;margin-left:8px;">${o.codcli}</span>
+      <span style="color:#888;font-size:11px;margin-left:8px;">${o.cliente}</span></div>
+      <div style="display:flex;gap:6px;align-items:center;">${estBadge(o.estado)}<span style="font-size:10px;color:#888;">${o.tec}</span>
+      <i class="ti ti-chevron-right" style="font-size:12px;color:#aaa;"></i></div>
+    </div>`).join('')}</div>`;
+}
+window.buscar = buscar;
+
+function selOT(key, panId){
+  const o = OTs[key];
+  if(!o) return;
+  document.querySelectorAll('.sr-row').forEach(el=>el.classList.remove('selected'));
+  const sr=g('sr-'+panId+'-'+key); if(sr) sr.classList.add('selected');
+  const codCat = Object.values(CODIGOS).find(c=>(c.um||'').toLowerCase()===(o.um||'').toLowerCase());
+  const estInfo = codCat
+    ? `<div class="info-banner"><i class="ti ti-clock" style="font-size:14px;"></i>Catálogo: <strong>${codCat.horas}h</strong> = <strong>${horasADias(codCat.horas)} días laborales</strong></div>`
+    : `<div class="warn-banner"><i class="ti ti-alert-triangle" style="font-size:14px;"></i>Código UM no encontrado en catálogo de tiempos.</div>`;
+  const hist=(o.historial||[]);
+  const histHTML = hist.length ? `<div class="sep"></div><p class="sec-title" style="margin-bottom:6px;"><i class="ti ti-history" style="font-size:12px;margin-right:3px;vertical-align:-1px;"></i>Historial</p>${
+    hist.slice().reverse().map((h,idx)=>`<div class="tl-item"><div class="tl-dot" style="background:${idx===0?'#378ADD':'#ccc'};"></div><div><span style="font-size:11px;">${h.accion}</span><br><span style="font-size:10px;color:#888;">${h.ts}</span></div></div>`).join('')}` : '';
+  g(panId).innerHTML=`
+  <div class="card" style="margin-top:10px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:6px;">
+      <span style="font-size:13px;font-weight:500;">${o.boleta} · ${o.um} · ${o.cliente}</span>
+      <button class="btn info" onclick="imprimirOT('${key}')"><i class="ti ti-printer" style="font-size:13px;"></i>Imprimir</button>
+    </div>
+    ${estInfo}
+    <p class="sec-title" style="color:#185FA5;">Datos de recepción</p>
+    <div class="fgrid">
+      <div class="fg"><label>Código UM</label><input id="e-um-${panId}" type="text" value="${o.um||''}"></div>
+      <div class="fg"><label>Código cliente</label><input id="e-codcli-${panId}" type="text" value="${o.codcli||''}"></div>
+      <div class="fg"><label>Boleta / trámite UM</label><input id="e-boleta-${panId}" type="text" value="${o.boleta||''}"></div>
+      <div class="fg"><label>Cliente</label><input id="e-cliente-${panId}" type="text" value="${o.cliente||''}"></div>
+      <div class="fg"><label>Tipo de máquina</label>
+        <select id="e-tipo-${panId}">${['Combustión','Hidráulica','Eléctrica','Otros'].map(s=>`<option${o.tipoMaq===s?' selected':''}>${s}</option>`).join('')}</select>
+      </div>
+      <div class="fg"><label>Accesorios</label>
+        <select id="e-acc-${panId}"><option${o.accesorios==='No'?' selected':''} value="No">No</option><option${o.accesorios==='Sí'?' selected':''} value="Sí">Sí</option></select>
+      </div>
+      <div class="fg"><label>Factura</label>
+        <select id="e-fac-${panId}"><option${o.factura==='No'?' selected':''} value="No">No</option><option${o.factura==='Sí'?' selected':''} value="Sí">Sí</option></select>
+      </div>
+      <div class="fg"><label>Fecha ingreso</label><input id="e-fechaIn-${panId}" type="date" value="${o.fechaIn||''}"></div>
+      <div class="fg"><label>Técnico asignado</label>
+        <select id="e-tec-${panId}">${['Usuario 1','Usuario 2','Usuario 3','Usuario 4','Usuario 5'].map(u=>`<option${o.tec===u?' selected':''}>${u}</option>`).join('')}</select>
+      </div>
+    </div>
+    <div class="fg" style="margin-top:4px;"><label>Falla reportada</label><textarea id="e-falla-${panId}" style="min-height:58px;">${o.falla||''}</textarea></div>
+    <div class="sep"></div>
+    <p class="sec-title" style="color:#3B6D11;">Cierre de OT — técnico</p>
+    <div class="fgrid">
+      <div class="fg"><label>Estado</label>
+        <select id="e-estado-${panId}">${['Asignado','En proceso','Reparado','Cotizado','Espera de repuesto','Cambio','Nota de crédito'].map(s=>`<option${o.estado===s?' selected':''}>${s}</option>`).join('')}</select>
+      </div>
+      <div class="fg"><label>Retrabajo</label>
+        <select id="e-ret-${panId}">
+          <option${o.retrabajo==='No'?' selected':''} value="No">No</option>
+          <option${o.retrabajo==='Dañado en transporte'?' selected':''} value="Dañado en transporte">Dañado en transporte</option>
+          <option${o.retrabajo==='Cliente no recibe'?' selected':''} value="Cliente no recibe">Cliente no recibe</option>
+          <option${o.retrabajo==='Fallo de repuesto'?' selected':''} value="Fallo de repuesto">Fallo de repuesto</option>
+        </select>
+      </div>
+      <div class="fg"><label>Fecha salida</label><input id="e-fechaSal-${panId}" type="date" value="${o.fechaSal||''}"></div>
+    </div>
+    <div class="fg" style="margin-top:4px;"><label>Diagnóstico final del técnico</label><textarea id="e-diag-${panId}" placeholder="Diagnóstico y trabajo realizado..." style="min-height:68px;">${o.diagnostico||''}</textarea></div>
+    ${histHTML}
+    <div id="btns-${panId}" style="margin-top:12px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+      <button class="btn primary" onclick="guardar('${key}','${panId}')"><i class="ti ti-check" style="font-size:13px;"></i>Guardar cambios</button>
+      <button class="btn" onclick="cerrar('${panId}')"><i class="ti ti-x" style="font-size:12px;"></i>Cancelar</button>
+    </div>
+    <div id="emsg-${panId}" style="font-size:12px;margin-top:6px;"></div>
+  </div>`;
+  g(panId).style.display='block';
+  g(panId).scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+window.selOT = selOT;
+
+async function guardar(key, panId){
+  const o = OTs[key]; if(!o) return;
+  const nv = id => g(id) ? g(id).value : '';
+  const cambios = [];
+  const updates = {
+    um: nv(`e-um-${panId}`).trim(),
+    codcli: nv(`e-codcli-${panId}`).trim(),
+    boleta: nv(`e-boleta-${panId}`).trim(),
+    cliente: nv(`e-cliente-${panId}`).trim(),
+    tipoMaq: nv(`e-tipo-${panId}`),
+    accesorios: nv(`e-acc-${panId}`),
+    factura: nv(`e-fac-${panId}`),
+    fechaIn: nv(`e-fechaIn-${panId}`),
+    tec: nv(`e-tec-${panId}`),
+    falla: nv(`e-falla-${panId}`).trim(),
+    diagnostico: nv(`e-diag-${panId}`).trim(),
+    estado: nv(`e-estado-${panId}`),
+    retrabajo: nv(`e-ret-${panId}`),
+    fechaSal: nv(`e-fechaSal-${panId}`)
+  };
+  Object.keys(updates).forEach(k=>{
+    const a=o[k]||'', d=updates[k]||'';
+    if(a!==d){
+      if(k==='estado') cambios.push(`Estado: ${a||'—'} → ${d}`);
+      else if(k==='fechaSal'&&d) cambios.push(`F. salida: ${d}`);
+      else if(k==='diagnostico'&&d) cambios.push('Diagnóstico agregado');
+      else if(k==='falla') cambios.push('Falla actualizada');
+      else cambios.push(`${k}: actualizado`);
+    }
+  });
+  if(cambios.length){
+    const ts = new Date().toLocaleString('es-CR');
+    updates.historial = [...(o.historial||[]), {ts, accion: cambios.join(' · ')}];
+  }
+  const btn = g(`btns-${panId}`);
+  if(btn){ btn.querySelectorAll('button').forEach(b=>b.disabled=true); }
+  try {
+    await update(ref(db,`OTs/${key}`), updates);
+    if(btn) btn.style.display='none';
+    const em=g(`emsg-${panId}`);
+    if(em){ em.style.color='#3B6D11'; em.innerHTML='<i class="ti ti-circle-check" style="font-size:14px;vertical-align:-2px;margin-right:4px;"></i>Guardado. Para editar nuevamente, realice una nueva búsqueda.'; }
+  } catch(e){
+    if(btn){ btn.querySelectorAll('button').forEach(b=>b.disabled=false); }
+    const em=g(`emsg-${panId}`);
+    if(em){ em.style.color='#A32D2D'; em.textContent='Error al guardar: '+e.message; }
+  }
+}
+window.guardar = guardar;
+
+function cerrar(panId){
+  g(panId).style.display='none';
+  const pfx=panId.replace('-panel','');
+  g(pfx+'-boleta').value=''; g(pfx+'-codcli').value=''; g(pfx+'-results').innerHTML='';
+}
+window.cerrar = cerrar;
+
+function limpiarB(pfx){
+  g(pfx+'-boleta').value=''; g(pfx+'-codcli').value='';
+  g(pfx+'-results').innerHTML=''; g(pfx+'-panel').style.display='none';
+}
+window.limpiarB = limpiarB;
+
+// ── CATÁLOGO DE CÓDIGOS ──
+async function guardarCodigo(){
+  const um=g('tc-um').value.trim(), desc=g('tc-desc').value.trim(),
+        horas=parseFloat(g('tc-horas').value), cat=g('tc-cat').value, obs=g('tc-obs').value.trim();
+  if(!um||!desc||!horas||horas<=0){ msg('tc-msg','Complete código, descripción y horas.','#A32D2D'); return; }
+  g('tc-guardar-btn').disabled=true;
+  try {
+    if(editCodigoKey){
+      await update(ref(db,`codigos/${editCodigoKey}`), {um,desc,horas,cat,obs});
+      msg('tc-msg','Código actualizado.','#3B6D11');
+      cancelarEditCodigo();
+    } else {
+      const existe=Object.values(CODIGOS).find(c=>(c.um||'').toLowerCase()===um.toLowerCase());
+      if(existe){ msg('tc-msg','Ya existe un código con ese UM.','#A32D2D'); g('tc-guardar-btn').disabled=false; return; }
+      await push(ref(db,'codigos'), {um,desc,horas,cat,obs});
+      msg('tc-msg','Código agregado.','#3B6D11');
+      ['tc-um','tc-desc','tc-horas','tc-obs'].forEach(id=>g(id).value='');
+      g('tc-cat').value='Eléctrica';
+    }
+  } catch(e){ msg('tc-msg','Error: '+e.message,'#A32D2D',0); }
+  g('tc-guardar-btn').disabled=false;
+}
+window.guardarCodigo = guardarCodigo;
+
+function editarCodigo(key){
+  const c=CODIGOS[key]; if(!c) return;
+  editCodigoKey=key;
+  g('tc-um').value=c.um||''; g('tc-desc').value=c.desc||'';
+  g('tc-horas').value=c.horas||''; g('tc-cat').value=c.cat||'Eléctrica'; g('tc-obs').value=c.obs||'';
+  g('tc-edit-label').textContent='Editando: '+c.um;
+  g('tc-edit-indicator').style.display='flex';
+  g('tc-cancelar-btn').style.display='inline-flex';
+  g('tc-msg').textContent=''; g('tc-um').focus();
+}
+window.editarCodigo = editarCodigo;
+
+function cancelarEditCodigo(){
+  editCodigoKey=null;
+  ['tc-um','tc-desc','tc-horas','tc-obs'].forEach(id=>g(id).value='');
+  g('tc-cat').value='Eléctrica';
+  g('tc-edit-indicator').style.display='none';
+  g('tc-cancelar-btn').style.display='none';
+  g('tc-msg').textContent='';
+}
+window.cancelarEditCodigo = cancelarEditCodigo;
+
+async function eliminarCodigo(key){
+  const c=CODIGOS[key]; if(!c) return;
+  if(!confirm(`¿Eliminar el código "${c.um}"?`)) return;
+  try { await remove(ref(db,`codigos/${key}`)); }
+  catch(e){ alert('Error: '+e.message); }
+}
+window.eliminarCodigo = eliminarCodigo;
+
+function renderCodigos(){
+  const ftxt=(g('tc-search')?g('tc-search').value.toLowerCase():'');
+  const fcat=(g('tc-search-cat')?g('tc-search-cat').value:'');
+  const catBadge={Eléctrica:'b-blue',Combustión:'b-yellow',Hidráulica:'b-purple',General:'b-green'};
+  const lista=Object.entries(CODIGOS).filter(([k,c])=>{
+    const okT=!ftxt||((c.um||'').toLowerCase().includes(ftxt)||(c.desc||'').toLowerCase().includes(ftxt));
+    const okC=!fcat||c.cat===fcat; return okT&&okC;
+  });
+  const tb=g('tc-tbody');
+  if(!tb) return;
+  if(!lista.length){ tb.innerHTML=`<tr><td colspan="7" class="empty">No hay códigos${ftxt||fcat?' que coincidan':' registrados'}.</td></tr>`; return; }
+  tb.innerHTML=lista.map(([key,c])=>`<tr>
+    <td style="font-weight:500;">${c.um}</td>
+    <td>${c.desc}</td>
+    <td><span class="badge ${catBadge[c.cat]||'b-blue'}">${c.cat}</span></td>
+    <td><strong>${c.horas}h</strong></td>
+    <td><span class="badge b-purple">${horasADias(c.horas)} d.l.</span></td>
+    <td style="font-size:10px;color:#888;">${c.obs||'—'}</td>
+    <td><div style="display:flex;gap:5px;">
+      <button class="icon-btn" onclick="editarCodigo('${key}')"><i class="ti ti-edit" style="font-size:12px;"></i></button>
+      <button class="icon-btn del" onclick="eliminarCodigo('${key}')"><i class="ti ti-trash" style="font-size:12px;"></i></button>
+    </div></td>
+  </tr>`).join('');
+}
+window.renderCodigos = renderCodigos;
+
+// ── TABLA OT ──
+function renderTabla(){
+  const fTxt=g('filtro-txt')?g('filtro-txt').value.toLowerCase():'';
+  const fEst=g('filtro-est')?g('filtro-est').value:'';
+  const lista=Object.entries(OTs).filter(([k,o])=>{
+    const okT=!fTxt||JSON.stringify(o).toLowerCase().includes(fTxt);
+    const okE=!fEst||o.estado===fEst; return okT&&okE;
+  }).sort((a,b)=>(b[1].creadoEn||0)-(a[1].creadoEn||0));
+  const tb=g('ot-tbody'); if(!tb) return;
+  if(!lista.length){ tb.innerHTML=`<tr><td colspan="16" class="empty">No hay OT${fTxt||fEst?' que coincidan':' registradas'}.</td></tr>`; return; }
+  tb.innerHTML=lista.map(([key,o])=>{
+    const dias=daysSince(o.fechaIn);
+    const dB=dias!==null?`<span class="badge ${dias<=3?'b-green':dias<=7?'b-yellow':'b-red'}">${dias}d</span>`:'—';
+    const cod=Object.values(CODIGOS).find(c=>(c.um||'').toLowerCase()===(o.um||'').toLowerCase());
+    const estD=cod?`<span class="badge b-purple">${horasADias(cod.horas)}d</span>`:'<span style="color:#aaa;font-size:10px;">—</span>';
+    const fallaS=(o.falla||'—').slice(0,22)+(o.falla&&o.falla.length>22?'…':'');
+    const diagS=o.diagnostico?o.diagnostico.slice(0,22)+(o.diagnostico.length>22?'…':''):'<span style="color:#aaa;">Pendiente</span>';
+    return`<tr>
+      <td style="font-weight:500;">${o.um}</td><td>${o.boleta}</td>
+      <td style="max-width:80px;overflow:hidden;text-overflow:ellipsis;">${o.cliente}</td>
+      <td>${o.tipoMaq}</td>
+      <td style="max-width:90px;font-size:10px;" title="${o.falla||''}">${fallaS}</td>
+      <td style="max-width:90px;font-size:10px;" title="${o.diagnostico||''}">${diagS}</td>
+      <td>${o.accesorios==='Sí'?'<span class="badge b-yellow">Sí</span>':'<span class="badge b-green">No</span>'}</td>
+      <td>${o.factura==='Sí'?'<span class="badge b-green">Sí</span>':'<span class="badge b-red">No</span>'}</td>
+      <td>${o.fechaIn}</td><td>${o.tec}</td><td>${estBadge(o.estado)}</td>
+      <td>${o.retrabajo!=='No'?`<span class="badge b-red" style="font-size:9px;">${o.retrabajo}</span>`:'<span class="badge b-green">No</span>'}</td>
+      <td>${o.fechaSal||'—'}</td><td>${dB}</td><td>${estD}</td>
+      <td><button class="icon-btn" onclick="irEditar('${key}')" title="Editar"><i class="ti ti-edit" style="font-size:12px;"></i></button></td>
+    </tr>`;
+  }).join('');
+}
+window.renderTabla = renderTabla;
+
+function irEditar(key){
+  const o=OTs[key]; if(!o) return;
+  showTab('tecnico');
+  setTimeout(()=>{ g('tb-boleta').value=o.boleta; buscar('tb'); },80);
+}
+window.irEditar = irEditar;
+
+// ── IMPRIMIR ──
+function imprimirOT(key){
+  const o=OTs[key]; if(!o) return;
+  const dias=daysSince(o.fechaIn);
+  const cod=Object.values(CODIGOS).find(c=>(c.um||'').toLowerCase()===(o.um||'').toLowerCase());
+  const hist=(o.historial||[]).slice().reverse().map(h=>`<tr><td style="padding:4px 8px;font-size:12px;">${h.ts}</td><td style="padding:4px 8px;font-size:12px;">${h.accion}</td></tr>`).join('');
+  const html=`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>OT ${o.boleta}</title>
+  <style>body{font-family:Arial,sans-serif;color:#111;padding:24px;max-width:720px;margin:auto;}h1{font-size:17px;margin:0 0 4px;}
+  .sub{font-size:12px;color:#555;margin:0 0 14px;}.row{display:flex;gap:0;}.col{flex:1;}.field{margin-bottom:9px;}
+  .lbl{font-size:10px;color:#555;text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px;}.val{font-size:13px;border-bottom:1px solid #ddd;padding-bottom:3px;min-height:18px;}
+  .section{margin:14px 0 7px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#444;border-bottom:1px solid #ccc;padding-bottom:3px;}
+  table{width:100%;border-collapse:collapse;}th{background:#f0f0f0;padding:5px 8px;text-align:left;font-size:11px;}td{border-bottom:1px solid #eee;}
+  .falla{background:#fff8e1;border:1px solid #f0c040;border-radius:4px;padding:9px;font-size:12px;min-height:40px;}
+  .diag{background:#e8f5e9;border:1px solid #81c784;border-radius:4px;padding:9px;font-size:12px;min-height:40px;}
+  .est{background:#ede7f6;border:1px solid #9575cd;border-radius:4px;padding:7px 10px;font-size:11px;margin-bottom:8px;}
+  @media print{body{padding:10px;}}</style></head><body>
+  <h1>Orden de Trabajo — Taller Ferretero</h1><p class="sub">Generado: ${new Date().toLocaleString('es-CR')}</p>
+  <div class="section">Identificación</div>
+  <div class="row"><div class="col"><div class="field"><div class="lbl">Código UM</div><div class="val">${o.um}</div></div></div>
+  <div class="col"><div class="field"><div class="lbl">Código cliente</div><div class="val">${o.codcli}</div></div></div>
+  <div class="col"><div class="field"><div class="lbl">Boleta UM</div><div class="val">${o.boleta}</div></div></div></div>
+  <div class="row"><div class="col"><div class="field"><div class="lbl">Cliente</div><div class="val">${o.cliente}</div></div></div>
+  <div class="col"><div class="field"><div class="lbl">Tipo de máquina</div><div class="val">${o.tipoMaq}${o.otrosDesc?' — '+o.otrosDesc:''}</div></div></div></div>
+  ${cod?`<div class="est"><strong>Estimado catálogo:</strong> ${cod.horas}h = ${horasADias(cod.horas)} días laborales (8h · L–V)</div>`:''}
+  <div class="section">Falla reportada por el cliente</div><div class="falla">${o.falla||'No registrada'}</div>
+  <div class="section">Asignación y tiempos</div>
+  <table><thead><tr><th>Campo</th><th>Valor</th></tr></thead><tbody>
+  <tr><td style="padding:4px 8px;font-size:12px;color:#555;">Técnico</td><td style="padding:4px 8px;font-size:12px;">${o.tec}</td></tr>
+  <tr><td style="padding:4px 8px;font-size:12px;color:#555;">Estado</td><td style="padding:4px 8px;font-size:12px;">${o.estado}</td></tr>
+  <tr><td style="padding:4px 8px;font-size:12px;color:#555;">Accesorios</td><td style="padding:4px 8px;font-size:12px;">${o.accesorios}${o.accdesc?' — '+o.accdesc:''}</td></tr>
+  <tr><td style="padding:4px 8px;font-size:12px;color:#555;">Con factura</td><td style="padding:4px 8px;font-size:12px;">${o.factura}</td></tr>
+  <tr><td style="padding:4px 8px;font-size:12px;color:#555;">Retrabajo</td><td style="padding:4px 8px;font-size:12px;">${o.retrabajo}</td></tr>
+  <tr><td style="padding:4px 8px;font-size:12px;color:#555;">Fecha ingreso</td><td style="padding:4px 8px;font-size:12px;">${o.fechaIn}</td></tr>
+  <tr><td style="padding:4px 8px;font-size:12px;color:#555;">Fecha salida</td><td style="padding:4px 8px;font-size:12px;">${o.fechaSal||'Pendiente'}</td></tr>
+  <tr><td style="padding:4px 8px;font-size:12px;color:#555;">Días en taller</td><td style="padding:4px 8px;font-size:12px;">${dias!==null?dias+'d':'—'}</td></tr>
+  </tbody></table>
+  <div class="section">Diagnóstico final del técnico</div><div class="diag">${o.diagnostico||'Pendiente de diagnóstico'}</div>
+  <div class="section">Historial de cambios</div>
+  <table><thead><tr><th>Fecha y hora</th><th>Acción</th></tr></thead><tbody>${hist||'<tr><td colspan="2" style="padding:6px 8px;font-size:12px;color:#888;">Sin cambios registrados</td></tr>'}</tbody></table>
+  <div style="margin-top:28px;display:flex;gap:40px;">
+    <div style="flex:1;border-top:1px solid #999;padding-top:5px;font-size:11px;color:#555;text-align:center;">Firma Recepción</div>
+    <div style="flex:1;border-top:1px solid #999;padding-top:5px;font-size:11px;color:#555;text-align:center;">Firma Técnico</div>
+    <div style="flex:1;border-top:1px solid #999;padding-top:5px;font-size:11px;color:#555;text-align:center;">Firma Cliente</div>
+  </div>
+  <script>window.onload=function(){window.print();}<\/script></body></html>`;
+  const w=window.open('','_blank','width=800,height=700');
+  if(w){ w.document.write(html); w.document.close(); }
+}
+window.imprimirOT = imprimirOT;
+
+// ── DASHBOARD ──
+function updateDash(){
+  const otsArr=Object.values(OTs);
+  const act=otsArr.filter(o=>isActiva(o)), cer=otsArr.filter(o=>!isActiva(o));
+  const esp=otsArr.filter(o=>o.estado==='Espera de repuesto');
+  const fac=otsArr.filter(o=>o.factura==='Sí');
+  const ret=otsArr.filter(o=>o.retrabajo!=='No');
+  g('d-activas').textContent=act.length; g('d-cerradas').textContent=cer.length;
+  g('d-espera').textContent=esp.length; g('d-factura').textContent=fac.length;
+  g('d-codigos').textContent=Object.keys(CODIGOS).length;
+  const ciclos=otsArr.filter(o=>o.fechaSal).map(o=>cycleDays(o)).filter(d=>d!==null);
+  if(ciclos.length){
+    const a=(ciclos.reduce((x,y)=>x+y,0)/ciclos.length).toFixed(1);
+    g('d-ciclo').textContent=a+'d';
+    const ok=parseFloat(a)<=5;
+    g('d-ciclo-s').textContent=ok?'✓ Dentro de meta':'Meta: ≤5 días';
+    g('d-ciclo-s').style.color=ok?'#3B6D11':'#854F0B';
+  } else { g('d-ciclo').textContent='—'; g('d-ciclo-s').textContent=''; }
+  const rp=otsArr.length?Math.round((ret.length/otsArr.length)*100):null;
+  g('d-retpct').textContent=rp!==null?rp+'%':'—';
+  g('d-ret-s').textContent=rp!==null&&rp>5?'Meta: <5%':'';
+  g('d-ret-s').style.color='#A32D2D';
+  let sg=0,sy=0,sr=0;
+  act.forEach(o=>{ const d=daysSince(o.fechaIn); if(d===null)return; if(d<=3)sg++; else if(d<=7)sy++; else sr++; });
+  g('s-g').textContent=sg; g('s-y').textContent=sy; g('s-r').textContent=sr;
+
+  // Rendimiento técnicos
+  const tecData={};
+  ['Usuario 1','Usuario 2','Usuario 3','Usuario 4','Usuario 5'].forEach(u=>{ tecData[u]={est:0,real:0,n:0,enT:0,exc:0,sinCod:0}; });
+  otsArr.forEach(o=>{
+    if(!o.tec||!tecData[o.tec]) return;
+    const td=tecData[o.tec]; td.n++;
+    const cod=Object.values(CODIGOS).find(c=>(c.um||'').toLowerCase()===(o.um||'').toLowerCase());
+    const real=cycleDays(o);
+    if(cod){ const estD=parseFloat(horasADias(cod.horas)); td.est+=estD; if(real!==null){td.real+=real; if(real>estD)td.exc++; else td.enT++;} }
+    else { td.sinCod++; if(real!==null) td.real+=real; }
+  });
+  const tecCon=Object.entries(tecData).filter(([,s])=>s.n>0);
+  g('d-rendimiento').innerHTML=tecCon.length ? tecCon.map(([nm,s])=>{
+    const ini=nm.replace('Usuario ','U');
+    const pct=s.est>0?Math.min(Math.round((s.real/s.est)*100),200):null;
+    const col=pct===null?'#888':pct<=100?'#3B6D11':pct<=130?'#854F0B':'#A32D2D';
+    const effBadge=pct===null?'b-blue':pct<=100?'b-green':pct<=130?'b-yellow':'b-red';
+    const effLabel=pct===null?'Sin estimado':pct<=100?`${pct}% — En tiempo`:`${pct}% — Excede`;
+    return`<div class="perf-card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;flex-wrap:wrap;gap:6px;">
+        <div style="display:flex;align-items:center;gap:7px;"><div class="avatar">${ini}</div><span style="font-size:13px;font-weight:500;">${nm}</span></div>
+        <span class="badge ${effBadge}">${effLabel}</span>
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:6px;">
+        <div style="text-align:center;"><div style="font-size:17px;font-weight:500;color:#378ADD;">${s.est>0?s.est.toFixed(1):'—'}</div><div style="font-size:10px;color:#888;">días est.</div></div>
+        <div style="text-align:center;"><div style="font-size:17px;font-weight:500;color:${col};">${s.real>0?s.real.toFixed(1):'—'}</div><div style="font-size:10px;color:#888;">días reales</div></div>
+        <div style="text-align:center;"><div style="font-size:17px;font-weight:500;">${s.n}</div><div style="font-size:10px;color:#888;">OT totales</div></div>
+        <div style="text-align:center;"><div style="font-size:17px;font-weight:500;color:#3B6D11;">${s.enT}</div><div style="font-size:10px;color:#888;">en tiempo</div></div>
+        <div style="text-align:center;"><div style="font-size:17px;font-weight:500;color:#A32D2D;">${s.exc}</div><div style="font-size:10px;color:#888;">exceden</div></div>
+        ${s.sinCod>0?`<div style="text-align:center;"><div style="font-size:17px;font-weight:500;color:#854F0B;">${s.sinCod}</div><div style="font-size:10px;color:#888;">sin catálogo</div></div>`:''}
+      </div>
+      ${s.est>0?`<div class="progress-bar"><div class="progress-fill" style="width:${Math.min(pct,100)}%;background:${col};"></div></div>`:''}
+    </div>`;
+  }).join('') : '<p class="empty">Registre OT con códigos del catálogo para ver rendimiento.</p>';
+
+  // Por máquina
+  const mC={};otsArr.forEach(o=>{if(o.tipoMaq)mC[o.tipoMaq]=(mC[o.tipoMaq]||0)+1;});
+  const mA=Object.entries(mC).sort((a,b)=>b[1]-a[1]); const mX=mA[0]?mA[0][1]:1;
+  g('d-maq').innerHTML=mA.length?mA.map(([k,v])=>`<div class="br-row"><span class="br-lbl">${k}</span><div class="br-track"><div class="br-fill" style="width:${Math.round(v/mX*100)}%;"></div></div><span style="font-size:11px;color:#888;min-width:16px;text-align:right;">${v}</span></div>`).join(''):'<p class="empty">Sin datos</p>';
+
+  // Por estado
+  const eC={};otsArr.forEach(o=>{if(o.estado)eC[o.estado]=(eC[o.estado]||0)+1;});
+  const eCls={'Asignado':'b-blue','En proceso':'b-purple','Reparado':'b-green','Cotizado':'b-yellow','Espera de repuesto':'b-yellow','Cambio':'b-red','Nota de crédito':'b-red'};
+  g('d-est').innerHTML=Object.entries(eC).length?Object.entries(eC).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`<div class="ot-row"><span>${k}</span><span class="badge ${eCls[k]||'b-blue'}">${v} OT</span></div>`).join(''):'<p class="empty">Sin datos</p>';
+
+  // Técnicos resumen
+  const tS={};otsArr.forEach(o=>{ if(!o.tec)return; if(!tS[o.tec])tS[o.tec]={n:0,c:[],r:0}; tS[o.tec].n++; const c=cycleDays(o); if(c!==null)tS[o.tec].c.push(c); if(o.retrabajo!=='No')tS[o.tec].r++; });
+  g('d-tec').innerHTML=Object.entries(tS).length?Object.entries(tS).sort((a,b)=>b[1].n-a[1].n).map(([nm,s])=>{
+    const a=s.c.length?(s.c.reduce((x,y)=>x+y,0)/s.c.length).toFixed(1):'—';
+    const cls=parseFloat(a)>7?'b-red':parseFloat(a)>4?'b-yellow':'b-green';
+    const ini=nm.replace('Usuario ','U');
+    return`<div class="ot-row"><div style="display:flex;align-items:center;gap:6px;"><div class="avatar">${ini}</div><span>${nm}</span></div><div style="display:flex;gap:5px;align-items:center;"><span style="font-size:10px;color:#888;">${a}d prom.</span><span class="badge ${cls}">${s.n} OT</span>${s.r?`<span class="badge b-red">${s.r} ret.</span>`:''}</div></div>`;
+  }).join(''):'<p class="empty">Sin datos</p>';
+
+  // Retrabajo
+  const rC={};ret.forEach(o=>{rC[o.retrabajo]=(rC[o.retrabajo]||0)+1;});
+  g('d-ret').innerHTML=Object.keys(rC).length?Object.entries(rC).map(([k,v])=>`<div class="ot-row"><span>${k}</span><span class="badge b-red">${v}</span></div>`).join(''):'<p class="empty">Sin retrabajos</p>';
+
+  // Críticas
+  const crit=act.filter(o=>{const d=daysSince(o.fechaIn);return d!==null&&d>7;}).sort((a,b)=>daysSince(b.fechaIn)-daysSince(a.fechaIn));
+  g('d-crit').innerHTML=crit.length?crit.slice(0,6).map(o=>`<div class="ot-row"><div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;"><span style="font-weight:500;">${o.boleta}</span><span style="font-size:10px;color:#888;">${o.cliente}</span><span class="badge b-blue">${o.tec}</span>${estBadge(o.estado)}</div><span class="badge b-red">${daysSince(o.fechaIn)}d</span></div>`).join(''):'<p class="empty">Sin OT críticas</p>';
+}
+window.updateDash = updateDash;
+</script>
+</body>
+</html>
