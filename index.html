@@ -726,6 +726,7 @@ function selOT(key,pi){
       ${hH}
     </div>`;
     g(pi).style.display='block';
+    g(pi).dataset.otKey=key;
     g(pi).scrollIntoView({behavior:'smooth',block:'nearest'});
     return;
   }
@@ -825,53 +826,68 @@ function selOT(key,pi){
   <div id="emsg-${pi}" style="font-size:12px;margin-top:8px;"></div>
   </div>`;
 
-  // Mostrar/ocultar botón finalizar según estado inicial
-  setTimeout(()=>onEstadoChange(pi),50);
-  g(pi).style.display='block';g(pi).scrollIntoView({behavior:'smooth',block:'nearest'});
+  // Guardar key en el panel para usarlo luego en Finalizar
+  g(pi).dataset.otKey=key;
+
+  // Mostrar/ocultar botón finalizar según estado actual de la OT
+  setTimeout(()=>onEstadoChange(pi),80);
+  g(pi).style.display='block';
+  g(pi).scrollIntoView({behavior:'smooth',block:'nearest'});
 }
 window.selOT=selOT;
 
 function onEstadoChange(pi){
   const est=g(`e-est-${pi}`);if(!est)return;
   const val=est.value;
-  const btnG=g(`btn-guardar-${pi}`);const btnArea=g(`btns-${pi}`);if(!btnArea)return;
+  const btnG=g(`btn-guardar-${pi}`);
+  const btnArea=g(`btns-${pi}`);
+  if(!btnArea)return;
+
   // Mostrar/ocultar cotización
-  const cotWrap=g(`cot-wrap-${pi}`);if(cotWrap)cotWrap.style.display=val==='Cotizado'?'block':'none';
-  // Si es estado final → mostrar Finalizar
+  const cotWrap=g(`cot-wrap-${pi}`);
+  if(cotWrap)cotWrap.style.display=val==='Cotizado'?'block':'none';
+
+  // Si es estado final → reemplazar Guardar por Finalizar
   const esFinal=ESTADOS_FINALES.includes(val);
   if(esFinal){
     if(btnG)btnG.style.display='none';
     if(!g(`btn-finalizar-${pi}`)){
       const bf=document.createElement('button');
-      bf.className='btn btn-finalizar';bf.id=`btn-finalizar-${pi}`;
+      bf.className='btn btn-finalizar';
+      bf.id=`btn-finalizar-${pi}`;
       bf.innerHTML='<i class="ti ti-flag-check" style="font-size:14px;"></i>Finalizar OT';
       bf.onclick=()=>pedirFinalizacion(pi);
       btnArea.insertBefore(bf,btnArea.firstChild);
     }
   } else {
     if(btnG)btnG.style.display='';
-    const bfExist=g(`btn-finalizar-${pi}`);if(bfExist)bfExist.remove();
+    const bfExist=g(`btn-finalizar-${pi}`);
+    if(bfExist)bfExist.remove();
   }
 }
 window.onEstadoChange=onEstadoChange;
 
 function pedirFinalizacion(pi){
   const est=g(`e-est-${pi}`);if(!est)return;
-  const key=currentEditKey(pi);if(!key){alert('No se pudo identificar la OT. Intente de nuevo.');return;}
-  abrirModal(`¿Está seguro que desea finalizar esta OT con estado "${est.value}"?\n\nUna vez finalizada, solo podrá editarse si se registra un Retrabajo.`,
-    ()=>guardar(key,pi,true));
-}
-function currentEditKey(pi){
-  const boletaInput=g(`e-boleta-${pi}`);if(!boletaInput)return null;
-  const boleta=boletaInput.value.trim();
-  return Object.entries(OTs).find(([k,o])=>o.boleta===boleta)?.[0]||null;
+  // Obtener key directamente del dataset del panel — no depende del DOM interno
+  const panelEl=g(pi);
+  const key=panelEl?panelEl.dataset.otKey:null;
+  if(!key){
+    alert('Error: no se pudo identificar la OT. Cierre y busque nuevamente.');
+    return;
+  }
+  const estadoVal=est.value;
+  abrirModal(
+    `¿Está seguro que desea FINALIZAR esta OT?\n\nEstado final: "${estadoVal}"\n\nUna vez finalizada quedará bloqueada. Solo se podrá reactivar registrando un Retrabajo.`,
+    ()=>guardar(key,pi,true)
+  );
 }
 window.pedirFinalizacion=pedirFinalizacion;
 
 async function guardar(key,pi,finalizar=false){
-  if(!key){key=currentEditKey(pi);}
   if(!key)return;
-  const o=OTs[key];if(!o)return;
+  const o=OTs[key];
+  if(!o){alert('OT no encontrada. Actualice la página e intente nuevamente.');return;}
   const nv=id=>g(id)?g(id).value:'';const cambios=[];
   // Recoger cotización si aplica
   let cots=o.cotizacion||[];
