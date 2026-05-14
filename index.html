@@ -16,22 +16,22 @@
   --amber:#F59E0B;--amber-light:#FEF3C7;--amber-dark:#92400E;
   --rose:#F43F5E;--rose-light:#FFE4E6;--rose-dark:#881337;
   --emerald:#10B981;--emerald-light:#D1FAE5;
+  --violet:#7C3AED;--violet-light:#EDE9FE;
   --white:#FFFFFF;--off:#F8FAFC;--gray-100:#F1F5F9;--gray-200:#E2E8F0;
-  --gray-300:#CBD5E1;--gray-400:#94A3B8;--gray-600:#475569;--gray-800:#1E293B;
+  --gray-300:#CBD5E1;--gray-400:#94A3B8;--gray-600:#475569;
   --shadow-sm:0 1px 3px rgba(0,0,0,.06),0 1px 2px rgba(0,0,0,.04);
-  --shadow-md:0 4px 16px rgba(0,0,0,.08);--shadow-lg:0 8px 32px rgba(0,0,0,.12);
+  --shadow-md:0 4px 16px rgba(0,0,0,.08);
   --r:10px;
 }
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--off);color:var(--slate);font-size:14px;min-height:100vh;}
 
-/* TOPBAR */
 .topbar{background:var(--slate);padding:0 22px;display:flex;align-items:center;justify-content:space-between;height:54px;position:sticky;top:0;z-index:200;box-shadow:0 2px 16px rgba(0,0,0,.18);}
 .tb-brand{display:flex;align-items:center;gap:12px;}
 .tb-logo{font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:700;letter-spacing:-.3px;display:flex;align-items:center;gap:0;}
 .tb-logo .ael{color:var(--teal);}
 .tb-logo .mod{color:rgba(255,255,255,.9);}
-.tb-logo .dot{width:6px;height:6px;border-radius:50%;background:var(--teal);margin:0 1px;display:inline-block;vertical-align:3px;}
+.tb-logo .dot{width:6px;height:6px;border-radius:50%;background:var(--teal);margin:0 2px;display:inline-block;vertical-align:3px;}
 .tb-divider{width:1px;height:22px;background:rgba(255,255,255,.12);}
 .tb-sub{font-size:11px;font-weight:500;color:rgba(255,255,255,.45);letter-spacing:.07em;text-transform:uppercase;}
 .tb-right{display:flex;align-items:center;gap:16px;}
@@ -39,38 +39,31 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--off);color:var(
 .sdot{width:7px;height:7px;border-radius:50%;background:var(--gray-400);transition:background .4s;}
 .sdot.on{background:#34D399;box-shadow:0 0 8px rgba(52,211,153,.6);}
 .sdot.err{background:var(--rose);}
-.tb-clock{font-family:'Space Grotesk',sans-serif;font-size:12px;color:rgba(255,255,255,.4);letter-spacing:.04em;}
+.tb-clock{font-family:'Space Grotesk',sans-serif;font-size:12px;color:rgba(255,255,255,.4);}
 
-/* NAV */
 .nav{background:var(--white);border-bottom:1px solid var(--gray-200);padding:0 22px;display:flex;gap:0;overflow-x:auto;}
-.ntab{display:flex;align-items:center;gap:7px;padding:0 16px;height:46px;font-size:12px;font-weight:600;color:var(--gray-400);border:none;background:transparent;cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:color .2s,border-color .2s;letter-spacing:.01em;}
+.ntab{display:flex;align-items:center;gap:7px;padding:0 16px;height:46px;font-size:12px;font-weight:600;color:var(--gray-400);border:none;background:transparent;cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:color .2s,border-color .2s;}
 .ntab i{font-size:15px;}
 .ntab:hover{color:var(--slate);}
 .ntab.active{color:var(--teal);border-bottom-color:var(--teal);}
 
-/* CONTENT */
 .content{padding:22px;max-width:1440px;margin:0 auto;}
 .tab-pane{display:none;}
 .tab-pane.active{display:block;}
 
-/* PAGE HEADER */
 .ph{margin-bottom:20px;}
 .ph h1{font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:700;color:var(--slate);margin-bottom:3px;display:flex;align-items:center;gap:10px;}
 .ph h1 .ph-icon{width:34px;height:34px;border-radius:8px;background:var(--teal-light);color:var(--teal);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;}
 .ph p{font-size:12px;color:var(--gray-400);margin-left:44px;}
 
-/* CARD */
 .card{background:var(--white);border:1px solid var(--gray-200);border-radius:var(--r);padding:1.1rem 1.25rem;margin-bottom:14px;box-shadow:var(--shadow-sm);}
 .card-t{font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--gray-400);margin-bottom:10px;display:flex;align-items:center;gap:6px;}
 .card-t i{font-size:14px;color:var(--teal);}
-
-/* ROLE TAGS */
 .rtag{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;padding:5px 12px;border-radius:20px;margin-bottom:14px;}
 .rt-rec{background:var(--sky-light);color:var(--sky);}
 .rt-tec{background:var(--emerald-light);color:#059669;}
 .rt-cod{background:var(--teal-light);color:var(--teal-dark);}
 
-/* FORMS */
 .fsec{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gray-300);margin:14px 0 8px;display:flex;align-items:center;gap:8px;}
 .fsec::after{content:'';flex:1;height:1px;background:var(--gray-100);}
 .fsec i{font-size:12px;color:var(--teal);}
@@ -83,7 +76,6 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--off);color:var(
 .fg textarea{font-size:12px;font-family:'Plus Jakarta Sans',sans-serif;resize:vertical;min-height:62px;padding:7px 10px;border:1.5px solid var(--gray-200);border-radius:7px;background:var(--white);color:var(--slate);width:100%;transition:border-color .2s;}
 .fg textarea:focus{outline:none;border-color:var(--teal);}
 
-/* BUTTONS */
 .btn{font-size:12px;font-weight:700;letter-spacing:.04em;padding:8px 16px;border-radius:8px;border:none;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:all .2s;font-family:'Plus Jakarta Sans',sans-serif;}
 .btn-primary{background:var(--teal);color:var(--white);}
 .btn-primary:hover{background:var(--teal-dark);transform:translateY(-1px);box-shadow:0 4px 14px rgba(13,148,136,.35);}
@@ -92,6 +84,8 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--off);color:var(
 .btn-ghost:hover{background:var(--gray-100);}
 .btn-success{background:var(--emerald);color:var(--white);}
 .btn-success:hover{background:#059669;}
+.btn-finalizar{background:linear-gradient(135deg,#DC2626,#9F1239);color:var(--white);box-shadow:0 4px 14px rgba(220,38,38,.3);}
+.btn-finalizar:hover{background:linear-gradient(135deg,#B91C1C,#881337);transform:translateY(-1px);}
 .btn-sky{background:var(--sky-light);color:var(--sky);border:1px solid #BAE6FD;}
 .btn-sky:hover{background:#BAE6FD;}
 .btn-excel{background:#166534;color:var(--white);}
@@ -102,7 +96,6 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--off);color:var(
 .icon-btn:hover{background:var(--gray-100);color:var(--slate);}
 .icon-btn.del:hover{background:var(--rose-light);color:var(--rose);border-color:var(--rose-light);}
 
-/* BADGES */
 .badge{font-size:10px;font-weight:700;letter-spacing:.04em;padding:2px 8px;border-radius:20px;display:inline-block;white-space:nowrap;}
 .b-teal{background:var(--teal-light);color:var(--teal-dark);}
 .b-sky{background:var(--sky-light);color:#0369A1;}
@@ -110,15 +103,16 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--off);color:var(
 .b-rose{background:var(--rose-light);color:var(--rose-dark);}
 .b-emerald{background:var(--emerald-light);color:#065F46;}
 .b-slate{background:var(--gray-100);color:var(--gray-600);}
-.b-purple{background:#EDE9FE;color:#5B21B6;}
+.b-purple{background:var(--violet-light);color:var(--violet);}
+.b-violet{background:var(--violet-light);color:var(--violet);}
 
-/* BANNERS */
 .banner{border-radius:8px;padding:9px 13px;font-size:12px;display:flex;align-items:center;gap:8px;margin-bottom:12px;line-height:1.5;font-weight:500;}
 .bn-teal{background:var(--teal-faint);color:var(--teal-dark);border:1px solid #99F6E4;}
 .bn-amber{background:var(--amber-light);color:var(--amber-dark);border:1px solid #FDE68A;}
 .bn-sky{background:var(--sky-light);color:#0369A1;border:1px solid #BAE6FD;}
+.bn-rose{background:var(--rose-light);color:var(--rose-dark);border:1px solid #FECDD3;}
+.bn-locked{background:#1E293B;color:rgba(255,255,255,.8);border:1px solid #334155;}
 
-/* TABLES */
 .tbl-wrap{overflow-x:auto;border:1px solid var(--gray-200);border-radius:var(--r);margin-bottom:14px;}
 table{width:100%;border-collapse:collapse;font-size:11px;}
 thead tr{background:linear-gradient(135deg,var(--slate) 0%,var(--slate-mid) 100%);}
@@ -128,7 +122,6 @@ tbody tr:hover{background:var(--teal-faint);}
 tr:last-child td{border-bottom:none;}
 .empty-row{text-align:center;padding:28px;color:var(--gray-400);font-style:italic;font-size:12px;}
 
-/* SEARCH */
 .sr-box{border:1px solid var(--gray-200);border-radius:var(--r);overflow:hidden;margin-bottom:12px;box-shadow:var(--shadow-sm);}
 .sr-head{background:var(--gray-100);padding:7px 14px;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--gray-400);border-bottom:1px solid var(--gray-200);}
 .sr-row{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;border-bottom:1px solid var(--gray-100);cursor:pointer;transition:background .15s;}
@@ -136,10 +129,36 @@ tr:last-child td{border-bottom:none;}
 .sr-row:hover{background:var(--teal-faint);}
 .sr-row.selected{background:var(--teal-faint);border-left:3px solid var(--teal);}
 
-/* TIMELINE HISTORIAL */
 .tl-item{display:flex;gap:10px;font-size:11px;margin-bottom:8px;}
 .tl-dot{width:8px;height:8px;border-radius:50%;margin-top:4px;flex-shrink:0;}
 .sep{height:1px;background:var(--gray-100);margin:12px 0;}
+
+/* CRONÓMETRO */
+.crono-badge{display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,#0F766E,#0369A1);color:var(--white);padding:6px 14px;border-radius:20px;font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:600;letter-spacing:.03em;}
+.crono-dot{width:8px;height:8px;border-radius:50%;background:#4ADE80;animation:pulse 1.2s ease-in-out infinite;}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.6;transform:scale(.85);}}
+
+/* COTIZACIÓN */
+.cot-wrap{background:linear-gradient(135deg,#F0FDFA,#E0F2FE);border:1.5px solid #99F6E4;border-radius:10px;padding:14px;margin-top:10px;}
+.cot-title{font-size:12px;font-weight:700;color:var(--teal-dark);margin-bottom:10px;display:flex;align-items:center;gap:6px;}
+.cot-table{width:100%;border-collapse:collapse;font-size:12px;}
+.cot-table th{background:var(--teal);color:var(--white);padding:7px 10px;text-align:left;font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;}
+.cot-table td{padding:6px 8px;border-bottom:1px solid #CCFBF1;vertical-align:middle;}
+.cot-table td input{border:1.5px solid #99F6E4;border-radius:5px;padding:5px 7px;font-size:12px;font-family:'Plus Jakarta Sans',sans-serif;background:var(--white);width:100%;transition:border-color .2s;}
+.cot-table td input:focus{outline:none;border-color:var(--teal);}
+.cot-total{display:flex;justify-content:flex-end;align-items:center;gap:10px;margin-top:10px;padding-top:10px;border-top:1.5px solid #99F6E4;}
+.cot-total-label{font-size:13px;font-weight:700;color:var(--teal-dark);}
+.cot-total-val{font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:700;color:var(--teal-dark);}
+.cot-add-btn{font-size:11px;padding:4px 10px;border-radius:6px;border:1.5px solid var(--teal);background:transparent;color:var(--teal);cursor:pointer;font-weight:600;display:inline-flex;align-items:center;gap:4px;}
+.cot-add-btn:hover{background:var(--teal-light);}
+.cot-del-btn{font-size:11px;padding:3px 6px;border-radius:5px;border:1.5px solid var(--rose-light);background:transparent;color:var(--rose);cursor:pointer;display:inline-flex;align-items:center;}
+.cot-del-btn:hover{background:var(--rose-light);}
+
+/* OT BLOQUEADA */
+.ot-locked-overlay{background:linear-gradient(135deg,#0F172A,#1E293B);border-radius:10px;padding:16px 18px;display:flex;align-items:center;gap:12px;margin-top:10px;}
+.locked-icon{font-size:28px;color:#F59E0B;flex-shrink:0;}
+.locked-msg{font-size:13px;color:rgba(255,255,255,.75);line-height:1.6;}
+.locked-msg strong{color:var(--white);}
 
 /* DASHBOARD */
 .dash-hero{background:linear-gradient(135deg,var(--slate) 0%,#0F4C75 60%,var(--teal-dark) 100%);border-radius:14px;padding:26px 30px;margin-bottom:22px;position:relative;overflow:hidden;box-shadow:0 8px 32px rgba(15,76,117,.25);}
@@ -152,7 +171,6 @@ tr:last-child td{border-bottom:none;}
 .hi-lbl{font-size:11px;color:rgba(255,255,255,.55);margin-top:5px;text-transform:uppercase;letter-spacing:.08em;font-weight:500;}
 .hi-sub{font-size:10px;color:rgba(255,255,255,.35);margin-top:2px;}
 
-/* KPI STRIP */
 .kpi-strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(125px,1fr));gap:10px;margin-bottom:20px;}
 .kpi-box{background:var(--white);border:1px solid var(--gray-200);border-radius:var(--r);padding:14px 16px;box-shadow:var(--shadow-sm);position:relative;overflow:hidden;transition:transform .2s,box-shadow .2s;}
 .kpi-box:hover{transform:translateY(-2px);box-shadow:var(--shadow-md);}
@@ -165,7 +183,6 @@ tr:last-child td{border-bottom:none;}
 .kv{font-family:'Space Grotesk',sans-serif;font-size:26px;font-weight:700;color:var(--slate);line-height:1;}
 .ks{font-size:10px;color:var(--gray-400);margin-top:3px;}
 
-/* SEMÁFORO */
 .sem-strip{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:22px;}
 .sem-box{border-radius:var(--r);padding:18px;text-align:center;border:1px solid transparent;transition:transform .2s;}
 .sem-box:hover{transform:translateY(-2px);}
@@ -182,7 +199,6 @@ tr:last-child td{border-bottom:none;}
 .sem-r .sem-l{color:var(--rose);}
 .sem-s{font-size:10px;opacity:.6;margin-top:2px;}
 
-/* DASH CARDS */
 .dash-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;}
 @media(max-width:660px){.dash-grid{grid-template-columns:1fr;}.hero-grid{grid-template-columns:1fr 1fr;}.sem-strip{grid-template-columns:1fr;}}
 .dc{background:var(--white);border:1px solid var(--gray-200);border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow-sm);}
@@ -191,24 +207,16 @@ tr:last-child td{border-bottom:none;}
 .dct i{font-size:14px;color:var(--teal);}
 .dcb{padding:14px 16px;}
 
-/* BAR CHART */
 .bar-row{display:flex;align-items:center;gap:10px;margin-bottom:9px;}
-.bar-lbl{width:78px;font-size:11px;color:var(--gray-600);flex-shrink:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.bar-lbl{width:120px;font-size:11px;color:var(--gray-600);flex-shrink:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 .bar-track{flex:1;height:8px;background:var(--gray-100);border-radius:4px;overflow:hidden;}
 .bar-fill{height:100%;border-radius:4px;background:var(--teal);transition:width .6s cubic-bezier(.4,0,.2,1);}
-.bar-fill.rose{background:var(--rose);}
-.bar-fill.amber{background:var(--amber);}
-.bar-fill.sky{background:var(--sky);}
 .bar-val{font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:600;color:var(--gray-400);min-width:22px;text-align:right;}
 
-/* TIMELINE CHART (recibidas vs finalizadas) */
-.chart-wrap{width:100%;overflow-x:auto;}
-.chart-svg-wrap{min-width:500px;position:relative;}
 .chart-legend{display:flex;gap:16px;margin-bottom:10px;flex-wrap:wrap;}
 .legend-item{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--gray-600);font-weight:500;}
 .legend-dot{width:10px;height:10px;border-radius:3px;flex-shrink:0;}
 
-/* TECH CARDS */
 .tec-card{background:var(--gray-100);border:1px solid var(--gray-200);border-radius:8px;padding:12px 14px;margin-bottom:8px;}
 .tec-card:last-child{margin-bottom:0;}
 .tec-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
@@ -221,11 +229,8 @@ tr:last-child td{border-bottom:none;}
 .perf-bar{height:5px;background:var(--gray-200);border-radius:3px;overflow:hidden;margin-top:8px;}
 .perf-fill{height:100%;border-radius:3px;transition:width .6s;}
 
-/* EST ROW */
 .est-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--gray-100);font-size:12px;}
 .est-row:last-child{border-bottom:none;}
-
-/* CRIT ROW */
 .crit-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--gray-100);}
 .crit-row:last-child{border-bottom:none;}
 .crit-left{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
@@ -237,21 +242,16 @@ tr:last-child td{border-bottom:none;}
 .fp-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:16px;}
 .fp-fg{display:flex;flex-direction:column;gap:5px;}
 .fp-fg label{font-size:11px;font-weight:600;color:rgba(255,255,255,.55);letter-spacing:.05em;text-transform:uppercase;}
-.fp-fg select,.fp-fg input{font-size:12px;font-family:'Plus Jakarta Sans',sans-serif;width:100%;padding:8px 10px;border:1.5px solid rgba(255,255,255,.12);border-radius:8px;background:rgba(255,255,255,.08);color:var(--white);transition:border-color .2s;}
-.fp-fg select:focus,.fp-fg input:focus{outline:none;border-color:var(--teal);}
+.fp-fg select,.fp-fg input{font-size:12px;font-family:'Plus Jakarta Sans',sans-serif;width:100%;padding:8px 10px;border:1.5px solid rgba(255,255,255,.12);border-radius:8px;background:rgba(255,255,255,.08);color:var(--white);}
 .fp-fg select option{background:var(--slate);color:var(--white);}
 .months-grid{display:flex;flex-wrap:wrap;gap:8px;}
 .month-chip{padding:5px 12px;border-radius:20px;border:1.5px solid rgba(255,255,255,.15);background:rgba(255,255,255,.06);color:rgba(255,255,255,.6);font-size:11px;font-weight:600;cursor:pointer;transition:all .2s;user-select:none;}
 .month-chip.selected{background:var(--teal);border-color:var(--teal);color:var(--white);}
 .fp-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:14px;padding-top:14px;border-top:1px solid rgba(255,255,255,.08);}
 .fp-result-label{font-size:12px;color:rgba(255,255,255,.45);margin-left:auto;}
-.export-wrap{display:none;gap:8px;align-items:center;}
+.export-wrap{display:none;gap:8px;}
 .export-wrap.show{display:flex;}
 
-/* MONTH NAV TAG */
-.month-tag{background:var(--teal-light);color:var(--teal-dark);border-radius:20px;padding:3px 12px;font-size:11px;font-weight:700;display:inline-flex;align-items:center;gap:5px;margin-bottom:14px;}
-
-/* LOADING */
 .loading-overlay{position:fixed;inset:0;background:rgba(248,250,252,.95);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:999;gap:14px;}
 .spinner{width:36px;height:36px;border:3px solid var(--gray-200);border-top-color:var(--teal);border-radius:50%;animation:spin .7s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg)}}
@@ -260,21 +260,39 @@ tr:last-child td{border-bottom:none;}
 .two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
 @media(max-width:700px){.two-col{grid-template-columns:1fr;}}
 .tc-editing{background:var(--teal-faint);border:1px solid #99F6E4;border-radius:8px;padding:7px 12px;font-size:12px;color:var(--teal-dark);display:flex;align-items:center;gap:7px;margin-bottom:10px;font-weight:500;}
+
+/* MODAL ALERTA PERSONALIZADO */
+.modal-overlay{position:fixed;inset:0;background:rgba(15,23,42,.7);backdrop-filter:blur(4px);z-index:999;display:flex;align-items:center;justify-content:center;}
+.modal-box{background:var(--white);border-radius:16px;padding:28px 32px;max-width:400px;width:90%;box-shadow:0 20px 60px rgba(0,0,0,.3);text-align:center;}
+.modal-icon{font-size:40px;margin-bottom:12px;}
+.modal-title{font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:700;color:var(--slate);margin-bottom:8px;}
+.modal-msg{font-size:13px;color:var(--gray-600);line-height:1.6;margin-bottom:22px;}
+.modal-btns{display:flex;gap:10px;justify-content:center;}
 </style>
 </head>
 <body>
+
+<!-- MODAL CONFIRMACIÓN -->
+<div id="modal-overlay" class="modal-overlay" style="display:none;">
+  <div class="modal-box">
+    <div class="modal-icon">⚠️</div>
+    <div class="modal-title">Confirmar Finalización</div>
+    <div class="modal-msg" id="modal-msg">¿Está seguro que desea finalizar esta OT? Una vez finalizada, no podrá editarse a menos que se registre un retrabajo.</div>
+    <div class="modal-btns">
+      <button class="btn btn-ghost" id="modal-no" onclick="cerrarModal()"><i class="ti ti-x" style="font-size:14px;"></i>No, continuar editando</button>
+      <button class="btn btn-finalizar" id="modal-si"><i class="ti ti-check" style="font-size:14px;"></i>Sí, finalizar OT</button>
+    </div>
+  </div>
+</div>
 
 <div id="loading-overlay" class="loading-overlay">
   <div class="spinner"></div>
   <div class="loading-text">Conectando sistema...</div>
 </div>
 
-<!-- TOPBAR -->
 <div class="topbar">
   <div class="tb-brand">
-    <div class="tb-logo">
-      <span class="ael">AEL</span><span class="dot"></span><span class="mod">MODULOS</span>
-    </div>
+    <div class="tb-logo"><span class="ael">AEL</span><span class="dot"></span><span class="mod">MODULOS</span></div>
     <div class="tb-divider"></div>
     <div class="tb-sub"><i class="ti ti-tool" style="font-size:11px;margin-right:4px;vertical-align:-1px;"></i>Gestión de Taller</div>
   </div>
@@ -284,7 +302,6 @@ tr:last-child td{border-bottom:none;}
   </div>
 </div>
 
-<!-- NAV -->
 <div class="nav">
   <button class="ntab active" id="btn-rec" onclick="showTab('rec')"><i class="ti ti-clipboard-plus"></i>Ingreso de Máquinas</button>
   <button class="ntab" id="btn-tec" onclick="showTab('tec')"><i class="ti ti-tool"></i>Gestión Técnica</button>
@@ -318,21 +335,18 @@ tr:last-child td{border-bottom:none;}
         <div class="fg" id="r-otros-w" style="display:none;"><label>Especifique</label><input id="r-otros" type="text" placeholder="Describa el tipo..."></div>
       </div>
       <div class="fsec"><i class="ti ti-alert-triangle"></i>Falla Reportada</div>
-      <div class="fg" style="margin-bottom:10px;"><label class="req">Descripción de falla del cliente</label><textarea id="r-falla" placeholder="Describa con detalle la falla que indica el cliente..." style="min-height:76px;"></textarea></div>
+      <div class="fg" style="margin-bottom:10px;"><label class="req">Descripción de falla del cliente</label><textarea id="r-falla" placeholder="Describa con detalle la falla que indica el cliente al entregar la máquina..." style="min-height:76px;"></textarea></div>
       <div class="fsec"><i class="ti ti-package"></i>Accesorios y Documentación</div>
       <div class="fgrid">
         <div class="fg"><label>Accesorios</label><select id="r-acc" onchange="tog('r-acc','r-acc-w','Sí')"><option value="No">No</option><option value="Sí">Sí</option></select></div>
         <div class="fg" id="r-acc-w" style="display:none;"><label>Detalle accesorios</label><textarea id="r-accdesc" placeholder="Liste los accesorios..."></textarea></div>
         <div class="fg"><label>Con Factura</label><select id="r-factura"><option value="No">No</option><option value="Sí">Sí</option></select></div>
       </div>
-      <div class="fsec"><i class="ti ti-user-cog"></i>Asignación Técnica</div>
+      <div class="fsec"><i class="ti ti-calendar"></i>Fecha de Ingreso</div>
       <div class="fgrid">
-        <div class="fg"><label class="req">Fecha de Ingreso</label><input id="r-fechaIn" type="date"></div>
-        <div class="fg"><label class="req">Técnico Asignado</label>
-          <select id="r-tec"><option value="">Seleccionar...</option><option>Usuario 1</option><option>Usuario 2</option><option>Usuario 3</option><option>Usuario 4</option><option>Usuario 5</option></select>
-        </div>
+        <div class="fg"><label class="req">Fecha de Ingreso a Taller</label><input id="r-fechaIn" type="date"></div>
       </div>
-      <div class="banner bn-sky" style="margin-top:6px;"><i class="ti ti-info-circle" style="font-size:14px;flex-shrink:0;"></i>Estado inicial: <strong>Asignado</strong> · Diagnóstico y fecha de salida los registra el técnico.</div>
+      <div class="banner bn-sky" style="margin-top:8px;"><i class="ti ti-info-circle" style="font-size:14px;flex-shrink:0;"></i>El técnico será asignado desde la pestaña <strong>Gestión Técnica</strong> al iniciar la reparación.</div>
       <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
         <button class="btn btn-primary" id="r-btn" onclick="addOT()"><i class="ti ti-device-floppy" style="font-size:14px;"></i>Registrar OT</button>
         <span id="r-msg" style="font-size:12px;"></span>
@@ -355,9 +369,9 @@ tr:last-child td{border-bottom:none;}
 
 <!-- TÉCNICO -->
 <div id="tab-tec" class="tab-pane">
-  <div class="ph"><h1><span class="ph-icon"><i class="ti ti-tool"></i></span>Gestión Técnica de Reparaciones</h1><p>Búsqueda, diagnóstico y cierre de órdenes de trabajo</p></div>
+  <div class="ph"><h1><span class="ph-icon"><i class="ti ti-tool"></i></span>Gestión Técnica de Reparaciones</h1><p>El técnico busca su OT asignada, registra su nombre e inicia el proceso de reparación</p></div>
   <div class="card">
-    <div class="rtag rt-tec"><i class="ti ti-tool" style="font-size:12px;"></i>Técnico — Búsqueda y Cierre de OT</div>
+    <div class="rtag rt-tec"><i class="ti ti-tool" style="font-size:12px;"></i>Técnico — Búsqueda y Gestión de OT</div>
     <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;align-items:flex-end;">
       <div class="fg" style="flex:1;min-width:130px;"><label>Boleta / Trámite UM</label><input id="tb-boleta" type="text" placeholder="BT-2025-441" oninput="buscar('tb')"></div>
       <div class="fg" style="flex:1;min-width:130px;"><label>Código Cliente</label><input id="tb-codcli" type="text" placeholder="CLI-0084" oninput="buscar('tb')"></div>
@@ -369,7 +383,7 @@ tr:last-child td{border-bottom:none;}
 
 <!-- TIEMPOS -->
 <div id="tab-cod" class="tab-pane">
-  <div class="ph"><h1><span class="ph-icon"><i class="ti ti-clock-check"></i></span>Catálogo de Tiempos por Código UM</h1><p>Estándares de tiempo · Jornada 8h · Lunes a Viernes</p></div>
+  <div class="ph"><h1><span class="ph-icon"><i class="ti ti-clock-check"></i></span>Catálogo de Tiempos por Código UM</h1><p>Estándares de tiempo para medición de rendimiento técnico · Jornada 8h · L–V</p></div>
   <div class="two-col">
     <div>
       <div class="card">
@@ -414,12 +428,12 @@ tr:last-child td{border-bottom:none;}
   <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;align-items:center;">
     <input id="filtro-txt" type="text" placeholder="Filtrar por cualquier campo..." style="font-size:12px;flex:1;min-width:180px;padding:7px 10px;border:1.5px solid var(--gray-200);border-radius:7px;font-family:'Plus Jakarta Sans',sans-serif;" oninput="rTabla()">
     <select id="filtro-est" style="font-size:12px;padding:7px 10px;border:1.5px solid var(--gray-200);border-radius:7px;font-family:'Plus Jakarta Sans',sans-serif;" onchange="rTabla()">
-      <option value="">Todos los estados</option><option>Asignado</option><option>En proceso</option><option>Reparado</option><option>Cotizado</option><option>Espera de repuesto</option><option>Cambio</option><option>Nota de crédito</option>
+      <option value="">Todos los estados</option><option>En proceso</option><option>Reparado</option><option>Cotizado</option><option>Espera de repuesto</option><option>Cambio</option><option>Nota de crédito</option>
     </select>
   </div>
   <div class="tbl-wrap">
     <table>
-      <thead><tr><th>Cód. UM</th><th>Boleta</th><th>Cliente</th><th>Tipo</th><th>Falla</th><th>Diagnóstico</th><th>Acc.</th><th>Factura</th><th>F. Ingreso</th><th>Técnico</th><th>Estado</th><th>Retrabajo</th><th>F. Salida</th><th>Días</th><th>Est.</th><th></th></tr></thead>
+      <thead><tr><th>Cód. UM</th><th>Boleta</th><th>Cliente</th><th>Tipo</th><th>Falla</th><th>Diagnóstico</th><th>Técnico</th><th>Estado</th><th>Retrabajo</th><th>F. Ingreso</th><th>Inicio Rep.</th><th>F. Salida</th><th>Días</th><th>Est.</th><th>🔒</th><th></th></tr></thead>
       <tbody id="ot-tbody"><tr><td colspan="16" class="empty-row">Cargando...</td></tr></tbody>
     </table>
   </div>
@@ -434,18 +448,16 @@ tr:last-child td{border-bottom:none;}
     </div>
   </div>
 
-  <!-- HERO -->
   <div class="dash-hero">
     <div class="hero-grid">
       <div class="hero-item"><div class="hi-num" id="dh-act">—</div><div class="hi-lbl">OT Activas</div><div class="hi-sub">del período</div></div>
       <div class="hero-divider"></div>
-      <div class="hero-item"><div class="hi-num" id="dh-hoy">—</div><div class="hi-lbl">Ingresadas</div><div class="hi-sub">en el período</div></div>
+      <div class="hero-item"><div class="hi-num" id="dh-proc">—</div><div class="hi-lbl">En Proceso</div><div class="hi-sub">con técnico activo</div></div>
       <div class="hero-divider"></div>
-      <div class="hero-item"><div class="hi-num" id="dh-crit">—</div><div class="hi-lbl">Críticas +7d</div><div class="hi-sub">requieren atención</div></div>
+      <div class="hero-item"><div class="hi-num" id="dh-crit">—</div><div class="hi-lbl">Críticas +10d</div><div class="hi-sub">requieren atención</div></div>
     </div>
   </div>
 
-  <!-- KPIs -->
   <div class="kpi-strip">
     <div class="kpi-box ka"><div class="kl">Total OT</div><div class="kv" id="d-total">—</div><div class="ks">del período</div></div>
     <div class="kpi-box kb"><div class="kl">Cerradas</div><div class="kv" id="d-cerradas">—</div><div class="ks">reparadas / cambio</div></div>
@@ -456,15 +468,13 @@ tr:last-child td{border-bottom:none;}
     <div class="kpi-box ka"><div class="kl">Catálogo</div><div class="kv" id="d-codigos">—</div><div class="ks">códigos UM</div></div>
   </div>
 
-  <!-- SEMÁFORO -->
   <div style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--gray-400);margin-bottom:10px;display:flex;align-items:center;gap:8px;"><i class="ti ti-traffic-lights" style="font-size:14px;color:var(--teal);"></i>Semáforo de Antigüedad — OT Activas del Período</div>
   <div class="sem-strip">
-    <div class="sem-box sem-g"><div class="sem-n" id="s-g">0</div><div class="sem-l">En Tiempo</div><div class="sem-s">0 – 3 días</div></div>
-    <div class="sem-box sem-a"><div class="sem-n" id="s-y">0</div><div class="sem-l">Atención</div><div class="sem-s">4 – 7 días</div></div>
-    <div class="sem-box sem-r"><div class="sem-n" id="s-r">0</div><div class="sem-l">Crítico</div><div class="sem-s">Más de 7 días</div></div>
+    <div class="sem-box sem-g"><div class="sem-n" id="s-g">0</div><div class="sem-l">En Tiempo</div><div class="sem-s">0 – 5 días</div></div>
+    <div class="sem-box sem-a"><div class="sem-n" id="s-y">0</div><div class="sem-l">Atención</div><div class="sem-s">6 – 10 días</div></div>
+    <div class="sem-box sem-r"><div class="sem-n" id="s-r">0</div><div class="sem-l">Crítico</div><div class="sem-s">Más de 10 días</div></div>
   </div>
 
-  <!-- GRÁFICO LÍNEA DE TIEMPO -->
   <div class="dc" style="margin-bottom:14px;">
     <div class="dch">
       <div class="dct"><i class="ti ti-chart-bar-popular"></i>Línea de Tiempo — Herramientas Recibidas vs Finalizadas por Día</div>
@@ -475,11 +485,10 @@ tr:last-child td{border-bottom:none;}
         <div class="legend-item"><div class="legend-dot" style="background:var(--teal);"></div>Recibidas</div>
         <div class="legend-item"><div class="legend-dot" style="background:var(--rose);"></div>Finalizadas</div>
       </div>
-      <div class="chart-wrap"><div id="chart-container" style="min-width:500px;"></div></div>
+      <div style="overflow-x:auto;"><div id="chart-container" style="min-width:500px;"></div></div>
     </div>
   </div>
 
-  <!-- RENDIMIENTO TÉCNICOS -->
   <div class="dc" style="margin-bottom:14px;">
     <div class="dch">
       <div class="dct"><i class="ti ti-chart-bar"></i>Rendimiento por Técnico — Días Estimados vs Reales</div>
@@ -495,40 +504,29 @@ tr:last-child td{border-bottom:none;}
     </div>
   </div>
 
-  <!-- GRILLA 2 COLS -->
   <div class="dash-grid">
     <div class="dc"><div class="dch"><div class="dct"><i class="ti ti-device-analytics"></i>Por Tipo de Máquina</div></div><div class="dcb"><div id="d-maq"><p style="font-size:12px;color:var(--gray-400);text-align:center;padding:14px 0;font-style:italic;">Sin datos</p></div></div></div>
     <div class="dc"><div class="dch"><div class="dct"><i class="ti ti-list-check"></i>OT por Estado</div></div><div class="dcb"><div id="d-est"><p style="font-size:12px;color:var(--gray-400);text-align:center;padding:14px 0;font-style:italic;">Sin datos</p></div></div></div>
-    <div class="dc"><div class="dch"><div class="dct"><i class="ti ti-users"></i>Resumen de Técnicos</div></div><div class="dcb"><div id="d-tec"><p style="font-size:12px;color:var(--gray-400);text-align:center;padding:14px 0;font-style:italic;">Sin datos</p></div></div></div>
+    <div class="dc"><div class="dch"><div class="dct"><i class="ti ti-users"></i>Rendimiento de Técnicos</div></div><div class="dcb"><div id="d-tec"><p style="font-size:12px;color:var(--gray-400);text-align:center;padding:14px 0;font-style:italic;">Sin datos</p></div></div></div>
     <div class="dc"><div class="dch"><div class="dct"><i class="ti ti-refresh-alert"></i>Causas de Retrabajo</div></div><div class="dcb"><div id="d-ret"><p style="font-size:12px;color:var(--gray-400);text-align:center;padding:14px 0;font-style:italic;">Sin retrabajos</p></div></div></div>
   </div>
 
-  <!-- CRÍTICAS -->
   <div class="dc" style="margin-bottom:22px;">
-    <div class="dch"><div class="dct"><i class="ti ti-alert-triangle"></i>OT Críticas — Más de 7 Días sin Cierre</div><span class="badge b-rose" id="d-crit-count">0</span></div>
+    <div class="dch"><div class="dct"><i class="ti ti-alert-triangle"></i>OT Críticas — Más de 10 Días sin Cierre</div><span class="badge b-rose" id="d-crit-count">0</span></div>
     <div class="dcb"><div id="d-crit"><p style="font-size:12px;color:var(--gray-400);text-align:center;padding:14px 0;font-style:italic;">Sin OT críticas</p></div></div>
   </div>
 
-  <!-- PANEL DE FILTROS -->
   <div class="filter-panel">
     <div class="fp-title"><i class="ti ti-filter" style="font-size:16px;color:var(--teal);"></i>Filtros de Análisis y Exportación</div>
-    <div class="fp-sub">Seleccione meses, cliente o código UM para filtrar el panel. Al aplicar un filtro aparecerán las opciones de exportación.</div>
-
+    <div class="fp-sub">Seleccione meses, cliente o código UM para filtrar el panel. Al aplicar un filtro aparecen las opciones de exportación.</div>
     <div class="fp-grid">
       <div class="fp-fg" style="grid-column:1/-1;">
-        <label><i class="ti ti-calendar" style="font-size:12px;margin-right:4px;vertical-align:-1px;"></i>Meses a incluir (seleccione uno o varios)</label>
+        <label><i class="ti ti-calendar" style="font-size:12px;margin-right:4px;vertical-align:-1px;"></i>Meses a incluir</label>
         <div class="months-grid" id="months-grid"></div>
       </div>
-      <div class="fp-fg">
-        <label><i class="ti ti-user" style="font-size:12px;margin-right:4px;vertical-align:-1px;"></i>Filtrar por Cliente</label>
-        <select id="fp-cliente"><option value="">Todos los clientes</option></select>
-      </div>
-      <div class="fp-fg">
-        <label><i class="ti ti-qrcode" style="font-size:12px;margin-right:4px;vertical-align:-1px;"></i>Filtrar por Código UM (OT finalizadas)</label>
-        <select id="fp-codigo"><option value="">Todos los códigos</option></select>
-      </div>
+      <div class="fp-fg"><label>Cliente</label><select id="fp-cliente"><option value="">Todos los clientes</option></select></div>
+      <div class="fp-fg"><label>Código UM (OT finalizadas)</label><select id="fp-codigo"><option value="">Todos los códigos</option></select></div>
     </div>
-
     <div class="fp-actions">
       <button class="btn btn-primary" onclick="aplicarFiltro()"><i class="ti ti-filter" style="font-size:14px;"></i>Aplicar Filtro</button>
       <button class="btn btn-ghost" style="border-color:rgba(255,255,255,.15);color:rgba(255,255,255,.6);" onclick="limpiarFiltro()"><i class="ti ti-x" style="font-size:13px;"></i>Limpiar</button>
@@ -539,11 +537,10 @@ tr:last-child td{border-bottom:none;}
       </div>
     </div>
   </div>
-
   <p style="font-size:10px;color:var(--gray-400);text-align:right;margin-top:10px;">Actualización en tiempo real · AELMODULOS Sistema de Gestión de Taller</p>
 </div>
 
-</div><!-- /content -->
+</div>
 
 <script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
@@ -551,12 +548,15 @@ import{getDatabase,ref,push,onValue,update,remove}from"https://www.gstatic.com/f
 const fc={apiKey:"AIzaSyDOl9tblEjRneTu4LkDgE8n5VMeKX40HKI",authDomain:"modulo-taller-4032f.firebaseapp.com",databaseURL:"https://modulo-taller-4032f-default-rtdb.firebaseio.com",projectId:"modulo-taller-4032f",storageBucket:"modulo-taller-4032f.firebasestorage.app",messagingSenderId:"375555657071",appId:"1:375555657071:web:c9c29e0ee92c225f8dac9a"};
 const app=initializeApp(fc);const db=getDatabase(app);
 
-let OTs={},CODIGOS={},editKey=null;
-let filtroActivo=null; // {meses:[], cliente:'', codigo:''}
+let OTs={},CODIGOS={},editKey=null,filtroActivo=null;
+let modalCallback=null;
 const J=8;
+const CRITICO_DIAS=10;
+const TECNICOS=['Gerald Duran Ardon','Alberto Fallas Granados','Viach Vargas Hidalgo','Heiner Leon Beita'];
+const ESTADOS_TEC=['En proceso','Reparado','Cotizado','Espera de repuesto','Cambio','Nota de crédito'];
+const ESTADOS_FINALES=['Reparado','Cambio','Nota de crédito'];
 const MESES_ES=['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
 
-// ── Clock ──
 function clock(){const n=new Date();document.getElementById('tclock').textContent=n.toLocaleTimeString('es-CR',{hour:'2-digit',minute:'2-digit'});}
 setInterval(clock,1000);clock();
 
@@ -566,100 +566,191 @@ window.showTab=showTab;
 function tog(s,d,v){g(d).style.display=g(s).value===v?'block':'none';}
 window.tog=tog;
 
-// ── Helpers ──
 function dSince(d){if(!d)return null;const n=new Date();n.setHours(0,0,0,0);return Math.floor((n-new Date(d))/86400000);}
 function cDays(o){if(!o.fechaIn)return null;const e=o.fechaSal?new Date(o.fechaSal):new Date();return Math.max(0,Math.floor((e-new Date(o.fechaIn))/86400000));}
-function isAct(o){return!['Reparado','Cambio','Nota de crédito'].includes(o.estado);}
+function isAct(o){return!ESTADOS_FINALES.includes(o.estado)||o.estado==='Cotizado';}
+function isCerrada(o){return ESTADOS_FINALES.includes(o.estado)&&o.finalizada;}
+function isEditable(o){
+  // Editable si: no finalizada, O si tiene retrabajo distinto de 'No'
+  if(!o.finalizada)return true;
+  return o.retrabajo&&o.retrabajo!=='No';
+}
 function h2d(h){return h>0?(h/J).toFixed(1):0;}
 function mEl(id,t,c,dur=3000){const el=g(id);if(!el)return;el.style.color=c;el.textContent=t;if(dur)setTimeout(()=>{if(el)el.textContent='';},dur);}
-function eBadge(e){const m={'Asignado':'b-sky','En proceso':'b-purple','Reparado':'b-emerald','Cotizado':'b-amber','Espera de repuesto':'b-amber','Cambio':'b-rose','Nota de crédito':'b-rose'};return`<span class="badge ${m[e]||'b-slate'}">${e||'—'}</span>`;}
+function eBadge(e){const m={'En proceso':'b-teal','Reparado':'b-emerald','Cotizado':'b-amber','Espera de repuesto':'b-amber','Cambio':'b-rose','Nota de crédito':'b-rose'};return`<span class="badge ${m[e]||'b-slate'}">${e||'—'}</span>`;}
+function avatarLetters(nm){if(!nm)return'?';const parts=nm.split(' ');return(parts[0][0]+(parts[1]?parts[1][0]:'')).toUpperCase();}
+function inicialesTec(nm){if(!nm)return'?';const p=nm.split(' ');return p.map(x=>x[0]).join('').toUpperCase().slice(0,2);}
 
-// ── Obtener mes actual ──
-function getMesActual(){const n=new Date();return{y:n.getFullYear(),m:n.getMonth()};}
-function inMesActual(dateStr){if(!dateStr)return false;const d=new Date(dateStr);const ma=getMesActual();return d.getFullYear()===ma.y&&d.getMonth()===ma.m;}
-function inMeses(dateStr,meses){if(!dateStr||!meses||!meses.length)return false;const d=new Date(dateStr);return meses.some(k=>{const[y,m]=k.split('-').map(Number);return d.getFullYear()===y&&d.getMonth()===m;});}
+// Modal
+function abrirModal(msg,onSi){
+  g('modal-msg').textContent=msg;
+  g('modal-overlay').style.display='flex';
+  modalCallback=onSi;
+  g('modal-si').onclick=()=>{cerrarModal();if(modalCallback)modalCallback();};
+}
+function cerrarModal(){g('modal-overlay').style.display='none';modalCallback=null;}
+window.cerrarModal=cerrarModal;
 
-// ── Firebase ──
+// Firebase
 onValue(ref(db,'OTs'),s=>{
-  OTs=s.val()||{};
-  rTabla();if(g('tab-dash').classList.contains('active'))uDash();
-  poblarFiltros();
-  g('loading-overlay').style.display='none';
-  g('sdot').className='sdot on';
+  OTs=s.val()||{};rTabla();if(g('tab-dash').classList.contains('active'))uDash();poblarFiltros();
+  g('loading-overlay').style.display='none';g('sdot').className='sdot on';
   g('slabel').textContent='En línea · '+new Date().toLocaleTimeString('es-CR',{hour:'2-digit',minute:'2-digit'});
 },()=>{g('sdot').className='sdot err';g('slabel').textContent='Error';g('loading-overlay').style.display='none';});
 onValue(ref(db,'codigos'),s=>{CODIGOS=s.val()||{};rCodigos();});
 
-// ── Poblar filtros ──
-function poblarFiltros(){
-  // Meses disponibles en OTs
-  const mesesSet=new Set();
-  Object.values(OTs).forEach(o=>{
-    if(o.fechaIn){const d=new Date(o.fechaIn);mesesSet.add(`${d.getFullYear()}-${d.getMonth()}`);}
-    if(o.fechaSal){const d=new Date(o.fechaSal);mesesSet.add(`${d.getFullYear()}-${d.getMonth()}`);}
-  });
-  const mesesArr=[...mesesSet].sort((a,b)=>b.localeCompare(a));
-  const ma=getMesActual();const mesActualKey=`${ma.y}-${ma.m}`;
-  const mg=g('months-grid');if(!mg)return;
-  const selected=mg.querySelectorAll('.month-chip.selected');
-  const prevSelected=new Set([...selected].map(el=>el.dataset.key));
-  mg.innerHTML=mesesArr.map(k=>{
-    const[y,m]=k.split('-').map(Number);
-    const label=MESES_ES[m]+' '+y;
-    const isCurrent=k===mesActualKey;
-    const isSel=prevSelected.has(k)||(prevSelected.size===0&&isCurrent);
-    return`<div class="month-chip ${isSel?'selected':''}" data-key="${k}" onclick="toggleMes(this)">${label}${isCurrent?' (Actual)':''}</div>`;
-  }).join('');
-  // Clientes
-  const clientes=new Set(Object.values(OTs).map(o=>o.cliente).filter(Boolean));
-  const fpCli=g('fp-cliente');if(fpCli){const cur=fpCli.value;fpCli.innerHTML='<option value="">Todos los clientes</option>'+[...clientes].sort().map(c=>`<option value="${c}"${cur===c?' selected':''}>${c}</option>`).join('');}
-  // Códigos (de OT finalizadas)
-  const finalizadas=Object.values(OTs).filter(o=>['Reparado','Cambio','Nota de crédito'].includes(o.estado));
-  const codigos=new Set(finalizadas.map(o=>o.um).filter(Boolean));
-  const fpCod=g('fp-codigo');if(fpCod){const cur=fpCod.value;fpCod.innerHTML='<option value="">Todos los códigos</option>'+[...codigos].sort().map(c=>`<option value="${c}"${cur===c?' selected':''}>${c}</option>`).join('');}
-}
-window.toggleMes=function(el){el.classList.toggle('selected');};
-
-// ── OT: Agregar ──
+// Agregar OT
 async function addOT(){
   const v=id=>g(id).value.trim();
-  if(!v('r-um')||!v('r-codcli')||!v('r-boleta')||!v('r-cliente')||!g('r-tipo').value||!v('r-falla')||!g('r-fechaIn').value||!g('r-tec').value){mEl('r-msg','Complete los campos obligatorios (*)','var(--rose)');return;}
+  if(!v('r-um')||!v('r-codcli')||!v('r-boleta')||!v('r-cliente')||!g('r-tipo').value||!v('r-falla')||!g('r-fechaIn').value){
+    mEl('r-msg','Complete los campos obligatorios (*)','var(--rose)');return;
+  }
   g('r-btn').disabled=true;
   const ts=new Date().toLocaleString('es-CR');
   try{
-    await push(ref(db,'OTs'),{um:v('r-um'),codcli:v('r-codcli'),boleta:v('r-boleta'),cliente:v('r-cliente'),tipoMaq:g('r-tipo').value,otrosDesc:v('r-otros'),falla:v('r-falla'),diagnostico:'',accesorios:g('r-acc').value,accdesc:v('r-accdesc'),factura:g('r-factura').value,fechaIn:g('r-fechaIn').value,tec:g('r-tec').value,estado:'Asignado',retrabajo:'No',fechaSal:'',historial:[{ts,accion:'OT creada por Recepción · Estado: Asignado'}],creadoEn:Date.now()});
+    await push(ref(db,'OTs'),{um:v('r-um'),codcli:v('r-codcli'),boleta:v('r-boleta'),cliente:v('r-cliente'),
+      tipoMaq:g('r-tipo').value,otrosDesc:v('r-otros'),falla:v('r-falla'),diagnostico:'',
+      accesorios:g('r-acc').value,accdesc:v('r-accdesc'),factura:g('r-factura').value,
+      fechaIn:g('r-fechaIn').value,tec:'',estado:'Pendiente',retrabajo:'No',
+      fechaSal:'',finalizada:false,inicioRep:'',cotizacion:[],
+      historial:[{ts,accion:'OT creada por Recepción · Pendiente de técnico'}],creadoEn:Date.now()});
     ['r-um','r-codcli','r-boleta','r-cliente','r-otros','r-falla','r-accdesc','r-fechaIn'].forEach(id=>g(id).value='');
-    ['r-tipo','r-tec'].forEach(id=>g(id).value='');g('r-acc').value='No';g('r-factura').value='No';g('r-otros-w').style.display='none';g('r-acc-w').style.display='none';
-    mEl('r-msg','OT registrada exitosamente.','var(--teal)');
+    g('r-tipo').value='';g('r-acc').value='No';g('r-factura').value='No';
+    g('r-otros-w').style.display='none';g('r-acc-w').style.display='none';
+    mEl('r-msg','OT registrada. Pendiente de asignación técnica.','var(--teal)');
   }catch(e){mEl('r-msg','Error: '+e.message,'var(--rose)',0);}
   g('r-btn').disabled=false;
 }
 window.addOT=addOT;
 
-// ── Buscar OT ──
+// Buscar OT
 function buscar(p){
   const sb=g(p+'-boleta').value.trim().toLowerCase(),sc=g(p+'-codcli').value.trim().toLowerCase();
   const ri=p+'-results',pi=p+'-panel';
   if(!sb&&!sc){g(ri).innerHTML='';g(pi).style.display='none';return;}
-  const enc=Object.entries(OTs).filter(([k,o])=>{const mb=!sb||(o.boleta||'').toLowerCase().includes(sb);const mc=!sc||(o.codcli||'').toLowerCase().includes(sc);return(sb||sc)&&mb&&mc;});
+  const enc=Object.entries(OTs).filter(([k,o])=>{
+    const mb=!sb||(o.boleta||'').toLowerCase().includes(sb);
+    const mc=!sc||(o.codcli||'').toLowerCase().includes(sc);
+    return(sb||sc)&&mb&&mc;
+  });
   if(!enc.length){g(ri).innerHTML='<p style="font-size:12px;color:var(--rose);padding:8px 0;">No se encontraron resultados.</p>';g(pi).style.display='none';return;}
-  g(ri).innerHTML=`<div class="sr-box"><div class="sr-head">${enc.length} resultado(s) — seleccione para editar</div>${enc.map(([k,o])=>`<div class="sr-row" id="sr-${pi}-${k}" onclick="selOT('${k}','${pi}')"><div style="display:flex;align-items:center;gap:10px;"><span style="font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700;">${o.boleta}</span><span style="font-size:11px;color:var(--gray-400);">${o.codcli}</span><span style="font-size:11px;color:var(--gray-400);">${o.cliente}</span></div><div style="display:flex;gap:6px;align-items:center;">${eBadge(o.estado)}<span style="font-size:11px;color:var(--gray-400);">${o.tec}</span><i class="ti ti-chevron-right" style="font-size:13px;color:var(--gray-300);"></i></div></div>`).join('')}</div>`;
+  g(ri).innerHTML=`<div class="sr-box"><div class="sr-head">${enc.length} resultado(s) — seleccione para editar</div>${enc.map(([k,o])=>`
+    <div class="sr-row" id="sr-${pi}-${k}" onclick="selOT('${k}','${pi}')">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <span style="font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700;">${o.boleta}</span>
+        <span style="font-size:11px;color:var(--gray-400);">${o.codcli}</span>
+        <span style="font-size:11px;color:var(--gray-400);">${o.cliente}</span>
+        ${o.finalizada?'<span class="badge b-slate" style="font-size:9px;"><i class="ti ti-lock" style="font-size:10px;margin-right:2px;vertical-align:-1px;"></i>Finalizada</span>':''}
+      </div>
+      <div style="display:flex;gap:6px;align-items:center;">${eBadge(o.estado)}<span style="font-size:11px;color:var(--gray-400);">${o.tec||'Sin técnico'}</span><i class="ti ti-chevron-right" style="font-size:13px;color:var(--gray-300);"></i></div>
+    </div>`).join('')}</div>`;
 }
 window.buscar=buscar;
 
 function selOT(key,pi){
   const o=OTs[key];if(!o)return;
-  document.querySelectorAll('.sr-row').forEach(el=>el.classList.remove('selected'));const sr=g('sr-'+pi+'-'+key);if(sr)sr.classList.add('selected');
+  document.querySelectorAll('.sr-row').forEach(el=>el.classList.remove('selected'));
+  const sr=g('sr-'+pi+'-'+key);if(sr)sr.classList.add('selected');
   const cc=Object.values(CODIGOS).find(c=>(c.um||'').toLowerCase()===(o.um||'').toLowerCase());
-  const ei=cc?`<div class="banner bn-teal"><i class="ti ti-clock" style="font-size:14px;flex-shrink:0;"></i>Catálogo: <strong>${cc.horas}h</strong> = <strong>${h2d(cc.horas)} días laborales</strong></div>`:`<div class="banner bn-amber"><i class="ti ti-alert-triangle" style="font-size:14px;flex-shrink:0;"></i>Código UM no encontrado en catálogo.</div>`;
+  const estInfo=cc?`<div class="banner bn-teal"><i class="ti ti-clock" style="font-size:14px;flex-shrink:0;"></i>Catálogo: <strong>${cc.horas}h</strong> = <strong>${h2d(cc.horas)} días laborales</strong></div>`
+    :`<div class="banner bn-amber"><i class="ti ti-alert-triangle" style="font-size:14px;flex-shrink:0;"></i>Código UM no encontrado en catálogo.</div>`;
   const hist=o.historial||[];
   const hH=hist.length?`<div class="sep"></div><div class="card-t"><i class="ti ti-history" style="font-size:14px;color:var(--teal);"></i>Historial de Cambios</div>${hist.slice().reverse().map((h,i)=>`<div class="tl-item"><div class="tl-dot" style="background:${i===0?'var(--teal)':'var(--gray-300)'};"></div><div><span style="font-size:11px;">${h.accion}</span><br><span style="font-size:10px;color:var(--gray-400);">${h.ts}</span></div></div>`).join('')}`:'';
+  const isTec=pi==='tb-panel';
+  const editable=isEditable(o);
+
+  // OT BLOQUEADA - solo mostrar info + campo retrabajo si está finalizada y sin retrabajo
+  if(o.finalizada&&o.retrabajo==='No'){
+    g(pi).innerHTML=`<div class="card" style="margin-top:12px;border-top:3px solid #94A3B8;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px;">
+        <div><span style="font-family:'Space Grotesk',sans-serif;font-size:16px;font-weight:700;">${o.boleta}</span><span style="font-size:12px;color:var(--gray-400);margin-left:10px;">${o.um} · ${o.cliente}</span></div>
+        <button class="btn btn-sky" onclick="printOT('${key}')"><i class="ti ti-printer" style="font-size:14px;"></i>Imprimir</button>
+      </div>
+      <div class="ot-locked-overlay">
+        <div class="locked-icon"><i class="ti ti-lock"></i></div>
+        <div class="locked-msg">
+          <strong>OT Finalizada — Solo lectura</strong><br>
+          Esta orden fue finalizada el ${hist.length?hist[hist.length-1].ts:'—'}. Para reactivarla y permitir edición, cambie el estado de Retrabajo a <strong>Sí</strong>.
+        </div>
+      </div>
+      <div class="sep"></div>
+      <p style="font-size:12px;font-weight:600;color:var(--gray-600);margin-bottom:8px;">Registrar Retrabajo para Reactivar OT</p>
+      <div class="fgrid">
+        <div class="fg"><label>Retrabajo</label>
+          <select id="ret-unlock-${pi}">
+            <option value="No">No</option>
+            <option value="Dañado en transporte">Dañado en transporte</option>
+            <option value="Cliente no recibe">Cliente no recibe</option>
+            <option value="Fallo de repuesto">Fallo de repuesto</option>
+          </select>
+        </div>
+      </div>
+      <div style="margin-top:10px;display:flex;gap:8px;">
+        <button class="btn btn-primary" onclick="desbloquearOT('${key}','${pi}')"><i class="ti ti-lock-open" style="font-size:14px;"></i>Registrar Retrabajo y Reactivar</button>
+        <button class="btn btn-ghost" onclick="cerrar('${pi}')"><i class="ti ti-x" style="font-size:13px;"></i>Cerrar</button>
+      </div>
+      ${hH}
+    </div>`;
+    g(pi).style.display='block';g(pi).scrollIntoView({behavior:'smooth',block:'nearest'});
+    return;
+  }
+
+  // Cronómetro si está en proceso
+  let cronoHTML='';
+  if(o.inicioRep&&o.estado==='En proceso'){
+    const inicio=new Date(o.inicioRep);const ahora=new Date();
+    const diffMin=Math.floor((ahora-inicio)/60000);const hh=Math.floor(diffMin/60);const mm=diffMin%60;
+    cronoHTML=`<div style="margin-bottom:12px;"><div class="crono-badge"><div class="crono-dot"></div>En proceso: ${hh}h ${mm}min transcurridos desde el ${new Date(o.inicioRep).toLocaleString('es-CR')}</div></div>`;
+  }
+
+  // Tabla cotización
+  const cots=o.cotizacion||[];
+  let cotHTML='';
+  if(isTec){
+    const cotFilas=cots.map((c,i)=>`<tr>
+      <td><input type="text" id="cot-cod-${pi}-${i}" value="${c.codigo||''}" placeholder="CÓD-001" onchange="actualizarCot('${pi}')"></td>
+      <td><input type="text" id="cot-desc-${pi}-${i}" value="${c.descripcion||''}" placeholder="Descripción del trabajo o repuesto" onchange="actualizarCot('${pi}')"></td>
+      <td><input type="number" id="cot-costo-${pi}-${i}" value="${c.costo||''}" placeholder="0.00" step="0.01" min="0" onchange="actualizarCot('${pi}')"></td>
+      <td style="text-align:center;"><button class="cot-del-btn" onclick="eliminarFilaCot('${pi}',${i})"><i class="ti ti-trash" style="font-size:12px;"></i></button></td>
+    </tr>`).join('');
+    const total=cots.reduce((s,c)=>s+(parseFloat(c.costo)||0),0);
+    cotHTML=`<div id="cot-wrap-${pi}" class="cot-wrap" style="display:${o.estado==='Cotizado'?'block':'none'};">
+      <div class="cot-title"><i class="ti ti-receipt" style="font-size:14px;"></i>Detalle de Cotización</div>
+      <table class="cot-table">
+        <thead><tr><th style="width:120px;">Código</th><th>Descripción</th><th style="width:110px;">Costo (₡)</th><th style="width:40px;"></th></tr></thead>
+        <tbody id="cot-tbody-${pi}">${cotFilas}</tbody>
+      </table>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;">
+        <button class="cot-add-btn" onclick="agregarFilaCot('${pi}')"><i class="ti ti-plus" style="font-size:12px;"></i>Agregar línea</button>
+        <div class="cot-total"><span class="cot-total-label">Total:</span><span class="cot-total-val" id="cot-total-${pi}">₡${total.toLocaleString('es-CR',{minimumFractionDigits:2})}</span></div>
+      </div>
+    </div>`;
+  }
+
+  // Selector de técnico solo en gestión técnica
+  const tecSelector=isTec?`
+    <div class="fgrid" style="margin-bottom:10px;">
+      <div class="fg"><label class="req">Técnico que atiende</label>
+        <select id="e-tec-${pi}" onchange="onTecChange('${key}','${pi}')">
+          <option value="">Seleccionar técnico...</option>
+          ${TECNICOS.map(t=>`<option value="${t}"${o.tec===t?' selected':''}>${t}</option>`).join('')}
+        </select>
+      </div>
+    </div>`:'';
+
+  // Estado options — recepción tiene todos, técnico sin Asignado/En proceso como restricción
+  const estadoOpts=isTec
+    ?ESTADOS_TEC.map(s=>`<option${o.estado===s?' selected':''}>${s}</option>`).join('')
+    :`<option${o.estado==='Pendiente'?' selected':''}>Pendiente</option>${ESTADOS_TEC.map(s=>`<option${o.estado===s?' selected':''}>${s}</option>`).join('')}`;
+
   g(pi).innerHTML=`<div class="card" style="margin-top:12px;border-top:3px solid var(--teal);">
   <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px;">
     <div><span style="font-family:'Space Grotesk',sans-serif;font-size:16px;font-weight:700;">${o.boleta}</span><span style="font-size:12px;color:var(--gray-400);margin-left:10px;">${o.um} · ${o.cliente}</span></div>
-    <button class="btn btn-sky" onclick="printOT('${key}')"><i class="ti ti-printer" style="font-size:14px;"></i>Imprimir Reporte</button>
+    <button class="btn btn-sky" onclick="printOT('${key}')"><i class="ti ti-printer" style="font-size:14px;"></i>Imprimir</button>
   </div>
-  ${ei}
+  ${estInfo}
+  ${cronoHTML}
+  ${isTec?`<div class="fsec" style="color:#059669;"><i class="ti ti-user-cog" style="font-size:12px;color:#059669;"></i>Técnico que atiende esta OT</div>${tecSelector}`:''}
   <div class="fsec" style="color:var(--sky);"><i class="ti ti-user" style="font-size:12px;color:var(--sky);"></i>Datos de Recepción</div>
   <div class="fgrid">
     <div class="fg"><label>Código UM</label><input id="e-um-${pi}" type="text" value="${o.um||''}"></div>
@@ -670,44 +761,197 @@ function selOT(key,pi){
     <div class="fg"><label>Accesorios</label><select id="e-acc-${pi}"><option${o.accesorios==='No'?' selected':''} value="No">No</option><option${o.accesorios==='Sí'?' selected':''} value="Sí">Sí</option></select></div>
     <div class="fg"><label>Factura</label><select id="e-fac-${pi}"><option${o.factura==='No'?' selected':''} value="No">No</option><option${o.factura==='Sí'?' selected':''} value="Sí">Sí</option></select></div>
     <div class="fg"><label>Fecha Ingreso</label><input id="e-fi-${pi}" type="date" value="${o.fechaIn||''}"></div>
-    <div class="fg"><label>Técnico</label><select id="e-tec-${pi}">${['Usuario 1','Usuario 2','Usuario 3','Usuario 4','Usuario 5'].map(u=>`<option${o.tec===u?' selected':''}>${u}</option>`).join('')}</select></div>
   </div>
   <div class="fg" style="margin-top:6px;"><label>Falla Reportada</label><textarea id="e-falla-${pi}" style="min-height:56px;">${o.falla||''}</textarea></div>
   <div class="fsec" style="color:var(--teal);margin-top:14px;"><i class="ti ti-tool" style="font-size:12px;color:var(--teal);"></i>Cierre de OT — Técnico</div>
   <div class="fgrid">
-    <div class="fg"><label>Estado</label><select id="e-est-${pi}">${['Asignado','En proceso','Reparado','Cotizado','Espera de repuesto','Cambio','Nota de crédito'].map(s=>`<option${o.estado===s?' selected':''}>${s}</option>`).join('')}</select></div>
-    <div class="fg"><label>Retrabajo</label><select id="e-ret-${pi}"><option${o.retrabajo==='No'?' selected':''} value="No">No</option><option${o.retrabajo==='Dañado en transporte'?' selected':''} value="Dañado en transporte">Dañado en transporte</option><option${o.retrabajo==='Cliente no recibe'?' selected':''} value="Cliente no recibe">Cliente no recibe</option><option${o.retrabajo==='Fallo de repuesto'?' selected':''} value="Fallo de repuesto">Fallo de repuesto</option></select></div>
+    <div class="fg"><label>Estado</label>
+      <select id="e-est-${pi}" onchange="onEstadoChange('${pi}')">
+        ${estadoOpts}
+      </select>
+    </div>
+    <div class="fg"><label>Retrabajo</label>
+      <select id="e-ret-${pi}">
+        <option${o.retrabajo==='No'?' selected':''} value="No">No</option>
+        <option${o.retrabajo==='Dañado en transporte'?' selected':''} value="Dañado en transporte">Dañado en transporte</option>
+        <option${o.retrabajo==='Cliente no recibe'?' selected':''} value="Cliente no recibe">Cliente no recibe</option>
+        <option${o.retrabajo==='Fallo de repuesto'?' selected':''} value="Fallo de repuesto">Fallo de repuesto</option>
+      </select>
+    </div>
     <div class="fg"><label>Fecha Salida</label><input id="e-fs-${pi}" type="date" value="${o.fechaSal||''}"></div>
   </div>
+  ${isTec?cotHTML:''}
   <div class="fg" style="margin-top:6px;"><label>Diagnóstico Final del Técnico</label><textarea id="e-diag-${pi}" placeholder="Diagnóstico y trabajo realizado..." style="min-height:72px;">${o.diagnostico||''}</textarea></div>
   ${hH}
   <div id="btns-${pi}" style="margin-top:14px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
-    <button class="btn btn-success" onclick="guardar('${key}','${pi}')"><i class="ti ti-check" style="font-size:14px;"></i>Guardar Cambios</button>
+    <button class="btn btn-success" id="btn-guardar-${pi}" onclick="guardar('${key}','${pi}',false)"><i class="ti ti-check" style="font-size:14px;"></i>Guardar Cambios</button>
     <button class="btn btn-ghost" onclick="cerrar('${pi}')"><i class="ti ti-x" style="font-size:13px;"></i>Cancelar</button>
   </div>
   <div id="emsg-${pi}" style="font-size:12px;margin-top:8px;"></div>
   </div>`;
+
+  // Mostrar/ocultar botón finalizar según estado inicial
+  setTimeout(()=>onEstadoChange(pi),50);
   g(pi).style.display='block';g(pi).scrollIntoView({behavior:'smooth',block:'nearest'});
 }
 window.selOT=selOT;
 
-async function guardar(key,pi){
+function onEstadoChange(pi){
+  const est=g(`e-est-${pi}`);if(!est)return;
+  const val=est.value;
+  const btnG=g(`btn-guardar-${pi}`);const btnArea=g(`btns-${pi}`);if(!btnArea)return;
+  // Mostrar/ocultar cotización
+  const cotWrap=g(`cot-wrap-${pi}`);if(cotWrap)cotWrap.style.display=val==='Cotizado'?'block':'none';
+  // Si es estado final → mostrar Finalizar
+  const esFinal=ESTADOS_FINALES.includes(val);
+  if(esFinal){
+    if(btnG)btnG.style.display='none';
+    if(!g(`btn-finalizar-${pi}`)){
+      const bf=document.createElement('button');
+      bf.className='btn btn-finalizar';bf.id=`btn-finalizar-${pi}`;
+      bf.innerHTML='<i class="ti ti-flag-check" style="font-size:14px;"></i>Finalizar OT';
+      bf.onclick=()=>pedirFinalizacion(pi);
+      btnArea.insertBefore(bf,btnArea.firstChild);
+    }
+  } else {
+    if(btnG)btnG.style.display='';
+    const bfExist=g(`btn-finalizar-${pi}`);if(bfExist)bfExist.remove();
+  }
+}
+window.onEstadoChange=onEstadoChange;
+
+function pedirFinalizacion(pi){
+  const est=g(`e-est-${pi}`);if(!est)return;
+  abrirModal(`¿Está seguro que desea finalizar esta OT con estado "${est.value}"?\n\nUna vez finalizada, solo podrá editarse si se registra un Retrabajo.`,
+    ()=>{const key=Object.entries(OTs).find(([k,o])=>o===OTs[currentEditKey(pi)])?.[0];if(key)guardar(key,pi,true);});
+  // Guardamos key activo
+  const srSel=document.querySelector(`#${pi} .selected`)||document.querySelector('.sr-row.selected');
+}
+function currentEditKey(pi){
+  // Buscar el key del OT que está siendo editado en este panel
+  const boletaInput=g(`e-boleta-${pi}`);if(!boletaInput)return null;
+  const boleta=boletaInput.value.trim();
+  return Object.entries(OTs).find(([k,o])=>o.boleta===boleta)?.[0]||null;
+}
+window.pedirFinalizacion=pedirFinalizacion;
+
+async function guardar(key,pi,finalizar=false){
+  if(!key){key=currentEditKey(pi);}
+  if(!key)return;
   const o=OTs[key];if(!o)return;
   const nv=id=>g(id)?g(id).value:'';const cambios=[];
-  const u={um:nv(`e-um-${pi}`).trim(),codcli:nv(`e-codcli-${pi}`).trim(),boleta:nv(`e-boleta-${pi}`).trim(),cliente:nv(`e-cliente-${pi}`).trim(),tipoMaq:nv(`e-tipo-${pi}`),accesorios:nv(`e-acc-${pi}`),factura:nv(`e-fac-${pi}`),fechaIn:nv(`e-fi-${pi}`),tec:nv(`e-tec-${pi}`),falla:nv(`e-falla-${pi}`).trim(),diagnostico:nv(`e-diag-${pi}`).trim(),estado:nv(`e-est-${pi}`),retrabajo:nv(`e-ret-${pi}`),fechaSal:nv(`e-fs-${pi}`)};
-  Object.keys(u).forEach(k=>{const a=o[k]||'',d=u[k]||'';if(a!==d){if(k==='estado')cambios.push(`Estado: ${a||'—'} → ${d}`);else if(k==='fechaSal'&&d)cambios.push(`F. salida: ${d}`);else if(k==='diagnostico'&&d)cambios.push('Diagnóstico registrado');else cambios.push(`${k}: actualizado`);}});
+  // Recoger cotización si aplica
+  let cots=o.cotizacion||[];
+  if(g(`cot-tbody-${pi}`)){
+    cots=recogerCotizacion(pi);
+  }
+  const u={
+    um:nv(`e-um-${pi}`).trim(),codcli:nv(`e-codcli-${pi}`).trim(),boleta:nv(`e-boleta-${pi}`).trim(),
+    cliente:nv(`e-cliente-${pi}`).trim(),tipoMaq:nv(`e-tipo-${pi}`),
+    accesorios:nv(`e-acc-${pi}`),factura:nv(`e-fac-${pi}`),fechaIn:nv(`e-fi-${pi}`),
+    falla:nv(`e-falla-${pi}`).trim(),diagnostico:nv(`e-diag-${pi}`).trim(),
+    estado:nv(`e-est-${pi}`),retrabajo:nv(`e-ret-${pi}`),fechaSal:nv(`e-fs-${pi}`),
+    cotizacion:cots,
+  };
+  // Técnico y cronómetro
+  const tecEl=g(`e-tec-${pi}`);if(tecEl)u.tec=tecEl.value;
+  // Si cambió a En proceso y no tiene inicioRep → iniciar cronómetro
+  if(u.estado==='En proceso'&&!o.inicioRep){u.inicioRep=new Date().toISOString();}
+  // Finalizar
+  if(finalizar){u.finalizada=true;if(!u.fechaSal)u.fechaSal=new Date().toISOString().slice(0,10);}
+  Object.keys(u).forEach(k=>{
+    const a=JSON.stringify(o[k])||'',d=JSON.stringify(u[k])||'';
+    if(a!==d){
+      if(k==='estado')cambios.push(`Estado: ${o.estado||'—'} → ${u[k]}`);
+      else if(k==='tec'&&u[k])cambios.push(`Técnico: ${u[k]}`);
+      else if(k==='fechaSal'&&u[k])cambios.push(`F. salida: ${u[k]}`);
+      else if(k==='diagnostico'&&u[k])cambios.push('Diagnóstico registrado');
+      else if(k==='inicioRep'&&u[k])cambios.push('Cronómetro iniciado — OT En proceso');
+      else if(k==='cotizacion')cambios.push('Cotización actualizada');
+      else if(k!=='finalizada'&&k!=='cotizacion')cambios.push(`${k}: actualizado`);
+    }
+  });
+  if(finalizar)cambios.push('OT FINALIZADA — bloqueada para edición');
   if(cambios.length){const ts=new Date().toLocaleString('es-CR');u.historial=[...(o.historial||[]),{ts,accion:cambios.join(' · ')}];}
   const btn=g(`btns-${pi}`);if(btn)btn.querySelectorAll('button').forEach(b=>b.disabled=true);
-  try{await update(ref(db,`OTs/${key}`),u);if(btn)btn.style.display='none';const em=g(`emsg-${pi}`);if(em){em.style.color='var(--teal)';em.innerHTML='<i class="ti ti-circle-check" style="font-size:14px;vertical-align:-2px;margin-right:4px;"></i>Guardado. Realice nueva búsqueda para editar nuevamente.';}}
-  catch(e){if(btn)btn.querySelectorAll('button').forEach(b=>b.disabled=false);const em=g(`emsg-${pi}`);if(em){em.style.color='var(--rose)';em.textContent='Error: '+e.message;}}
+  try{
+    await update(ref(db,`OTs/${key}`),u);
+    if(btn)btn.style.display='none';
+    const em=g(`emsg-${pi}`);
+    if(em){
+      em.style.color=finalizar?'var(--rose)':'var(--teal)';
+      em.innerHTML=finalizar
+        ?'<i class="ti ti-flag-check" style="font-size:14px;vertical-align:-2px;margin-right:4px;"></i>OT Finalizada y bloqueada. Para reactivar, registre un Retrabajo.'
+        :'<i class="ti ti-circle-check" style="font-size:14px;vertical-align:-2px;margin-right:4px;"></i>Cambios guardados. Realice nueva búsqueda para editar nuevamente.';
+    }
+  }catch(e){
+    if(btn)btn.querySelectorAll('button').forEach(b=>b.disabled=false);
+    const em=g(`emsg-${pi}`);if(em){em.style.color='var(--rose)';em.textContent='Error: '+e.message;}
+  }
 }
 window.guardar=guardar;
-function cerrar(pi){g(pi).style.display='none';const p=pi.replace('-panel','');g(p+'-boleta').value='';g(p+'-codcli').value='';g(p+'-results').innerHTML='';}
+
+// Desbloquear OT con retrabajo
+async function desbloquearOT(key,pi){
+  const retVal=g(`ret-unlock-${pi}`).value;
+  if(!retVal||retVal==='No'){alert('Seleccione una causa de retrabajo para reactivar la OT.');return;}
+  const o=OTs[key];if(!o)return;
+  const ts=new Date().toLocaleString('es-CR');
+  await update(ref(db,`OTs/${key}`),{
+    retrabajo:retVal,finalizada:false,estado:'En proceso',inicioRep:'',
+    historial:[...(o.historial||[]),{ts,accion:`OT REACTIVADA — Retrabajo: ${retVal}`}]
+  });
+  limpiarB(pi.replace('-panel',''));
+}
+window.desbloquearOT=desbloquearOT;
+
+function onTecChange(key,pi){
+  const el=g(`e-tec-${pi}`);if(!el||!el.value)return;
+  const o=OTs[key];if(!o)return;
+  // Si no tenía técnico → establecer automáticamente en proceso
+  if(!o.tec&&el.value){
+    const estEl=g(`e-est-${pi}`);if(estEl&&estEl.value==='Pendiente'){estEl.value='En proceso';onEstadoChange(pi);}
+  }
+}
+window.onTecChange=onTecChange;
+
+// Cotización
+function recogerCotizacion(pi){
+  const tb=g(`cot-tbody-${pi}`);if(!tb)return[];
+  const rows=tb.querySelectorAll('tr');const cots=[];
+  rows.forEach((row,i)=>{
+    const cod=g(`cot-cod-${pi}-${i}`);const desc=g(`cot-desc-${pi}-${i}`);const costo=g(`cot-costo-${pi}-${i}`);
+    if(cod||desc||costo)cots.push({codigo:cod?cod.value:'',descripcion:desc?desc.value:'',costo:costo?parseFloat(costo.value)||0:0});
+  });
+  return cots;
+}
+function actualizarCot(pi){
+  const cots=recogerCotizacion(pi);
+  const total=cots.reduce((s,c)=>s+(c.costo||0),0);
+  const tv=g(`cot-total-${pi}`);if(tv)tv.textContent='₡'+total.toLocaleString('es-CR',{minimumFractionDigits:2});
+}
+function agregarFilaCot(pi){
+  const tb=g(`cot-tbody-${pi}`);if(!tb)return;
+  const i=tb.querySelectorAll('tr').length;
+  const tr=document.createElement('tr');
+  tr.innerHTML=`<td><input type="text" id="cot-cod-${pi}-${i}" placeholder="CÓD-001" onchange="actualizarCot('${pi}')"></td><td><input type="text" id="cot-desc-${pi}-${i}" placeholder="Descripción" onchange="actualizarCot('${pi}')"></td><td><input type="number" id="cot-costo-${pi}-${i}" placeholder="0.00" step="0.01" min="0" onchange="actualizarCot('${pi}')"></td><td style="text-align:center;"><button class="cot-del-btn" onclick="eliminarFilaCot('${pi}',${i})"><i class="ti ti-trash" style="font-size:12px;"></i></button></td>`;
+  tb.appendChild(tr);
+}
+function eliminarFilaCot(pi,idx){
+  const cots=recogerCotizacion(pi);cots.splice(idx,1);
+  const tb=g(`cot-tbody-${pi}`);if(!tb)return;
+  const total=cots.reduce((s,c)=>s+(c.costo||0),0);
+  tb.innerHTML=cots.map((c,i)=>`<tr><td><input type="text" id="cot-cod-${pi}-${i}" value="${c.codigo||''}" placeholder="CÓD-001" onchange="actualizarCot('${pi}')"></td><td><input type="text" id="cot-desc-${pi}-${i}" value="${c.descripcion||''}" placeholder="Descripción" onchange="actualizarCot('${pi}')"></td><td><input type="number" id="cot-costo-${pi}-${i}" value="${c.costo||''}" placeholder="0.00" step="0.01" min="0" onchange="actualizarCot('${pi}')"></td><td style="text-align:center;"><button class="cot-del-btn" onclick="eliminarFilaCot('${pi}',${i})"><i class="ti ti-trash" style="font-size:12px;"></i></button></td></tr>`).join('');
+  const tv=g(`cot-total-${pi}`);if(tv)tv.textContent='₡'+total.toLocaleString('es-CR',{minimumFractionDigits:2});
+}
+window.agregarFilaCot=agregarFilaCot;window.eliminarFilaCot=eliminarFilaCot;window.actualizarCot=actualizarCot;
+
+function cerrar(pi){g(pi).style.display='none';const p=pi.replace('-panel','');if(g(p+'-boleta'))g(p+'-boleta').value='';if(g(p+'-codcli'))g(p+'-codcli').value='';if(g(p+'-results'))g(p+'-results').innerHTML='';}
 window.cerrar=cerrar;
-function limpiarB(p){g(p+'-boleta').value='';g(p+'-codcli').value='';g(p+'-results').innerHTML='';g(p+'-panel').style.display='none';}
+function limpiarB(p){if(g(p+'-boleta'))g(p+'-boleta').value='';if(g(p+'-codcli'))g(p+'-codcli').value='';if(g(p+'-results'))g(p+'-results').innerHTML='';if(g(p+'-panel'))g(p+'-panel').style.display='none';}
 window.limpiarB=limpiarB;
 
-// ── Catálogo ──
+// Catálogo
 async function guardarCodigo(){
   const um=g('tc-um').value.trim(),desc=g('tc-desc').value.trim(),horas=parseFloat(g('tc-horas').value),cat=g('tc-cat').value,obs=g('tc-obs').value.trim();
   if(!um||!desc||!horas||horas<=0){mEl('tc-msg','Complete código, descripción y horas.','var(--rose)');return;}
@@ -725,6 +969,7 @@ function cancelarEditCodigo(){editKey=null;['tc-um','tc-desc','tc-horas','tc-obs
 window.cancelarEditCodigo=cancelarEditCodigo;
 async function eliminarCodigo(k){const c=CODIGOS[k];if(!c||!confirm(`¿Eliminar "${c.um}"?`))return;try{await remove(ref(db,`codigos/${k}`));}catch(e){alert('Error: '+e.message);}}
 window.eliminarCodigo=eliminarCodigo;
+
 function rCodigos(){
   const ft=g('tc-search')?g('tc-search').value.toLowerCase():'',fc=g('tc-cat-f')?g('tc-cat-f').value:'';
   const cb={Eléctrica:'b-sky',Combustión:'b-amber',Hidráulica:'b-purple',General:'b-emerald'};
@@ -735,63 +980,135 @@ function rCodigos(){
 }
 window.rCodigos=rCodigos;
 
-// ── Tabla OT ──
 function rTabla(){
   const ft=g('filtro-txt')?g('filtro-txt').value.toLowerCase():'',fe=g('filtro-est')?g('filtro-est').value:'';
   const lista=Object.entries(OTs).filter(([k,o])=>(!ft||JSON.stringify(o).toLowerCase().includes(ft))&&(!fe||o.estado===fe)).sort((a,b)=>(b[1].creadoEn||0)-(a[1].creadoEn||0));
   const tb=g('ot-tbody');if(!tb)return;
   if(!lista.length){tb.innerHTML=`<tr><td colspan="16" class="empty-row">No hay OT${ft||fe?' que coincidan':' registradas'}.</td></tr>`;return;}
   tb.innerHTML=lista.map(([k,o])=>{
-    const d=dSince(o.fechaIn);const dB=d!==null?`<span class="badge ${d<=3?'b-emerald':d<=7?'b-amber':'b-rose'}">${d}d</span>`:'—';
+    const d=dSince(o.fechaIn);
+    const dB=d!==null?`<span class="badge ${d<=5?'b-emerald':d<=CRITICO_DIAS?'b-amber':'b-rose'}">${d}d</span>`:'—';
     const cod=Object.values(CODIGOS).find(c=>(c.um||'').toLowerCase()===(o.um||'').toLowerCase());
-    const eD=cod?`<span class="badge b-sky">${h2d(cod.horas)}d</span>`:'<span style="color:var(--gray-300);">—</span>';
-    return`<tr><td style="font-family:'Space Grotesk',sans-serif;font-weight:700;">${o.um}</td><td>${o.boleta}</td><td style="max-width:80px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${o.cliente}</td><td>${o.tipoMaq}</td><td style="max-width:90px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:10px;" title="${o.falla||''}">${(o.falla||'—').slice(0,20)+(o.falla&&o.falla.length>20?'…':'')}</td><td style="max-width:90px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:10px;">${o.diagnostico?o.diagnostico.slice(0,20)+(o.diagnostico.length>20?'…':''):'<span style="color:var(--gray-300);">Pendiente</span>'}</td><td>${o.accesorios==='Sí'?'<span class="badge b-amber">Sí</span>':'<span class="badge b-emerald">No</span>'}</td><td>${o.factura==='Sí'?'<span class="badge b-emerald">Sí</span>':'<span class="badge b-rose">No</span>'}</td><td>${o.fechaIn}</td><td>${o.tec}</td><td>${eBadge(o.estado)}</td><td>${o.retrabajo!=='No'?`<span class="badge b-rose" style="font-size:9px;">${o.retrabajo}</span>`:'<span class="badge b-emerald">No</span>'}</td><td>${o.fechaSal||'—'}</td><td>${dB}</td><td>${eD}</td><td><button class="icon-btn" onclick="irEditar('${k}')"><i class="ti ti-edit" style="font-size:12px;"></i></button></td></tr>`;
+    const eD=cod?`<span class="badge b-sky">${h2d(cod.horas)}d</span>`:'—';
+    const lock=o.finalizada?'<span title="Finalizada"><i class="ti ti-lock" style="font-size:13px;color:var(--gray-400);"></i></span>':'<span title="Editable"><i class="ti ti-lock-open" style="font-size:13px;color:var(--emerald);"></i></span>';
+    const estadoBadge=o.finalizada?`<span class="badge b-slate"><i class="ti ti-lock" style="font-size:10px;margin-right:2px;vertical-align:-1px;"></i>${o.estado}</span>`:eBadge(o.estado);
+    return`<tr style="${o.finalizada?'opacity:.75;':''}" >
+      <td style="font-family:'Space Grotesk',sans-serif;font-weight:700;">${o.um}</td>
+      <td>${o.boleta}</td>
+      <td style="max-width:80px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${o.cliente}</td>
+      <td>${o.tipoMaq}</td>
+      <td style="max-width:80px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:10px;" title="${o.falla||''}">${(o.falla||'—').slice(0,20)+(o.falla&&o.falla.length>20?'…':'')}</td>
+      <td style="max-width:80px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:10px;">${o.diagnostico?o.diagnostico.slice(0,20)+(o.diagnostico.length>20?'…':''):'<span style="color:var(--gray-300);">Pendiente</span>'}</td>
+      <td style="font-size:11px;">${o.tec||'<span style="color:var(--gray-300);">Sin asignar</span>'}</td>
+      <td>${estadoBadge}</td>
+      <td>${o.retrabajo!=='No'?`<span class="badge b-rose" style="font-size:9px;">${o.retrabajo}</span>`:'<span class="badge b-emerald">No</span>'}</td>
+      <td style="font-size:11px;">${o.fechaIn||'—'}</td>
+      <td style="font-size:11px;">${o.inicioRep?new Date(o.inicioRep).toLocaleDateString('es-CR'):'—'}</td>
+      <td style="font-size:11px;">${o.fechaSal||'—'}</td>
+      <td>${dB}</td><td>${eD}</td>
+      <td style="text-align:center;">${lock}</td>
+      <td><button class="icon-btn" onclick="irEditar('${k}')"><i class="ti ti-edit" style="font-size:12px;"></i></button></td>
+    </tr>`;
   }).join('');
 }
 window.rTabla=rTabla;
 function irEditar(k){const o=OTs[k];if(!o)return;showTab('tec');setTimeout(()=>{g('tb-boleta').value=o.boleta;buscar('tb');},80);}
 window.irEditar=irEditar;
 
-// ── Print ──
+// Print
 function printOT(key){
   const o=OTs[key];if(!o)return;
-  const d=dSince(o.fechaIn);const cod=Object.values(CODIGOS).find(c=>(c.um||'').toLowerCase()===(o.um||'').toLowerCase());
+  const d=dSince(o.fechaIn);
+  const cod=Object.values(CODIGOS).find(c=>(c.um||'').toLowerCase()===(o.um||'').toLowerCase());
   const hist=(o.historial||[]).slice().reverse().map(h=>`<tr><td style="padding:4px 8px;font-size:11px;">${h.ts}</td><td style="padding:4px 8px;font-size:11px;">${h.accion}</td></tr>`).join('');
-  const html=`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>OT ${o.boleta}</title><link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500&display=swap" rel="stylesheet"><style>body{font-family:'Plus Jakarta Sans',sans-serif;color:#1E293B;padding:24px;max-width:720px;margin:auto;}h1{font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:700;color:#0D9488;margin:0 0 2px;}.sub{font-size:11px;color:#94A3B8;border-bottom:2px solid #0D9488;padding-bottom:8px;margin:0 0 14px;}.row{display:flex;gap:16px;}.col{flex:1;}.field{margin-bottom:8px;}.lbl{font-size:10px;font-weight:700;color:#94A3B8;text-transform:uppercase;letter-spacing:.06em;margin-bottom:1px;}.val{font-size:12px;border-bottom:1px solid #E2E8F0;padding-bottom:3px;}.section{margin:14px 0 7px;font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#0D9488;border-bottom:1px solid #CCFBF1;padding-bottom:4px;}table{width:100%;border-collapse:collapse;}th{background:#1E293B;color:#fff;padding:6px 8px;text-align:left;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;}td{border-bottom:1px solid #F1F5F9;}.falla{background:#FFFBEB;border-left:3px solid #F59E0B;padding:8px;font-size:12px;min-height:36px;}.diag{background:#F0FDFA;border-left:3px solid #0D9488;padding:8px;font-size:12px;min-height:36px;}.est{background:#F0FDFA;border-left:3px solid #0D9488;padding:6px 10px;font-size:11px;margin-bottom:8px;}@media print{body{padding:8px;}}</style></head><body>
-  <h1>AELMODULOS — Orden de Trabajo</h1><p class="sub">Generado: ${new Date().toLocaleString('es-CR')}</p>
+  const cots=o.cotizacion||[];
+  const cotTotal=cots.reduce((s,c)=>s+(parseFloat(c.costo)||0),0);
+  const cotTable=cots.length?`<table class="cot-print"><thead><tr><th>Código</th><th>Descripción</th><th>Costo (₡)</th></tr></thead><tbody>${cots.map(c=>`<tr><td>${c.codigo||'—'}</td><td>${c.descripcion||'—'}</td><td style="text-align:right;">₡${(parseFloat(c.costo)||0).toLocaleString('es-CR',{minimumFractionDigits:2})}</td></tr>`).join('')}<tr style="background:#F0FDFA;font-weight:700;"><td colspan="2" style="text-align:right;padding:6px 8px;">Total Cotización:</td><td style="text-align:right;padding:6px 8px;color:#0F766E;">₡${cotTotal.toLocaleString('es-CR',{minimumFractionDigits:2})}</td></tr></tbody></table>`:'<p style="font-size:12px;color:#94A3B8;font-style:italic;">Sin cotización registrada</p>';
+  const html=`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>OT ${o.boleta}</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500&display=swap" rel="stylesheet">
+  <style>body{font-family:'Plus Jakarta Sans',sans-serif;color:#1E293B;padding:24px;max-width:720px;margin:auto;}
+  h1{font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:700;color:#0D9488;margin:0 0 2px;}
+  .sub{font-size:11px;color:#94A3B8;border-bottom:2px solid #0D9488;padding-bottom:8px;margin:0 0 14px;}
+  .row{display:flex;gap:16px;}.col{flex:1;}.field{margin-bottom:8px;}
+  .lbl{font-size:10px;font-weight:700;color:#94A3B8;text-transform:uppercase;letter-spacing:.06em;margin-bottom:1px;}
+  .val{font-size:12px;border-bottom:1px solid #E2E8F0;padding-bottom:3px;}
+  .section{margin:14px 0 7px;font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#0D9488;border-bottom:1px solid #CCFBF1;padding-bottom:4px;}
+  table{width:100%;border-collapse:collapse;}
+  th{background:#1E293B;color:#fff;padding:6px 8px;text-align:left;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;}
+  td{border-bottom:1px solid #F1F5F9;padding:4px 8px;}
+  .cot-print th{background:#0D9488;}
+  .falla{background:#FFFBEB;border-left:3px solid #F59E0B;padding:8px;font-size:12px;min-height:36px;}
+  .diag{background:#F0FDFA;border-left:3px solid #0D9488;padding:8px;font-size:12px;min-height:36px;}
+  .locked-badge{background:#F1F5F9;border:1px solid #CBD5E1;border-radius:4px;padding:4px 10px;font-size:11px;color:#64748B;display:inline-flex;align-items:center;gap:4px;}
+  @media print{body{padding:8px;}}</style></head><body>
+  <h1>AELMODULOS — Orden de Trabajo ${o.finalizada?'<span class="locked-badge">🔒 Finalizada</span>':''}</h1>
+  <p class="sub">Generado: ${new Date().toLocaleString('es-CR')}</p>
   <div class="section">Identificación</div>
   <div class="row"><div class="col"><div class="field"><div class="lbl">Código UM</div><div class="val">${o.um}</div></div></div><div class="col"><div class="field"><div class="lbl">Código Cliente</div><div class="val">${o.codcli}</div></div></div><div class="col"><div class="field"><div class="lbl">Boleta / Trámite UM</div><div class="val">${o.boleta}</div></div></div></div>
   <div class="row"><div class="col"><div class="field"><div class="lbl">Cliente</div><div class="val">${o.cliente}</div></div></div><div class="col"><div class="field"><div class="lbl">Tipo de Máquina</div><div class="val">${o.tipoMaq}${o.otrosDesc?' — '+o.otrosDesc:''}</div></div></div></div>
-  ${cod?`<div class="est"><strong>Estimado catálogo:</strong> ${cod.horas}h = ${h2d(cod.horas)} días laborales (8h · L–V)</div>`:''}
+  ${cod?`<div style="background:#F0FDFA;border-left:3px solid #0D9488;padding:6px 10px;font-size:11px;margin-bottom:8px;"><strong>Estimado catálogo:</strong> ${cod.horas}h = ${h2d(cod.horas)} días laborales (8h · L–V)</div>`:''}
   <div class="section">Falla Reportada</div><div class="falla">${o.falla||'No registrada'}</div>
   <div class="section">Asignación y Tiempos</div>
-  <table><thead><tr><th>Campo</th><th>Valor</th></tr></thead><tbody><tr><td style="padding:4px 8px;font-size:11px;color:#94A3B8;">Técnico</td><td style="padding:4px 8px;font-size:11px;">${o.tec}</td></tr><tr><td style="padding:4px 8px;font-size:11px;color:#94A3B8;">Estado</td><td style="padding:4px 8px;font-size:11px;">${o.estado}</td></tr><tr><td style="padding:4px 8px;font-size:11px;color:#94A3B8;">Accesorios</td><td style="padding:4px 8px;font-size:11px;">${o.accesorios}${o.accdesc?' — '+o.accdesc:''}</td></tr><tr><td style="padding:4px 8px;font-size:11px;color:#94A3B8;">Factura</td><td style="padding:4px 8px;font-size:11px;">${o.factura}</td></tr><tr><td style="padding:4px 8px;font-size:11px;color:#94A3B8;">Retrabajo</td><td style="padding:4px 8px;font-size:11px;">${o.retrabajo}</td></tr><tr><td style="padding:4px 8px;font-size:11px;color:#94A3B8;">F. Ingreso</td><td style="padding:4px 8px;font-size:11px;">${o.fechaIn}</td></tr><tr><td style="padding:4px 8px;font-size:11px;color:#94A3B8;">F. Salida</td><td style="padding:4px 8px;font-size:11px;">${o.fechaSal||'Pendiente'}</td></tr><tr><td style="padding:4px 8px;font-size:11px;color:#94A3B8;">Días en Taller</td><td style="padding:4px 8px;font-size:11px;">${d!==null?d+'d':'—'}</td></tr></tbody></table>
+  <table><thead><tr><th>Campo</th><th>Valor</th></tr></thead><tbody>
+  <tr><td>Técnico</td><td>${o.tec||'No asignado'}</td></tr>
+  <tr><td>Estado</td><td>${o.estado}</td></tr>
+  <tr><td>Accesorios</td><td>${o.accesorios}${o.accdesc?' — '+o.accdesc:''}</td></tr>
+  <tr><td>Factura</td><td>${o.factura}</td></tr>
+  <tr><td>Retrabajo</td><td>${o.retrabajo}</td></tr>
+  <tr><td>Fecha Ingreso</td><td>${o.fechaIn||'—'}</td></tr>
+  <tr><td>Inicio Reparación</td><td>${o.inicioRep?new Date(o.inicioRep).toLocaleString('es-CR'):'—'}</td></tr>
+  <tr><td>Fecha Salida</td><td>${o.fechaSal||'Pendiente'}</td></tr>
+  <tr><td>Días en Taller</td><td>${d!==null?d+'d':'—'}</td></tr>
+  </tbody></table>
+  ${o.estado==='Cotizado'||cots.length?`<div class="section">Cotización</div>${cotTable}`:''}
   <div class="section">Diagnóstico Final</div><div class="diag">${o.diagnostico||'Pendiente'}</div>
-  <div class="section">Historial</div><table><thead><tr><th>Fecha y Hora</th><th>Acción</th></tr></thead><tbody>${hist||'<tr><td colspan="2" style="padding:6px 8px;font-size:11px;color:#94A3B8;">Sin cambios</td></tr>'}</tbody></table>
-  <div style="margin-top:28px;display:flex;gap:40px;"><div style="flex:1;border-top:2px solid #0D9488;padding-top:5px;font-size:10px;color:#94A3B8;text-align:center;">Firma Recepción</div><div style="flex:1;border-top:2px solid #0D9488;padding-top:5px;font-size:10px;color:#94A3B8;text-align:center;">Firma Técnico</div><div style="flex:1;border-top:2px solid #0D9488;padding-top:5px;font-size:10px;color:#94A3B8;text-align:center;">Firma Cliente</div></div>
+  <div class="section">Historial</div>
+  <table><thead><tr><th>Fecha y Hora</th><th>Acción</th></tr></thead><tbody>${hist||'<tr><td colspan="2" style="font-style:italic;color:#94A3B8;">Sin cambios</td></tr>'}</tbody></table>
+  <div style="margin-top:28px;display:flex;gap:40px;">
+    <div style="flex:1;border-top:2px solid #0D9488;padding-top:5px;font-size:10px;color:#94A3B8;text-align:center;">Firma Recepción</div>
+    <div style="flex:1;border-top:2px solid #0D9488;padding-top:5px;font-size:10px;color:#94A3B8;text-align:center;">Firma Técnico — ${o.tec||'_______________'}</div>
+    <div style="flex:1;border-top:2px solid #0D9488;padding-top:5px;font-size:10px;color:#94A3B8;text-align:center;">Firma Cliente</div>
+  </div>
   <script>window.onload=function(){window.print();}<\/script></body></html>`;
   const w=window.open('','_blank','width=800,height=700');if(w){w.document.write(html);w.document.close();}
 }
 window.printOT=printOT;
 
-// ── Filtros del panel ──
-function getMesesSeleccionados(){
-  const chips=document.querySelectorAll('.month-chip.selected');
-  return [...chips].map(el=>el.dataset.key);
+// Filtros
+function getMesActual(){const n=new Date();return{y:n.getFullYear(),m:n.getMonth()};}
+function inMesActual(d){if(!d)return false;const dt=new Date(d);const ma=getMesActual();return dt.getFullYear()===ma.y&&dt.getMonth()===ma.m;}
+function inMeses(d,meses){if(!d||!meses||!meses.length)return false;const dt=new Date(d);return meses.some(k=>{const[y,m]=k.split('-').map(Number);return dt.getFullYear()===y&&dt.getMonth()===m;});}
+
+function poblarFiltros(){
+  const mesesSet=new Set();
+  Object.values(OTs).forEach(o=>{
+    if(o.fechaIn){const d=new Date(o.fechaIn);mesesSet.add(`${d.getFullYear()}-${d.getMonth()}`);}
+    if(o.fechaSal){const d=new Date(o.fechaSal);mesesSet.add(`${d.getFullYear()}-${d.getMonth()}`);}
+  });
+  const mesesArr=[...mesesSet].sort((a,b)=>b.localeCompare(a));
+  const ma=getMesActual();const mesActualKey=`${ma.y}-${ma.m}`;
+  const mg=g('months-grid');if(!mg)return;
+  const prevSel=new Set([...mg.querySelectorAll('.month-chip.selected')].map(el=>el.dataset.key));
+  mg.innerHTML=mesesArr.map(k=>{
+    const[y,m]=k.split('-').map(Number);
+    const isCur=k===mesActualKey;
+    const isSel=prevSel.has(k)||(prevSel.size===0&&isCur);
+    return`<div class="month-chip ${isSel?'selected':''}" data-key="${k}" onclick="this.classList.toggle('selected')">${MESES_ES[m]} ${y}${isCur?' ●':''}</div>`;
+  }).join('');
+  const clientes=new Set(Object.values(OTs).map(o=>o.cliente).filter(Boolean));
+  const fpCli=g('fp-cliente');if(fpCli){const cur=fpCli.value;fpCli.innerHTML='<option value="">Todos los clientes</option>'+[...clientes].sort().map(c=>`<option${cur===c?' selected':''} value="${c}">${c}</option>`).join('');}
+  const fin=Object.values(OTs).filter(o=>o.finalizada||ESTADOS_FINALES.includes(o.estado));
+  const codigos=new Set(fin.map(o=>o.um).filter(Boolean));
+  const fpCod=g('fp-codigo');if(fpCod){const cur=fpCod.value;fpCod.innerHTML='<option value="">Todos los códigos</option>'+[...codigos].sort().map(c=>`<option${cur===c?' selected':''} value="${c}">${c}</option>`).join('');}
 }
 
 function getOTFiltradas(){
-  const meses=getMesesSeleccionados();
-  const cliente=g('fp-cliente').value;
-  const codigo=g('fp-codigo').value;
-  const arr=Object.values(OTs);
-  // Si no hay filtros activos → mes actual
-  const tieneFiltroPeriodo=meses.length>0;
-  const tieneOtroFiltro=cliente||codigo;
-  return arr.filter(o=>{
+  const meses=[...document.querySelectorAll('.month-chip.selected')].map(el=>el.dataset.key);
+  const cliente=g('fp-cliente').value;const codigo=g('fp-codigo').value;
+  return Object.values(OTs).filter(o=>{
     let ok=true;
-    if(tieneFiltroPeriodo){ok=ok&&(inMeses(o.fechaIn,meses)||inMeses(o.fechaSal,meses));}
-    else{ok=ok&&(inMesActual(o.fechaIn)||inMesActual(o.fechaSal));}
+    if(meses.length>0)ok=ok&&(inMeses(o.fechaIn,meses)||inMeses(o.fechaSal,meses));
+    else ok=ok&&(inMesActual(o.fechaIn)||inMesActual(o.fechaSal));
     if(cliente)ok=ok&&o.cliente===cliente;
     if(codigo)ok=ok&&o.um===codigo;
     return ok;
@@ -799,162 +1116,134 @@ function getOTFiltradas(){
 }
 
 function aplicarFiltro(){
-  const meses=getMesesSeleccionados();
-  const cliente=g('fp-cliente').value;
-  const codigo=g('fp-codigo').value;
-  filtroActivo={meses,cliente,codigo};
-  uDash();
-  // Mostrar exportación si hay filtro
+  const meses=[...document.querySelectorAll('.month-chip.selected')].map(el=>el.dataset.key);
+  const cliente=g('fp-cliente').value;const codigo=g('fp-codigo').value;
+  filtroActivo={meses,cliente,codigo};uDash();
   const hayFiltro=meses.length>0||cliente||codigo;
   g('export-wrap').className=hayFiltro?'export-wrap show':'export-wrap';
-  const datos=getOTFiltradas();
-  g('fp-result').textContent=datos.length+' OT en el resultado del filtro';
+  g('fp-result').textContent=getOTFiltradas().length+' registros en el filtro';
 }
 window.aplicarFiltro=aplicarFiltro;
 
 function limpiarFiltro(){
-  filtroActivo=null;
-  document.querySelectorAll('.month-chip').forEach(el=>el.classList.remove('selected'));
-  // Seleccionar mes actual por defecto
-  const ma=getMesActual();const key=`${ma.y}-${ma.m}`;
-  const chip=document.querySelector(`.month-chip[data-key="${key}"]`);
-  if(chip)chip.classList.add('selected');
-  g('fp-cliente').value='';g('fp-codigo').value='';
-  g('export-wrap').className='export-wrap';
-  g('fp-result').textContent='';
-  uDash();
+  filtroActivo=null;document.querySelectorAll('.month-chip').forEach(el=>el.classList.remove('selected'));
+  const ma=getMesActual();const chip=document.querySelector(`.month-chip[data-key="${ma.y}-${ma.m}"]`);if(chip)chip.classList.add('selected');
+  if(g('fp-cliente'))g('fp-cliente').value='';if(g('fp-codigo'))g('fp-codigo').value='';
+  g('export-wrap').className='export-wrap';g('fp-result').textContent='';uDash();
 }
 window.limpiarFiltro=limpiarFiltro;
 
-// ── Exportar Excel ──
 function exportarExcel(){
-  const datos=getOTFiltradas();
-  if(!datos.length){alert('No hay datos para exportar con los filtros actuales.');return;}
+  const datos=getOTFiltradas();if(!datos.length){alert('No hay datos para exportar.');return;}
   const rows=datos.map(o=>({
     'Código UM':o.um||'','Código Cliente':o.codcli||'','Boleta UM':o.boleta||'','Cliente':o.cliente||'',
-    'Tipo Máquina':o.tipoMaq||'','Falla Reportada':o.falla||'','Diagnóstico':o.diagnostico||'',
-    'Accesorios':o.accesorios||'','Con Factura':o.factura||'','Técnico':o.tec||'',
-    'Estado':o.estado||'','Retrabajo':o.retrabajo||'','F. Ingreso':o.fechaIn||'','F. Salida':o.fechaSal||'',
-    'Días en Taller':dSince(o.fechaIn)!==null?dSince(o.fechaIn):'',
+    'Tipo Máquina':o.tipoMaq||'','Técnico':o.tec||'No asignado','Estado':o.estado||'',
+    'Falla Reportada':o.falla||'','Diagnóstico':o.diagnostico||'',
+    'Accesorios':o.accesorios||'','Con Factura':o.factura||'','Retrabajo':o.retrabajo||'',
+    'F. Ingreso':o.fechaIn||'','Inicio Reparación':o.inicioRep?new Date(o.inicioRep).toLocaleString('es-CR'):'',
+    'F. Salida':o.fechaSal||'','Días en Taller':dSince(o.fechaIn)!==null?dSince(o.fechaIn):'',
+    'Finalizada':o.finalizada?'Sí':'No',
+    'Total Cotización':o.cotizacion?(o.cotizacion.reduce((s,c)=>s+(parseFloat(c.costo)||0),0)):0,
   }));
-  const ws=XLSX.utils.json_to_sheet(rows);
-  const wb=XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(wb,'OT Taller',ws);
-  const fecha=new Date().toISOString().slice(0,10);
-  XLSX.writeFile(wb,`AELMODULOS_Taller_${fecha}.xlsx`);
+  const ws=XLSX.utils.json_to_sheet(rows);const wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,'OT Taller',ws);
+  XLSX.writeFile(wb,`AELMODULOS_Taller_${new Date().toISOString().slice(0,10)}.xlsx`);
 }
 window.exportarExcel=exportarExcel;
 
-// ── Exportar PDF ──
 function exportarPDF(){
-  const datos=getOTFiltradas();
-  if(!datos.length){alert('No hay datos para exportar.');return;}
-  const meses=getMesesSeleccionados();
-  const cliente=g('fp-cliente').value;
-  const codigo=g('fp-codigo').value;
-  const fecha=new Date().toLocaleString('es-CR');
+  const datos=getOTFiltradas();if(!datos.length){alert('No hay datos para exportar.');return;}
+  const meses=[...document.querySelectorAll('.month-chip.selected')].map(el=>el.dataset.key);
+  const cliente=g('fp-cliente').value;const codigo=g('fp-codigo').value;
   const filas=datos.map(o=>`<tr>
-    <td>${o.um||'—'}</td><td>${o.boleta||'—'}</td><td>${o.cliente||'—'}</td><td>${o.tipoMaq||'—'}</td>
-    <td>${o.tec||'—'}</td><td>${o.estado||'—'}</td><td>${o.fechaIn||'—'}</td><td>${o.fechaSal||'Pendiente'}</td>
-    <td>${dSince(o.fechaIn)!==null?dSince(o.fechaIn)+'d':'—'}</td><td>${o.retrabajo||'No'}</td>
+    <td>${o.um||'—'}</td><td>${o.boleta||'—'}</td><td>${o.cliente||'—'}</td>
+    <td>${o.tec||'Sin asignar'}</td><td>${o.estado||'—'}</td>
+    <td>${o.fechaIn||'—'}</td><td>${o.fechaSal||'Pendiente'}</td>
+    <td>${dSince(o.fechaIn)!==null?dSince(o.fechaIn)+'d':'—'}</td>
+    <td>${o.retrabajo||'No'}</td>
+    <td>${o.cotizacion?(o.cotizacion.reduce((s,c)=>s+(parseFloat(c.costo)||0),0)).toLocaleString('es-CR',{minimumFractionDigits:2}):0}</td>
+    <td>${o.finalizada?'✓':''}</td>
   </tr>`).join('');
   const html=`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Reporte Taller</title>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500&display=swap" rel="stylesheet">
-  <style>body{font-family:'Plus Jakarta Sans',sans-serif;color:#1E293B;padding:20px;font-size:12px;}
+  <style>body{font-family:'Plus Jakarta Sans',sans-serif;color:#1E293B;padding:20px;font-size:11px;}
   h1{font-family:'Space Grotesk',sans-serif;color:#0D9488;font-size:18px;margin:0 0 4px;}
-  .sub{color:#94A3B8;font-size:11px;margin:0 0 12px;border-bottom:2px solid #0D9488;padding-bottom:8px;}
-  .filtros{background:#F0FDFA;border:1px solid #CCFBF1;border-radius:6px;padding:8px 12px;font-size:11px;margin-bottom:14px;color:#0F766E;}
+  .sub{color:#94A3B8;font-size:10px;margin:0 0 10px;border-bottom:2px solid #0D9488;padding-bottom:6px;}
+  .filtros{background:#F0FDFA;border:1px solid #CCFBF1;border-radius:6px;padding:7px 12px;font-size:10px;margin-bottom:12px;color:#0F766E;}
   table{width:100%;border-collapse:collapse;font-size:10px;}
-  th{background:#1E293B;color:rgba(255,255,255,.85);padding:7px 8px;text-align:left;font-weight:600;letter-spacing:.05em;text-transform:uppercase;}
-  td{padding:6px 8px;border-bottom:1px solid #F1F5F9;}
-  tr:nth-child(even) td{background:#F8FAFC;}
-  .footer{margin-top:14px;font-size:10px;color:#94A3B8;text-align:right;}
+  th{background:#1E293B;color:rgba(255,255,255,.85);padding:7px 8px;text-align:left;font-weight:600;letter-spacing:.04em;text-transform:uppercase;}
+  td{padding:5px 8px;border-bottom:1px solid #F1F5F9;}tr:nth-child(even) td{background:#F8FAFC;}
+  .footer{margin-top:12px;font-size:10px;color:#94A3B8;text-align:right;}
   @media print{body{padding:8px;}}</style></head><body>
   <h1>AELMODULOS — Reporte de Taller</h1>
-  <p class="sub">Generado: ${fecha} · Total: ${datos.length} registros</p>
-  <div class="filtros"><strong>Filtros aplicados:</strong> ${meses.length?'Meses: '+meses.map(k=>{const[y,m]=k.split('-').map(Number);return MESES_ES[m]+' '+y;}).join(', '):'Mes actual'} ${cliente?'· Cliente: '+cliente:''} ${codigo?'· Código UM: '+codigo:''}</div>
-  <table><thead><tr><th>Cód. UM</th><th>Boleta</th><th>Cliente</th><th>Tipo</th><th>Técnico</th><th>Estado</th><th>F. Ingreso</th><th>F. Salida</th><th>Días</th><th>Retrabajo</th></tr></thead>
+  <p class="sub">Generado: ${new Date().toLocaleString('es-CR')} · ${datos.length} registros</p>
+  <div class="filtros"><strong>Filtros:</strong> ${meses.length?meses.map(k=>{const[y,m]=k.split('-').map(Number);return MESES_ES[m]+' '+y;}).join(', '):'Mes actual'}${cliente?' · Cliente: '+cliente:''}${codigo?' · Código UM: '+codigo:''}</div>
+  <table><thead><tr><th>Cód. UM</th><th>Boleta</th><th>Cliente</th><th>Técnico</th><th>Estado</th><th>F. Ingreso</th><th>F. Salida</th><th>Días</th><th>Retrabajo</th><th>Total Cot. ₡</th><th>Finalizada</th></tr></thead>
   <tbody>${filas}</tbody></table>
-  <div class="footer">AELMODULOS Sistema de Gestión de Taller · ${fecha}</div>
+  <div class="footer">AELMODULOS Sistema de Gestión de Taller</div>
   <script>window.onload=function(){window.print();}<\/script></body></html>`;
   const w=window.open('','_blank','width=900,height=700');if(w){w.document.write(html);w.document.close();}
 }
 window.exportarPDF=exportarPDF;
 
-// ── Gráfico de barras: recibidas vs finalizadas por día ──
+// Gráfico
 function renderChart(arr){
   const container=g('chart-container');if(!container)return;
   if(!arr.length){container.innerHTML='<p style="font-size:12px;color:var(--gray-400);text-align:center;padding:20px 0;font-style:italic;">Sin datos para el período</p>';return;}
-  // Agrupar por día
   const recMap={},finMap={};
-  arr.forEach(o=>{
-    if(o.fechaIn){const k=o.fechaIn;recMap[k]=(recMap[k]||0)+1;}
-    if(o.fechaSal){const k=o.fechaSal;finMap[k]=(finMap[k]||0)+1;}
-  });
+  arr.forEach(o=>{if(o.fechaIn){recMap[o.fechaIn]=(recMap[o.fechaIn]||0)+1;}if(o.fechaSal){finMap[o.fechaSal]=(finMap[o.fechaSal]||0)+1;}});
   const allDays=[...new Set([...Object.keys(recMap),...Object.keys(finMap)])].sort();
   if(!allDays.length){container.innerHTML='<p style="font-size:12px;color:var(--gray-400);text-align:center;padding:20px 0;font-style:italic;">Sin datos</p>';return;}
   const maxVal=Math.max(...allDays.map(d=>Math.max(recMap[d]||0,finMap[d]||0)),1);
-  const W=Math.max(500,allDays.length*52+80);
-  const H=180;const PL=30;const PB=36;const PT=10;const barW=18;const gap=16;const groupW=barW*2+gap;const colW=groupW+20;
+  const W=Math.max(500,allDays.length*54+80);const H=180;const PL=32;const PB=38;const PT=12;const barW=18;
   let svg=`<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:${H}px;">`;
-  // Grid lines
-  for(let i=0;i<=4;i++){const y=PT+(H-PT-PB)*(1-i/4);const val=Math.round(maxVal*i/4);svg+=`<line x1="${PL}" y1="${y}" x2="${W-10}" y2="${y}" stroke="#E2E8F0" stroke-width="1"/><text x="${PL-4}" y="${y+4}" text-anchor="end" font-size="9" fill="#94A3B8">${val}</text>`;}
-  // Bars
+  for(let i=0;i<=4;i++){const y=PT+(H-PT-PB)*(1-i/4);const val=Math.round(maxVal*i/4);svg+=`<line x1="${PL}" y1="${y}" x2="${W-10}" y2="${y}" stroke="#E2E8F0" stroke-width="1"/><text x="${PL-5}" y="${y+4}" text-anchor="end" font-size="9" fill="#94A3B8">${val}</text>`;}
   allDays.forEach((day,i)=>{
-    const x=PL+10+i*colW;const rec=recMap[day]||0;const fin=finMap[day]||0;
+    const x=PL+12+i*54;const rec=recMap[day]||0;const fin=finMap[day]||0;
     const hRec=(H-PT-PB)*(rec/maxVal);const hFin=(H-PT-PB)*(fin/maxVal);
     const yRec=PT+(H-PT-PB)-hRec;const yFin=PT+(H-PT-PB)-hFin;
-    // Recibidas (teal)
     svg+=`<rect x="${x}" y="${yRec}" width="${barW}" height="${hRec}" rx="3" fill="#0D9488" opacity=".85"/>`;
     if(rec>0)svg+=`<text x="${x+barW/2}" y="${yRec-3}" text-anchor="middle" font-size="9" fill="#0D9488" font-weight="600">${rec}</text>`;
-    // Finalizadas (rose)
     svg+=`<rect x="${x+barW+4}" y="${yFin}" width="${barW}" height="${hFin}" rx="3" fill="#F43F5E" opacity=".85"/>`;
     if(fin>0)svg+=`<text x="${x+barW+4+barW/2}" y="${yFin-3}" text-anchor="middle" font-size="9" fill="#F43F5E" font-weight="600">${fin}</text>`;
-    // Etiqueta día
-    const d=new Date(day+'T00:00:00');const label=`${d.getDate()}/${d.getMonth()+1}`;
-    svg+=`<text x="${x+barW}" y="${H-PB+14}" text-anchor="middle" font-size="9" fill="#64748B">${label}</text>`;
+    const dt=new Date(day+'T00:00:00');
+    svg+=`<text x="${x+barW}" y="${H-PB+14}" text-anchor="middle" font-size="9" fill="#64748B">${dt.getDate()}/${dt.getMonth()+1}</text>`;
   });
-  // Axis
   svg+=`<line x1="${PL}" y1="${PT}" x2="${PL}" y2="${H-PB}" stroke="#CBD5E1" stroke-width="1.5"/>`;
   svg+=`<line x1="${PL}" y1="${H-PB}" x2="${W-10}" y2="${H-PB}" stroke="#CBD5E1" stroke-width="1.5"/>`;
   svg+='</svg>';
   container.innerHTML=svg;
-  g('chart-periodo-label').textContent=`${allDays[0]} → ${allDays[allDays.length-1]}`;
+  if(allDays.length>1)g('chart-periodo-label').textContent=`${allDays[0]} → ${allDays[allDays.length-1]}`;
 }
 
-// ── Dashboard principal ──
+// Dashboard
 function uDash(){
-  // Determinar el conjunto de OT a mostrar
   let arr;
   if(filtroActivo){
     const{meses,cliente,codigo}=filtroActivo;
     arr=Object.values(OTs).filter(o=>{
       let ok=true;
-      if(meses&&meses.length>0){ok=ok&&(inMeses(o.fechaIn,meses)||inMeses(o.fechaSal,meses));}
-      else{ok=ok&&(inMesActual(o.fechaIn)||inMesActual(o.fechaSal));}
-      if(cliente)ok=ok&&o.cliente===cliente;
-      if(codigo)ok=ok&&o.um===codigo;
-      return ok;
+      if(meses&&meses.length>0)ok=ok&&(inMeses(o.fechaIn,meses)||inMeses(o.fechaSal,meses));
+      else ok=ok&&(inMesActual(o.fechaIn)||inMesActual(o.fechaSal));
+      if(cliente)ok=ok&&o.cliente===cliente;if(codigo)ok=ok&&o.um===codigo;return ok;
     });
-  } else {
-    arr=Object.values(OTs).filter(o=>inMesActual(o.fechaIn)||inMesActual(o.fechaSal));
-  }
+  }else{arr=Object.values(OTs).filter(o=>inMesActual(o.fechaIn)||inMesActual(o.fechaSal));}
 
-  // Etiqueta período
   const ma=getMesActual();
   const mesLabel=filtroActivo&&filtroActivo.meses&&filtroActivo.meses.length
     ?filtroActivo.meses.map(k=>{const[y,m]=k.split('-').map(Number);return MESES_ES[m]+' '+y;}).join(', ')
     :MESES_ES[ma.m]+' '+ma.y;
-  g('dash-mes-label').textContent=mesLabel;
-  g('dash-ts').textContent='Actualizado: '+new Date().toLocaleString('es-CR');
+  if(g('dash-mes-label'))g('dash-mes-label').textContent=mesLabel;
+  if(g('dash-ts'))g('dash-ts').textContent='Actualizado: '+new Date().toLocaleString('es-CR');
 
-  const act=arr.filter(o=>isAct(o)),cer=arr.filter(o=>!isAct(o));
+  const act=arr.filter(o=>!o.finalizada&&!ESTADOS_FINALES.includes(o.estado));
+  const proc=arr.filter(o=>o.estado==='En proceso');
+  const cer=arr.filter(o=>o.finalizada||ESTADOS_FINALES.includes(o.estado));
   const esp=arr.filter(o=>o.estado==='Espera de repuesto');
   const fac=arr.filter(o=>o.factura==='Sí');
   const ret=arr.filter(o=>o.retrabajo!=='No');
-  const crit=act.filter(o=>{const d=dSince(o.fechaIn);return d!==null&&d>7;});
+  const crit=act.filter(o=>{const d=dSince(o.fechaIn);return d!==null&&d>CRITICO_DIAS;});
 
-  g('dh-act').textContent=act.length;g('dh-hoy').textContent=arr.length;g('dh-crit').textContent=crit.length;
+  g('dh-act').textContent=act.length;g('dh-proc').textContent=proc.length;g('dh-crit').textContent=crit.length;
   g('d-total').textContent=arr.length;g('d-cerradas').textContent=cer.length;g('d-espera').textContent=esp.length;g('d-factura').textContent=fac.length;
   g('d-codigos').textContent=Object.keys(CODIGOS).length;
 
@@ -962,20 +1251,21 @@ function uDash(){
   if(ciclos.length){const a=(ciclos.reduce((x,y)=>x+y,0)/ciclos.length).toFixed(1);g('d-ciclo').textContent=a+'d';const ok=parseFloat(a)<=5;g('d-ciclo-s').textContent=ok?'✓ Dentro de meta':'⚠ Meta: ≤5 días';g('d-ciclo-s').style.color=ok?'var(--emerald)':'var(--rose)';g('kpi-ciclo').className='kpi-box '+(ok?'kb':'kc');}
   else{g('d-ciclo').textContent='—';g('d-ciclo-s').textContent='Sin datos cerrados';}
   const rp=arr.length?Math.round((ret.length/arr.length)*100):null;
-  g('d-retpct').textContent=rp!==null?rp+'%':'—';if(rp!==null){g('d-ret-s').textContent=rp>5?'⚠ Supera meta del 5%':'✓ Dentro de meta';g('d-ret-s').style.color=rp>5?'var(--rose)':'var(--emerald)';g('kpi-ret').className='kpi-box '+(rp>5?'kc':'kb');}
+  g('d-retpct').textContent=rp!==null?rp+'%':'—';
+  if(rp!==null){g('d-ret-s').textContent=rp>5?'⚠ Supera meta del 5%':'✓ Dentro de meta';g('d-ret-s').style.color=rp>5?'var(--rose)':'var(--emerald)';g('kpi-ret').className='kpi-box '+(rp>5?'kc':'kb');}
 
-  let sg=0,sy=0,sr=0;act.forEach(o=>{const d=dSince(o.fechaIn);if(d===null)return;if(d<=3)sg++;else if(d<=7)sy++;else sr++;});
+  let sg=0,sy=0,sr=0;
+  act.forEach(o=>{const d=dSince(o.fechaIn);if(d===null)return;if(d<=5)sg++;else if(d<=CRITICO_DIAS)sy++;else sr++;});
   g('s-g').textContent=sg;g('s-y').textContent=sy;g('s-r').textContent=sr;
 
-  // Gráfico
   renderChart(arr);
 
   // Rendimiento técnicos
-  const tD={};['Usuario 1','Usuario 2','Usuario 3','Usuario 4','Usuario 5'].forEach(u=>{tD[u]={est:0,real:0,n:0,enT:0,exc:0,sinCod:0};});
+  const tD={};TECNICOS.forEach(u=>{tD[u]={est:0,real:0,n:0,enT:0,exc:0,sinCod:0};});
   arr.forEach(o=>{if(!o.tec||!tD[o.tec])return;const td=tD[o.tec];td.n++;const cod=Object.values(CODIGOS).find(c=>(c.um||'').toLowerCase()===(o.um||'').toLowerCase());const real=cDays(o);if(cod){const eD=parseFloat(h2d(cod.horas));td.est+=eD;if(real!==null){td.real+=real;if(real>eD)td.exc++;else td.enT++;}}else{td.sinCod++;if(real!==null)td.real+=real;}});
   const tC=Object.entries(tD).filter(([,s])=>s.n>0);
   g('d-rendimiento').innerHTML=tC.length?tC.map(([nm,s])=>{
-    const ini=nm.replace('Usuario ','U');const pct=s.est>0?Math.min(Math.round((s.real/s.est)*100),200):null;
+    const ini=inicialesTec(nm);const pct=s.est>0?Math.min(Math.round((s.real/s.est)*100),200):null;
     const col=pct===null?'var(--gray-300)':pct<=100?'var(--emerald)':pct<=130?'var(--amber)':'var(--rose)';
     const eb=pct===null?'b-slate':pct<=100?'b-emerald':pct<=130?'b-amber':'b-rose';
     const el=pct===null?'Sin estimado':pct<=100?`${pct}% — En tiempo`:`${pct}% — Excede`;
@@ -990,29 +1280,24 @@ function uDash(){
     </div>
     ${s.est>0?`<div class="perf-bar"><div class="perf-fill" style="width:${Math.min(pct,100)}%;background:${col};"></div></div>`:''}
     </div>`;
-  }).join(''):'<p style="font-size:12px;color:var(--gray-400);text-align:center;padding:14px 0;font-style:italic;">Registre OT con códigos del catálogo para ver rendimiento.</p>';
+  }).join(''):'<p style="font-size:12px;color:var(--gray-400);text-align:center;padding:14px 0;font-style:italic;">Sin OT con códigos de catálogo en este período.</p>';
 
-  // Máquina
   const mC={};arr.forEach(o=>{if(o.tipoMaq)mC[o.tipoMaq]=(mC[o.tipoMaq]||0)+1;});
   const mA=Object.entries(mC).sort((a,b)=>b[1]-a[1]);const mX=mA[0]?mA[0][1]:1;
-  g('d-maq').innerHTML=mA.length?mA.map(([k,v])=>`<div class="bar-row"><span class="bar-lbl">${k}</span><div class="bar-track"><div class="bar-fill" style="width:${Math.round(v/mX*100)}%;"></div></div><span class="bar-val">${v}</span></div>`).join(''):'<p style="font-size:12px;color:var(--gray-400);text-align:center;padding:12px 0;font-style:italic;">Sin datos</p>';
+  g('d-maq').innerHTML=mA.length?mA.map(([k,v])=>`<div class="bar-row"><span class="bar-lbl">${k}</span><div class="bar-track"><div class="bar-fill" style="width:${Math.round(v/mX*100)}%;"></div></div><span class="bar-val">${v}</span></div>`).join(''):'<p style="font-size:12px;color:var(--gray-400);text-align:center;padding:14px 0;font-style:italic;">Sin datos</p>';
 
-  // Estados
   const eC={};arr.forEach(o=>{if(o.estado)eC[o.estado]=(eC[o.estado]||0)+1;});
-  const eCls={'Asignado':'b-sky','En proceso':'b-purple','Reparado':'b-emerald','Cotizado':'b-amber','Espera de repuesto':'b-amber','Cambio':'b-rose','Nota de crédito':'b-rose'};
-  g('d-est').innerHTML=Object.entries(eC).length?Object.entries(eC).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`<div class="est-row"><span>${k}</span><span class="badge ${eCls[k]||'b-slate'}">${v} OT</span></div>`).join(''):'<p style="font-size:12px;color:var(--gray-400);text-align:center;padding:12px 0;font-style:italic;">Sin datos</p>';
+  const eCls={'En proceso':'b-teal','Reparado':'b-emerald','Cotizado':'b-amber','Espera de repuesto':'b-amber','Cambio':'b-rose','Nota de crédito':'b-rose','Pendiente':'b-slate'};
+  g('d-est').innerHTML=Object.entries(eC).length?Object.entries(eC).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`<div class="est-row"><span>${k}</span><span class="badge ${eCls[k]||'b-slate'}">${v} OT</span></div>`).join(''):'<p style="font-size:12px;color:var(--gray-400);text-align:center;padding:14px 0;font-style:italic;">Sin datos</p>';
 
-  // Técnicos resumen
   const tS={};arr.forEach(o=>{if(!o.tec)return;if(!tS[o.tec])tS[o.tec]={n:0,c:[],r:0};tS[o.tec].n++;const c=cDays(o);if(c!==null)tS[o.tec].c.push(c);if(o.retrabajo!=='No')tS[o.tec].r++;});
-  g('d-tec').innerHTML=Object.entries(tS).length?Object.entries(tS).sort((a,b)=>b[1].n-a[1].n).map(([nm,s])=>{const a=s.c.length?(s.c.reduce((x,y)=>x+y,0)/s.c.length).toFixed(1):'—';const cl=parseFloat(a)>7?'b-rose':parseFloat(a)>4?'b-amber':'b-emerald';const ini=nm.replace('Usuario ','U');return`<div class="est-row"><div style="display:flex;align-items:center;gap:7px;"><div class="avatar" style="width:24px;height:24px;font-size:10px;">${ini}</div><span>${nm}</span></div><div style="display:flex;gap:6px;align-items:center;"><span style="font-size:11px;color:var(--gray-400);">${a}d prom.</span><span class="badge ${cl}">${s.n} OT</span>${s.r?`<span class="badge b-rose">${s.r} ret.</span>`:''}</div></div>`;}).join(''):'<p style="font-size:12px;color:var(--gray-400);text-align:center;padding:12px 0;font-style:italic;">Sin datos</p>';
+  g('d-tec').innerHTML=Object.entries(tS).length?Object.entries(tS).sort((a,b)=>b[1].n-a[1].n).map(([nm,s])=>{const a=s.c.length?(s.c.reduce((x,y)=>x+y,0)/s.c.length).toFixed(1):'—';const cl=parseFloat(a)>CRITICO_DIAS?'b-rose':parseFloat(a)>5?'b-amber':'b-emerald';const ini=inicialesTec(nm);return`<div class="est-row"><div style="display:flex;align-items:center;gap:7px;"><div class="avatar" style="width:24px;height:24px;font-size:9px;">${ini}</div><span style="font-size:12px;">${nm}</span></div><div style="display:flex;gap:6px;align-items:center;"><span style="font-size:11px;color:var(--gray-400);">${a}d prom.</span><span class="badge ${cl}">${s.n} OT</span>${s.r?`<span class="badge b-rose">${s.r} ret.</span>`:''}</div></div>`;}).join(''):'<p style="font-size:12px;color:var(--gray-400);text-align:center;padding:14px 0;font-style:italic;">Sin datos</p>';
 
-  // Retrabajo
   const rC={};ret.forEach(o=>{rC[o.retrabajo]=(rC[o.retrabajo]||0)+1;});
-  g('d-ret').innerHTML=Object.keys(rC).length?Object.entries(rC).map(([k,v])=>`<div class="est-row"><span>${k}</span><span class="badge b-rose">${v}</span></div>`).join(''):'<p style="font-size:12px;color:var(--gray-400);text-align:center;padding:12px 0;font-style:italic;">Sin retrabajos</p>';
+  g('d-ret').innerHTML=Object.keys(rC).length?Object.entries(rC).map(([k,v])=>`<div class="est-row"><span>${k}</span><span class="badge b-rose">${v}</span></div>`).join(''):'<p style="font-size:12px;color:var(--gray-400);text-align:center;padding:14px 0;font-style:italic;">Sin retrabajos</p>';
 
-  // Críticas
   g('d-crit-count').textContent=crit.length;
-  g('d-crit').innerHTML=crit.length?crit.sort((a,b)=>dSince(b.fechaIn)-dSince(a.fechaIn)).slice(0,8).map(o=>`<div class="crit-row"><div class="crit-left"><span style="font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700;">${o.boleta}</span><span style="font-size:11px;color:var(--gray-400);">${o.cliente}</span><span class="badge b-sky" style="font-size:10px;">${o.tec}</span>${eBadge(o.estado)}</div><span class="badge b-rose">${dSince(o.fechaIn)}d</span></div>`).join(''):'<p style="font-size:12px;color:var(--gray-400);text-align:center;padding:12px 0;font-style:italic;">Sin OT críticas — buena gestión</p>';
+  g('d-crit').innerHTML=crit.length?crit.sort((a,b)=>dSince(b.fechaIn)-dSince(a.fechaIn)).slice(0,8).map(o=>`<div class="crit-row"><div class="crit-left"><span style="font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700;">${o.boleta}</span><span style="font-size:11px;color:var(--gray-400);">${o.cliente}</span><span class="badge b-sky" style="font-size:10px;">${o.tec||'Sin técnico'}</span>${eBadge(o.estado)}</div><span class="badge b-rose">${dSince(o.fechaIn)}d</span></div>`).join(''):'<p style="font-size:12px;color:var(--gray-400);text-align:center;padding:14px 0;font-style:italic;">Sin OT críticas — buena gestión</p>';
 }
 window.uDash=uDash;
 </script>
