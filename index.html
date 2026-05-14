@@ -586,9 +586,24 @@ function abrirModal(msg,onSi){
   g('modal-msg').textContent=msg;
   g('modal-overlay').style.display='flex';
   modalCallback=onSi;
-  g('modal-si').onclick=()=>{cerrarModal();if(modalCallback)modalCallback();};
+  // Asignar onclick al botón Sí — ejecuta callback ANTES de cerrar
+  const btnSi=g('modal-si');
+  if(btnSi){
+    // Clonar el botón para eliminar cualquier listener previo
+    const btnClone=btnSi.cloneNode(true);
+    btnSi.parentNode.replaceChild(btnClone,btnSi);
+    btnClone.onclick=function(){
+      const cb=modalCallback; // capturar antes de cerrar
+      g('modal-overlay').style.display='none';
+      modalCallback=null;
+      if(cb)cb();
+    };
+  }
 }
-function cerrarModal(){g('modal-overlay').style.display='none';modalCallback=null;}
+function cerrarModal(){
+  g('modal-overlay').style.display='none';
+  modalCallback=null;
+}
 window.cerrarModal=cerrarModal;
 
 // Firebase
@@ -888,31 +903,80 @@ async function guardar(key,pi,finalizar=false){
   if(!key)return;
   const o=OTs[key];
   if(!o){alert('OT no encontrada. Actualice la página e intente nuevamente.');return;}
-  const nv=id=>g(id)?g(id).value:'';const cambios=[];
-  // Recoger cotización si aplica
-  let cots=o.cotizacion||[];
-  if(g(`cot-tbody-${pi}`)){
-    cots=recogerCotizacion(pi);
+  const nv=id=>g(id)?g(id).value:'';
+  const cambios=[];
+
+  // Si es finalización: usar datos existentes de Firebase, solo actualizar campos de cierre
+  if(finalizar){
+    const estadoSeleccionado=nv(`e-est-${pi}`)||o.estado;
+    const diagSeleccionado=nv(`e-diag-${pi}`).trim()||o.diagnostico||'';
+    const retSeleccionado=nv(`e-ret-${pi}`)||o.retrabajo||'No';
+    let cots=o.cotizacion||[];
+    if(g(`cot-tbody-${pi}`))cots=recogerCotizacion(pi);
+    const fechaSalVal=nv(`e-fs-${pi}`)||new Date().toISOString().slice(0,10);
+    const tecVal=nv(`e-tec-${pi}`)||o.tec||'';
+    const u={
+      ...o, // conservar todos los datos existentes
+      tec:tecVal,
+      estado:'Finalizado',
+      diagnostico:diagSeleccionado,
+      retrabajo:retSeleccionado,
+      fechaSal:fechaSalVal,
+      cotizacion:cots,
+      finalizada:true,
+    };
+    cambios.push(`Estado: ${o.estado||'—'} → Finalizado`);
+    if(diagSeleccionado&&diagSeleccionado!==o.diagnostico)cambios.push('Diagnóstico registrado');
+    cambios.push('OT FINALIZADA — bloqueada para edición');
+    const ts=new Date().toLocaleString('es-CR');
+    u.historial=[...(o.historial||[]),{ts,accion:cambios.join(' · ')}];
+    // Eliminar campo que no existe en Firebase (historial ya copiado desde o)
+    const btn=g(`btns-${pi}`);if(btn)btn.querySelectorAll('button').forEach(b=>b.disabled=true);
+    try{
+      await update(ref(db,`OTs/${key}`),u);
+      g(pi).style.display='none';
+      const pfx=pi.replace('-panel','');
+      if(g(pfx+'-boleta'))g(pfx+'-boleta').value='';
+      if(g(pfx+'-codcli'))g(pfx+'-codcli').value='';
+      if(g(pfx+'-results')){
+        g(pfx+'-results').innerHTML=`
+          <div style="background:var(--emerald-light);border:1px solid #6EE7B7;border-radius:10px;padding:14px 18px;display:flex;align-items:center;gap:12px;margin-bottom:10px;">
+            <i class="ti ti-flag-check" style="font-size:28px;color:var(--emerald);flex-shrink:0;"></i>
+            <div>
+              <div style="font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:700;color:#065F46;">OT Finalizada exitosamente</div>
+              <div style="font-size:12px;color:#059669;margin-top:3px;">Estado: <strong>Finalizado</strong>. OT bloqueada. Para reactivar registre un Retrabajo al buscarla.</div>
+            </div>
+          </div>`;
+        setTimeout(()=>{const el=g(pfx+'-results');if(el)el.innerHTML='';},5000);
+      }
+    }catch(e){
+      if(btn)btn.querySelectorAll('button').forEach(b=>b.disabled=false);
+      alert('Error al finalizar: '+e.message);
+    }
+    return; // salir — no continuar con el flujo normal
   }
+
+  // Flujo normal (no finalizar)
+  let cots=o.cotizacion||[];
+  if(g(`cot-tbody-${pi}`)){cots=recogerCotizacion(pi);}
   const u={
-    um:nv(`e-um-${pi}`).trim(),codcli:nv(`e-codcli-${pi}`).trim(),boleta:nv(`e-boleta-${pi}`).trim(),
-    cliente:nv(`e-cliente-${pi}`).trim(),tipoMaq:nv(`e-tipo-${pi}`),
-    accesorios:nv(`e-acc-${pi}`),factura:nv(`e-fac-${pi}`),fechaIn:nv(`e-fi-${pi}`),
-    falla:nv(`e-falla-${pi}`).trim(),diagnostico:nv(`e-diag-${pi}`).trim(),
-    estado:nv(`e-est-${pi}`),retrabajo:nv(`e-ret-${pi}`),fechaSal:nv(`e-fs-${pi}`),
+    um:nv(`e-um-${pi}`).trim()||o.um,
+    codcli:nv(`e-codcli-${pi}`).trim()||o.codcli,
+    boleta:nv(`e-boleta-${pi}`).trim()||o.boleta,
+    cliente:nv(`e-cliente-${pi}`).trim()||o.cliente,
+    tipoMaq:nv(`e-tipo-${pi}`)||o.tipoMaq,
+    accesorios:nv(`e-acc-${pi}`)||o.accesorios,
+    factura:nv(`e-fac-${pi}`)||o.factura,
+    fechaIn:nv(`e-fi-${pi}`)||o.fechaIn,
+    falla:nv(`e-falla-${pi}`).trim()||o.falla,
+    diagnostico:nv(`e-diag-${pi}`).trim()||o.diagnostico,
+    estado:nv(`e-est-${pi}`)||o.estado,
+    retrabajo:nv(`e-ret-${pi}`)||o.retrabajo,
+    fechaSal:nv(`e-fs-${pi}`)||o.fechaSal,
     cotizacion:cots,
   };
-  // Técnico y cronómetro
-  const tecEl=g(`e-tec-${pi}`);if(tecEl)u.tec=tecEl.value;
-  // Si cambió a En proceso y no tiene inicioRep → iniciar cronómetro
+  const tecEl=g(`e-tec-${pi}`);if(tecEl&&tecEl.value)u.tec=tecEl.value;
   if(u.estado==='En proceso'&&!o.inicioRep){u.inicioRep=new Date().toISOString();}
-  // Finalizar
-  // Finalizar: estado especial + bloqueo + fecha salida
-  if(finalizar){
-    u.finalizada=true;
-    u.estado='Finalizado';
-    if(!u.fechaSal)u.fechaSal=new Date().toISOString().slice(0,10);
-  }
   Object.keys(u).forEach(k=>{
     const a=JSON.stringify(o[k])||'',d=JSON.stringify(u[k])||'';
     if(a!==d){
@@ -925,34 +989,13 @@ async function guardar(key,pi,finalizar=false){
       else if(k!=='finalizada'&&k!=='cotizacion')cambios.push(`${k}: actualizado`);
     }
   });
-  if(finalizar)cambios.push('OT FINALIZADA — bloqueada para edición');
   if(cambios.length){const ts=new Date().toLocaleString('es-CR');u.historial=[...(o.historial||[]),{ts,accion:cambios.join(' · ')}];}
   const btn=g(`btns-${pi}`);if(btn)btn.querySelectorAll('button').forEach(b=>b.disabled=true);
   try{
     await update(ref(db,`OTs/${key}`),u);
-    if(finalizar){
-      // Cerrar panel de edición
-      g(pi).style.display='none';
-      const pfx=pi.replace('-panel','');
-      if(g(pfx+'-boleta'))g(pfx+'-boleta').value='';
-      if(g(pfx+'-codcli'))g(pfx+'-codcli').value='';
-      // Mostrar banner de confirmación en el área de resultados
-      if(g(pfx+'-results')){
-        g(pfx+'-results').innerHTML=`
-          <div style="background:var(--emerald-light);border:1px solid #6EE7B7;border-radius:10px;padding:14px 18px;display:flex;align-items:center;gap:12px;margin-bottom:10px;">
-            <i class="ti ti-flag-check" style="font-size:28px;color:var(--emerald);flex-shrink:0;"></i>
-            <div>
-              <div style="font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:700;color:#065F46;">OT Finalizada exitosamente</div>
-              <div style="font-size:12px;color:#059669;margin-top:3px;">Estado actualizado a <strong>Finalizado</strong>. La OT queda bloqueada. Para reactivarla debe registrar un Retrabajo al buscarla nuevamente.</div>
-            </div>
-          </div>`;
-        setTimeout(()=>{const el=g(pfx+'-results');if(el)el.innerHTML='';},5000);
-      }
-    } else {
-      if(btn)btn.style.display='none';
-      const em=g(`emsg-${pi}`);
-      if(em){em.style.color='var(--teal)';em.innerHTML='<i class="ti ti-circle-check" style="font-size:14px;vertical-align:-2px;margin-right:4px;"></i>Cambios guardados. Realice nueva búsqueda para editar nuevamente.';}
-    }
+    if(btn)btn.style.display='none';
+    const em=g(`emsg-${pi}`);
+    if(em){em.style.color='var(--teal)';em.innerHTML='<i class="ti ti-circle-check" style="font-size:14px;vertical-align:-2px;margin-right:4px;"></i>Cambios guardados. Realice nueva búsqueda para editar nuevamente.';}
   }catch(e){
     if(btn)btn.querySelectorAll('button').forEach(b=>b.disabled=false);
     const em=g(`emsg-${pi}`);if(em){em.style.color='var(--rose)';em.textContent='Error: '+e.message;}
