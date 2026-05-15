@@ -19,8 +19,10 @@
   --violet:#7C3AED;--violet-light:#EDE9FE;
   --white:#FFFFFF;--off:#F8FAFC;--gray-100:#F1F5F9;--gray-200:#E2E8F0;
   --gray-300:#CBD5E1;--gray-400:#94A3B8;--gray-600:#475569;
+  --dark-bg:#1C2733;--dark-bg2:#243040;
   --shadow-sm:0 1px 3px rgba(0,0,0,.06),0 1px 2px rgba(0,0,0,.04);
   --shadow-md:0 4px 16px rgba(0,0,0,.08);
+  --shadow-float:0 4px 20px rgba(0,0,0,.22);
   --r:10px;
 }
 *{box-sizing:border-box;margin:0;padding:0;}
@@ -48,6 +50,38 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--off);color:var(
 .ntab.active{color:var(--teal);border-bottom-color:var(--teal);}
 
 .content{padding:22px;max-width:1440px;margin:0 auto;}
+
+/* Fondo oscuro profesional para Recepción y Gestión Técnica */
+#tab-rec,#tab-tec{
+  background:var(--dark-bg);
+  margin:-22px;
+  padding:22px;
+  min-height:calc(100vh - 100px);
+}
+#tab-rec .card,#tab-tec .card{
+  box-shadow:var(--shadow-float);
+  border-color:rgba(255,255,255,.06);
+}
+#tab-rec .ph h1,#tab-tec .ph h1{color:rgba(255,255,255,.92);}
+#tab-rec .ph p,#tab-tec .ph p{color:rgba(255,255,255,.4);}
+#tab-rec .ph h1 .ph-icon,#tab-tec .ph h1 .ph-icon{background:rgba(13,148,136,.25);color:var(--teal-light);}
+/* Fondo de búsqueda en Recepción lado derecho */
+#tab-rec .two-col > div:last-child .card,
+#tab-tec .card{background:rgba(255,255,255,.97);}
+/* Banner aviso de fecha salida */
+.banner-fecha-req{
+  background:rgba(245,158,11,.12);
+  border:1.5px solid rgba(245,158,11,.35);
+  border-radius:8px;
+  padding:9px 13px;
+  font-size:12px;
+  font-weight:500;
+  color:#FDE68A;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin-top:8px;
+}
 .tab-pane{display:none;}
 .tab-pane.active{display:block;}
 
@@ -320,20 +354,18 @@ tr:last-child td{border-bottom:none;}
       <div class="rtag rt-rec"><i class="ti ti-user-check" style="font-size:12px;"></i>Nueva Orden de Trabajo</div>
       <div class="fsec"><i class="ti ti-id"></i>Identificación</div>
       <div class="fgrid">
-        <div class="fg"><label class="req">Código UM</label><input id="r-um" type="text" placeholder="UM-00312"></div>
+        <div class="fg">
+          <label class="req">Código UM</label>
+          <input id="r-um" type="text" placeholder="UM-00312" autocomplete="off"
+            onblur="buscarCodUM()"
+            onkeydown="if(event.key==='Enter'){event.preventDefault();buscarCodUM();}">
+        </div>
         <div class="fg"><label class="req">Código Cliente</label><input id="r-codcli" type="text" placeholder="CLI-0084"></div>
         <div class="fg"><label class="req">Boleta / Trámite UM</label><input id="r-boleta" type="text" placeholder="BT-2025-441"></div>
         <div class="fg"><label class="req">Nombre del Cliente</label><input id="r-cliente" type="text" placeholder="Nombre o empresa"></div>
       </div>
-      <div class="fsec"><i class="ti ti-settings"></i>Tipo de Máquina</div>
-      <div class="fgrid">
-        <div class="fg"><label class="req">Tipo</label>
-          <select id="r-tipo" onchange="tog('r-tipo','r-otros-w','Otros')">
-            <option value="">Seleccionar...</option><option>Combustión</option><option>Hidráulica</option><option>Eléctrica</option><option>Otros</option>
-          </select>
-        </div>
-        <div class="fg" id="r-otros-w" style="display:none;"><label>Especifique</label><input id="r-otros" type="text" placeholder="Describa el tipo..."></div>
-      </div>
+      <!-- Banner autocompletado catálogo -->
+      <div id="r-cod-info" style="display:none;margin-bottom:10px;"></div>
       <div class="fsec"><i class="ti ti-alert-triangle"></i>Falla Reportada</div>
       <div class="fg" style="margin-bottom:10px;"><label class="req">Descripción de falla del cliente</label><textarea id="r-falla" placeholder="Describa con detalle la falla que indica el cliente al entregar la máquina..." style="min-height:76px;"></textarea></div>
       <div class="fsec"><i class="ti ti-package"></i>Accesorios y Documentación</div>
@@ -393,7 +425,7 @@ tr:last-child td{border-bottom:none;}
           <div class="fg"><label class="req">Código UM</label><input id="tc-um" type="text" placeholder="UM-001"></div>
           <div class="fg"><label class="req">Descripción</label><input id="tc-desc" type="text" placeholder="Motor taladro 1/2"></div>
           <div class="fg"><label class="req">Horas Estimadas</label><input id="tc-horas" type="number" min="0.5" step="0.5" placeholder="4"></div>
-          <div class="fg"><label>Categoría</label><select id="tc-cat"><option>Eléctrica</option><option>Combustión</option><option>Hidráulica</option><option>General</option></select></div>
+          <div class="fg"><label class="req">Tipo de Máquina</label><select id="tc-cat"><option>Eléctrica</option><option>Combustión</option><option>Hidráulica</option><option>General</option></select></div>
           <div class="fg"><label>Observaciones</label><input id="tc-obs" type="text" placeholder="Opcional..."></div>
         </div>
         <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
@@ -413,7 +445,7 @@ tr:last-child td{border-bottom:none;}
     <div>
       <div class="tbl-wrap">
         <table>
-          <thead><tr><th>Código UM</th><th>Descripción</th><th>Categoría</th><th>Horas</th><th>Días Lab.</th><th>Obs.</th><th></th></tr></thead>
+          <thead><tr><th>Código UM</th><th>Descripción</th><th>Tipo de Máquina</th><th>Horas</th><th>Días Lab.</th><th>Obs.</th><th></th></tr></thead>
           <tbody id="tc-tbody"><tr><td colspan="7" class="empty-row">Cargando...</td></tr></tbody>
         </table>
       </div>
@@ -433,7 +465,7 @@ tr:last-child td{border-bottom:none;}
   </div>
   <div class="tbl-wrap">
     <table>
-      <thead><tr><th>Cód. UM</th><th>Boleta</th><th>Cliente</th><th>Tipo</th><th>Falla</th><th>Diagnóstico</th><th>Técnico</th><th>Estado</th><th>Retrabajo</th><th>F. Ingreso</th><th>Inicio Rep.</th><th>F. Salida</th><th>Días</th><th>Est.</th><th>🔒</th><th></th></tr></thead>
+      <thead><tr><th>Cód. UM</th><th>Boleta</th><th>Cliente</th><th>Descripción</th><th>Tipo</th><th>Falla</th><th>Diagnóstico</th><th>Técnico</th><th>Estado</th><th>Retrabajo</th><th>F. Ingreso</th><th>Inicio Rep.</th><th>F. Salida</th><th>Días</th><th>Est.</th><th>🔒</th><th></th></tr></thead>
       <tbody id="ot-tbody"><tr><td colspan="16" class="empty-row">Cargando...</td></tr></tbody>
     </table>
   </div>
@@ -550,25 +582,36 @@ const app=initializeApp(fc);const db=getDatabase(app);
 
 let OTs={},CODIGOS={},editKey=null,filtroActivo=null;
 let modalCallback=null;
+// Flag por prefijo de panel: si true → limpiar al salir de la pestaña
+const panelGuardado={tb:false,rb:false};
 const J=8;
 const CRITICO_DIAS=10;
 const TECNICOS=['Gerald Duran Ardon','Alberto Fallas Granados','Viach Vargas Hidalgo','Heiner Leon Beita'];
 const ESTADOS_TEC=['En proceso','Reparado','Cotizado','Espera de repuesto','Cambio','Nota de crédito'];
-const ESTADOS_FINALES=['Reparado','Cambio','Nota de crédito'];
+const ESTADOS_FINALES=['Reparado','Cotizado','Cambio','Nota de crédito'];
 const MESES_ES=['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
 
 function clock(){const n=new Date();document.getElementById('tclock').textContent=n.toLocaleTimeString('es-CR',{hour:'2-digit',minute:'2-digit'});}
 setInterval(clock,1000);clock();
 
 const g=id=>document.getElementById(id);
-function showTab(t){['rec','tec','cod','tbl','dash'].forEach(x=>{g('tab-'+x).classList.toggle('active',x===t);g('btn-'+x).classList.toggle('active',x===t);});if(t==='dash')uDash();if(t==='tbl')rTabla();if(t==='cod')rCodigos();}
+function showTab(t){
+  // Antes de cambiar, limpiar pestañas que tuvieron guardado exitoso
+  if(panelGuardado.tb){limpiarB('tb');panelGuardado.tb=false;}
+  if(panelGuardado.rb){limpiarB('rb');panelGuardado.rb=false;}
+  ['rec','tec','cod','tbl','dash'].forEach(x=>{
+    g('tab-'+x).classList.toggle('active',x===t);
+    g('btn-'+x).classList.toggle('active',x===t);
+  });
+  if(t==='dash')uDash();if(t==='tbl')rTabla();if(t==='cod')rCodigos();
+}
 window.showTab=showTab;
 function tog(s,d,v){g(d).style.display=g(s).value===v?'block':'none';}
 window.tog=tog;
 
 function dSince(d){if(!d)return null;const n=new Date();n.setHours(0,0,0,0);return Math.floor((n-new Date(d))/86400000);}
 function cDays(o){if(!o.fechaIn)return null;const e=o.fechaSal?new Date(o.fechaSal):new Date();return Math.max(0,Math.floor((e-new Date(o.fechaIn))/86400000));}
-function isAct(o){return!ESTADOS_FINALES.includes(o.estado)||o.estado==='Cotizado';}
+function isAct(o){return!ESTADOS_FINALES.includes(o.estado)&&!o.finalizada;}
 function isCerrada(o){return ESTADOS_FINALES.includes(o.estado)&&o.finalizada;}
 function isEditable(o){
   // Editable si: no finalizada, O si tiene retrabajo distinto de 'No'
@@ -614,27 +657,119 @@ onValue(ref(db,'OTs'),s=>{
 },()=>{g('sdot').className='sdot err';g('slabel').textContent='Error';g('loading-overlay').style.display='none';});
 onValue(ref(db,'codigos'),s=>{CODIGOS=s.val()||{};rCodigos();});
 
+// Variable que guarda el dato del catálogo encontrado para el código UM actual
+let codUMActual = null; // {desc, cat} o null
+
+function buscarCodUM(){
+  const um=g('r-um').value.trim();
+  const infoEl=g('r-cod-info');
+  const btnReg=g('r-btn');
+  const btnSinCat=g('r-btn-sincat');
+
+  // Limpiar estado anterior
+  codUMActual=null;
+  infoEl.style.display='none';
+  infoEl.innerHTML='';
+  if(btnSinCat)btnSinCat.style.display='none';
+
+  if(!um){
+    if(btnReg)btnReg.disabled=false;
+    return;
+  }
+
+  // Buscar coincidencia exacta en catálogo
+  const encontrado=Object.values(CODIGOS).find(c=>(c.um||'').trim()===um);
+
+  if(encontrado){
+    codUMActual={desc:encontrado.desc||'',cat:encontrado.cat||''};
+    infoEl.style.display='block';
+    infoEl.innerHTML=`
+      <div style="background:var(--teal-faint);border:1.5px solid #99F6E4;border-radius:8px;padding:10px 14px;display:flex;align-items:center;gap:12px;">
+        <i class="ti ti-circle-check" style="font-size:22px;color:var(--teal);flex-shrink:0;"></i>
+        <div>
+          <div style="font-size:10px;font-weight:700;color:var(--teal-dark);text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px;">Código encontrado en catálogo</div>
+          <div style="display:flex;gap:16px;flex-wrap:wrap;">
+            <div><span style="font-size:10px;color:var(--gray-400);">Descripción</span><br><span style="font-size:13px;font-weight:600;color:var(--slate);">${encontrado.desc||'—'}</span></div>
+            <div><span style="font-size:10px;color:var(--gray-400);">Tipo de Máquina</span><br><span style="font-size:13px;font-weight:600;color:var(--slate);">${encontrado.cat||'—'}</span></div>
+          </div>
+        </div>
+      </div>`;
+    if(btnReg){btnReg.disabled=false;btnReg.style.display='';}
+    if(btnSinCat)btnSinCat.style.display='none';
+  } else {
+    codUMActual=null;
+    infoEl.style.display='block';
+    infoEl.innerHTML=`
+      <div style="background:var(--rose-light);border:1.5px solid #FECDD3;border-radius:8px;padding:10px 14px;display:flex;align-items:center;gap:12px;">
+        <i class="ti ti-alert-circle" style="font-size:22px;color:var(--rose);flex-shrink:0;"></i>
+        <div style="flex:1;">
+          <div style="font-size:12px;font-weight:700;color:var(--rose-dark);">Código No registrado en catálogo</div>
+          <div style="font-size:11px;color:var(--rose-dark);margin-top:2px;opacity:.8;">El código <strong>${um}</strong> no existe en Tiempos por Código. Agréguelo primero o use "Registrar sin catálogo".</div>
+        </div>
+      </div>`;
+    // Bloquear botón principal, mostrar botón alternativo
+    if(btnReg){btnReg.disabled=true;btnReg.style.display='';}
+    // Crear/mostrar botón sin catálogo si no existe
+    let bsc=g('r-btn-sincat');
+    if(!bsc){
+      bsc=document.createElement('button');
+      bsc.id='r-btn-sincat';
+      bsc.className='btn btn-ghost';
+      bsc.innerHTML='<i class="ti ti-alert-triangle" style="font-size:14px;"></i>Registrar sin catálogo';
+      bsc.onclick=()=>{codUMActual={desc:'',cat:''};addOT(true);};
+      g('r-btn').parentNode.insertBefore(bsc,g('r-btn').nextSibling);
+    }
+    bsc.style.display='';
+  }
+}
+window.buscarCodUM=buscarCodUM;
+
 // Agregar OT
-async function addOT(){
-  const v=id=>g(id).value.trim();
-  if(!v('r-um')||!v('r-codcli')||!v('r-boleta')||!v('r-cliente')||!g('r-tipo').value||!v('r-falla')||!g('r-fechaIn').value){
+async function addOT(sinCatalogo=false){
+  const v=id=>g(id)&&g(id).value?g(id).value.trim():'';
+  const um=v('r-um');
+
+  // Validar que se haya buscado el código (codUMActual seteado o sinCatalogo)
+  if(!sinCatalogo&&codUMActual===null&&um){
+    // Forzar búsqueda primero
+    buscarCodUM();
+    if(codUMActual===null){mEl('r-msg','Verifique el Código UM antes de registrar.','var(--rose)');return;}
+  }
+
+  if(!um||!v('r-codcli')||!v('r-boleta')||!v('r-cliente')||!v('r-falla')||!g('r-fechaIn').value){
     mEl('r-msg','Complete los campos obligatorios (*)','var(--rose)');return;
   }
+
+  const tipoMaq=codUMActual?codUMActual.cat:'';
+  const descCat=codUMActual?codUMActual.desc:'';
+
   g('r-btn').disabled=true;
+  const bsc=g('r-btn-sincat');if(bsc)bsc.disabled=true;
   const ts=new Date().toLocaleString('es-CR');
   try{
-    await push(ref(db,'OTs'),{um:v('r-um'),codcli:v('r-codcli'),boleta:v('r-boleta'),cliente:v('r-cliente'),
-      tipoMaq:g('r-tipo').value,otrosDesc:v('r-otros'),falla:v('r-falla'),diagnostico:'',
+    await push(ref(db,'OTs'),{
+      um,codcli:v('r-codcli'),boleta:v('r-boleta'),cliente:v('r-cliente'),
+      tipoMaq,descCatalogo:descCat,
+      falla:v('r-falla'),diagnostico:'',
       accesorios:g('r-acc').value,accdesc:v('r-accdesc'),factura:g('r-factura').value,
       fechaIn:g('r-fechaIn').value,tec:'',estado:'Pendiente',retrabajo:'No',
       fechaSal:'',finalizada:false,inicioRep:'',cotizacion:[],
-      historial:[{ts,accion:'OT creada por Recepción · Pendiente de técnico'}],creadoEn:Date.now()});
-    ['r-um','r-codcli','r-boleta','r-cliente','r-otros','r-falla','r-accdesc','r-fechaIn'].forEach(id=>g(id).value='');
-    g('r-tipo').value='';g('r-acc').value='No';g('r-factura').value='No';
-    g('r-otros-w').style.display='none';g('r-acc-w').style.display='none';
-    mEl('r-msg','OT registrada. Pendiente de asignación técnica.','var(--teal)');
+      sinCatalogo:sinCatalogo||false,
+      historial:[{ts,accion:`OT creada por Recepción · ${sinCatalogo?'Sin código de catálogo':'Código de catálogo validado'} · Pendiente de técnico`}],
+      creadoEn:Date.now()
+    });
+    // Limpiar formulario
+    ['r-um','r-codcli','r-boleta','r-cliente','r-falla','r-accdesc','r-fechaIn'].forEach(id=>{if(g(id))g(id).value='';});
+    g('r-acc').value='No';g('r-factura').value='No';
+    if(g('r-acc-w'))g('r-acc-w').style.display='none';
+    g('r-cod-info').style.display='none';g('r-cod-info').innerHTML='';
+    codUMActual=null;
+    if(bsc)bsc.style.display='none';
+    mEl('r-msg',sinCatalogo?'OT registrada sin catálogo. Pendiente de asignación técnica.':'OT registrada. Pendiente de asignación técnica.','var(--teal)');
+    panelGuardado.rb=true; // al navegar fuera de Recepción se limpiará el buscador
   }catch(e){mEl('r-msg','Error: '+e.message,'var(--rose)',0);}
   g('r-btn').disabled=false;
+  if(bsc)bsc.disabled=false;
 }
 window.addOT=addOT;
 
@@ -706,7 +841,8 @@ function selOT(key,pi){
         <div class="fg"><label>Código Cliente</label><input type="text" value="${o.codcli||''}" readonly style="background:var(--gray-100);color:var(--gray-400);cursor:not-allowed;border-color:var(--gray-100);"></div>
         <div class="fg"><label>Boleta / Trámite UM</label><input type="text" value="${o.boleta||''}" readonly style="background:var(--gray-100);color:var(--gray-400);cursor:not-allowed;border-color:var(--gray-100);"></div>
         <div class="fg"><label>Cliente</label><input type="text" value="${o.cliente||''}" readonly style="background:var(--gray-100);color:var(--gray-400);cursor:not-allowed;border-color:var(--gray-100);"></div>
-        <div class="fg"><label>Tipo de Máquina</label><input type="text" value="${o.tipoMaq||''}" readonly style="background:var(--gray-100);color:var(--gray-400);cursor:not-allowed;border-color:var(--gray-100);"></div>
+        <div class="fg"><label>Descripción (catálogo)</label><input type="text" value="${o.descCatalogo||'—'}" readonly style="background:var(--gray-100);color:var(--gray-400);cursor:not-allowed;border-color:var(--gray-100);"></div>
+        <div class="fg"><label>Tipo de Máquina</label><input type="text" value="${o.tipoMaq||'—'}" readonly style="background:var(--gray-100);color:var(--gray-400);cursor:not-allowed;border-color:var(--gray-100);"></div>
         <div class="fg"><label>Técnico</label><input type="text" value="${o.tec||'No asignado'}" readonly style="background:var(--gray-100);color:var(--gray-400);cursor:not-allowed;border-color:var(--gray-100);"></div>
         <div class="fg"><label>Estado</label><input type="text" value="${o.estado||''}" readonly style="background:var(--gray-100);color:var(--gray-400);cursor:not-allowed;border-color:var(--gray-100);font-weight:600;"></div>
         <div class="fg"><label>Fecha Ingreso</label><input type="text" value="${o.fechaIn||''}" readonly style="background:var(--gray-100);color:var(--gray-400);cursor:not-allowed;border-color:var(--gray-100);"></div>
@@ -779,6 +915,7 @@ function selOT(key,pi){
   }
 
   // Selector de técnico solo en gestión técnica
+  const tecPreseleccionado=isTec&&o.tec&&TECNICOS.includes(o.tec);
   const tecSelector=isTec?`
     <div class="fgrid" style="margin-bottom:10px;">
       <div class="fg"><label class="req">Técnico que atiende</label>
@@ -787,7 +924,9 @@ function selOT(key,pi){
           ${TECNICOS.map(t=>`<option value="${t}"${o.tec===t?' selected':''}>${t}</option>`).join('')}
         </select>
       </div>
-    </div>`:'';
+    </div>
+    ${!tecPreseleccionado?`<div id="aviso-tec-${pi}" style="background:rgba(14,165,233,.12);border:1.5px solid rgba(14,165,233,.3);border-radius:8px;padding:9px 13px;font-size:12px;font-weight:500;color:#0369A1;display:flex;align-items:center;gap:8px;margin-bottom:10px;"><i class="ti ti-user-exclamation" style="font-size:16px;flex-shrink:0;"></i><span>Seleccione su nombre como técnico para habilitar los cambios.</span></div>`:''}
+    `:'';
 
   // Estado options — recepción tiene todos, técnico sin Asignado/En proceso como restricción
   const estadoOpts=isTec
@@ -808,7 +947,8 @@ function selOT(key,pi){
     <div class="fg"><label>Código Cliente</label><input id="e-codcli-${pi}" type="text" value="${o.codcli||''}"></div>
     <div class="fg"><label>Boleta</label><input id="e-boleta-${pi}" type="text" value="${o.boleta||''}"></div>
     <div class="fg"><label>Cliente</label><input id="e-cliente-${pi}" type="text" value="${o.cliente||''}"></div>
-    <div class="fg"><label>Tipo Máquina</label><select id="e-tipo-${pi}">${['Combustión','Hidráulica','Eléctrica','Otros'].map(s=>`<option${o.tipoMaq===s?' selected':''}>${s}</option>`).join('')}</select></div>
+    <div class="fg"><label>Descripción (catálogo)</label><input type="text" value="${o.descCatalogo||'—'}" readonly style="background:var(--gray-100);color:var(--gray-600);cursor:not-allowed;border-color:var(--gray-100);"></div>
+    <div class="fg"><label>Tipo de Máquina (catálogo)</label><input type="text" value="${o.tipoMaq||'—'}" readonly style="background:var(--gray-100);color:var(--gray-600);cursor:not-allowed;border-color:var(--gray-100);"></div>
     <div class="fg"><label>Accesorios</label><select id="e-acc-${pi}"><option${o.accesorios==='No'?' selected':''} value="No">No</option><option${o.accesorios==='Sí'?' selected':''} value="Sí">Sí</option></select></div>
     <div class="fg"><label>Factura</label><select id="e-fac-${pi}"><option${o.factura==='No'?' selected':''} value="No">No</option><option${o.factura==='Sí'?' selected':''} value="Sí">Sí</option></select></div>
     <div class="fg"><label>Fecha Ingreso</label><input id="e-fi-${pi}" type="date" value="${o.fechaIn||''}"></div>
@@ -829,13 +969,15 @@ function selOT(key,pi){
         <option${o.retrabajo==='Fallo de repuesto'?' selected':''} value="Fallo de repuesto">Fallo de repuesto</option>
       </select>
     </div>
-    <div class="fg"><label>Fecha Salida</label><input id="e-fs-${pi}" type="date" value="${o.fechaSal||''}"></div>
+    <div class="fg"><label>Fecha Salida</label><input id="e-fs-${pi}" type="date" value="${o.fechaSal||''}" onchange="onFechaSalChange('${pi}')"></div>
   </div>
   ${isTec?cotHTML:''}
   <div class="fg" style="margin-top:6px;"><label>Diagnóstico Final del Técnico</label><textarea id="e-diag-${pi}" placeholder="Diagnóstico y trabajo realizado..." style="min-height:72px;">${o.diagnostico||''}</textarea></div>
   ${hH}
   <div id="btns-${pi}" style="margin-top:14px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
-    <button class="btn btn-success" id="btn-guardar-${pi}" onclick="guardar('${key}','${pi}',false)"><i class="ti ti-check" style="font-size:14px;"></i>Guardar Cambios</button>
+    <button class="btn btn-success" id="btn-guardar-${pi}" onclick="guardar('${key}','${pi}',false)"
+      ${isTec&&!o.tec?'disabled style="opacity:.4;cursor:not-allowed;"':''}
+    ><i class="ti ti-check" style="font-size:14px;"></i>Guardar Cambios</button>
     <button class="btn btn-ghost" onclick="cerrar('${pi}')"><i class="ti ti-x" style="font-size:13px;"></i>Cancelar</button>
   </div>
   <div id="emsg-${pi}" style="font-size:12px;margin-top:8px;"></div>
@@ -862,25 +1004,60 @@ function onEstadoChange(pi){
   const cotWrap=g(`cot-wrap-${pi}`);
   if(cotWrap)cotWrap.style.display=val==='Cotizado'?'block':'none';
 
-  // Si es estado final → reemplazar Guardar por Finalizar
-  const esFinal=ESTADOS_FINALES.includes(val);
-  if(esFinal){
-    if(btnG)btnG.style.display='none';
-    if(!g(`btn-finalizar-${pi}`)){
-      const bf=document.createElement('button');
-      bf.className='btn btn-finalizar';
-      bf.id=`btn-finalizar-${pi}`;
-      bf.innerHTML='<i class="ti ti-flag-check" style="font-size:14px;"></i>Finalizar OT';
-      bf.onclick=()=>pedirFinalizacion(pi);
-      btnArea.insertBefore(bf,btnArea.firstChild);
-    }
-  } else {
+  // Limpiar aviso anterior de fecha y botón finalizar
+  const avisoExist=g(`aviso-fecha-${pi}`);
+  if(avisoExist)avisoExist.remove();
+  const bfExist=g(`btn-finalizar-${pi}`);
+  if(bfExist)bfExist.remove();
+
+  // Si no hay técnico seleccionado en panel técnico → no habilitar nada más
+  const tecEl=g(`e-tec-${pi}`);
+  const hayTecnico=tecEl?tecEl.value.trim()!=='':true; // si no hay selector (rb-panel), asumir ok
+  if(!hayTecnico){
     if(btnG)btnG.style.display='';
-    const bfExist=g(`btn-finalizar-${pi}`);
-    if(bfExist)bfExist.remove();
+    return;
+  }
+
+  // Restaurar Guardar visible
+  if(btnG)btnG.style.display='';
+
+  // Solo aplica lógica de Finalizar en estados finales
+  const esFinal=ESTADOS_FINALES.includes(val);
+  if(!esFinal)return;
+
+  // Es estado final: verificar si tiene fecha de salida
+  const fechaSalEl=g(`e-fs-${pi}`);
+  const tieneFecha=fechaSalEl&&fechaSalEl.value.trim()!=='';
+
+  if(tieneFecha){
+    // Tiene fecha → mostrar botón Finalizar, ocultar Guardar
+    if(btnG)btnG.style.display='none';
+    const bf=document.createElement('button');
+    bf.className='btn btn-finalizar';
+    bf.id=`btn-finalizar-${pi}`;
+    bf.innerHTML='<i class="ti ti-flag-check" style="font-size:14px;"></i>Finalizar OT';
+    bf.onclick=()=>pedirFinalizacion(pi);
+    btnArea.insertBefore(bf,btnArea.firstChild);
+  } else {
+    // Sin fecha → mantener Guardar, mostrar aviso ámbar
+    if(btnG)btnG.style.display='';
+    const aviso=document.createElement('div');
+    aviso.id=`aviso-fecha-${pi}`;
+    aviso.className='banner-fecha-req';
+    aviso.innerHTML=`<i class="ti ti-calendar-x" style="font-size:16px;flex-shrink:0;"></i><span>Debe registrar la <strong>Fecha de Salida</strong> antes de poder Finalizar esta OT.</span>`;
+    btnArea.insertAdjacentElement('afterend',aviso);
   }
 }
 window.onEstadoChange=onEstadoChange;
+
+// Escuchar cambios en fecha de salida para actualizar botón en tiempo real
+function onFechaSalChange(pi){
+  const est=g(`e-est-${pi}`);
+  if(est&&ESTADOS_FINALES.includes(est.value)){
+    onEstadoChange(pi);
+  }
+}
+window.onFechaSalChange=onFechaSalChange;
 
 function pedirFinalizacion(pi){
   const est=g(`e-est-${pi}`);if(!est)return;
@@ -913,7 +1090,7 @@ async function guardar(key,pi,finalizar=false){
     const retSeleccionado=nv(`e-ret-${pi}`)||o.retrabajo||'No';
     let cots=o.cotizacion||[];
     if(g(`cot-tbody-${pi}`))cots=recogerCotizacion(pi);
-    const fechaSalVal=nv(`e-fs-${pi}`)||new Date().toISOString().slice(0,10);
+    const fechaSalVal=nv(`e-fs-${pi}`)||o.fechaSal||'';
     const tecVal=nv(`e-tec-${pi}`)||o.tec||'';
     const u={
       ...o, // conservar todos los datos existentes
@@ -936,6 +1113,8 @@ async function guardar(key,pi,finalizar=false){
       await update(ref(db,`OTs/${key}`),u);
       g(pi).style.display='none';
       const pfx=pi.replace('-panel','');
+      // Finalizar limpia manualmente — no necesita flag, resetear por si acaso
+      if(panelGuardado.hasOwnProperty(pfx))panelGuardado[pfx]=false;
       if(g(pfx+'-boleta'))g(pfx+'-boleta').value='';
       if(g(pfx+'-codcli'))g(pfx+'-codcli').value='';
       if(g(pfx+'-results')){
@@ -964,7 +1143,8 @@ async function guardar(key,pi,finalizar=false){
     codcli:nv(`e-codcli-${pi}`).trim()||o.codcli,
     boleta:nv(`e-boleta-${pi}`).trim()||o.boleta,
     cliente:nv(`e-cliente-${pi}`).trim()||o.cliente,
-    tipoMaq:nv(`e-tipo-${pi}`)||o.tipoMaq,
+    tipoMaq:o.tipoMaq, // solo lectura — no se edita desde el panel
+    descCatalogo:o.descCatalogo||'',
     accesorios:nv(`e-acc-${pi}`)||o.accesorios,
     factura:nv(`e-fac-${pi}`)||o.factura,
     fechaIn:nv(`e-fi-${pi}`)||o.fechaIn,
@@ -996,6 +1176,9 @@ async function guardar(key,pi,finalizar=false){
     if(btn)btn.style.display='none';
     const em=g(`emsg-${pi}`);
     if(em){em.style.color='var(--teal)';em.innerHTML='<i class="ti ti-circle-check" style="font-size:14px;vertical-align:-2px;margin-right:4px;"></i>Cambios guardados. Realice nueva búsqueda para editar nuevamente.';}
+    // Marcar flag: al salir de esta pestaña se limpiará automáticamente
+    const pfx=pi.replace('-panel','');
+    if(panelGuardado.hasOwnProperty(pfx))panelGuardado[pfx]=true;
   }catch(e){
     if(btn)btn.querySelectorAll('button').forEach(b=>b.disabled=false);
     const em=g(`emsg-${pi}`);if(em){em.style.color='var(--rose)';em.textContent='Error: '+e.message;}
@@ -1011,18 +1194,38 @@ async function desbloquearOT(key,pi){
   const ts=new Date().toLocaleString('es-CR');
   await update(ref(db,`OTs/${key}`),{
     retrabajo:retVal,finalizada:false,estado:'En proceso',inicioRep:'',
-    historial:[...(o.historial||[]),{ts,accion:`OT REACTIVADA — Retrabajo: ${retVal}`}]
+    tec:'', // limpiar técnico para que el nuevo responsable se identifique
+    fechaSal:'', // limpiar fecha para que registre la nueva al cerrar
+    historial:[...(o.historial||[]),{ts,accion:`OT REACTIVADA — Retrabajo: ${retVal} · Técnico y fecha de salida limpiados para nuevo cierre`}]
   });
   limpiarB(pi.replace('-panel',''));
 }
 window.desbloquearOT=desbloquearOT;
 
 function onTecChange(key,pi){
-  const el=g(`e-tec-${pi}`);if(!el||!el.value)return;
+  const el=g(`e-tec-${pi}`);if(!el)return;
   const o=OTs[key];if(!o)return;
-  // Si no tenía técnico → establecer automáticamente en proceso
-  if(!o.tec&&el.value){
-    const estEl=g(`e-est-${pi}`);if(estEl&&estEl.value==='Pendiente'){estEl.value='En proceso';onEstadoChange(pi);}
+  const btnG=g(`btn-guardar-${pi}`);
+  const aviso=g(`aviso-tec-${pi}`);
+
+  if(el.value){
+    // Técnico seleccionado → habilitar Guardar y ocultar aviso
+    if(btnG){btnG.disabled=false;btnG.style.opacity='';btnG.style.cursor='';}
+    if(aviso)aviso.style.display='none';
+    // Si la OT no tenía técnico → cambiar automáticamente a En proceso
+    if(!o.tec){
+      const estEl=g(`e-est-${pi}`);
+      if(estEl&&estEl.value==='Pendiente'){
+        estEl.value='En proceso';
+        onEstadoChange(pi);
+      }
+    }
+  } else {
+    // Sin técnico → deshabilitar Guardar y mostrar aviso
+    if(btnG){btnG.disabled=true;btnG.style.opacity='.4';btnG.style.cursor='not-allowed';}
+    if(aviso)aviso.style.display='flex';
+    // Quitar Finalizar si existía
+    const bfExist=g(`btn-finalizar-${pi}`);if(bfExist)bfExist.remove();
   }
 }
 window.onTecChange=onTecChange;
@@ -1104,11 +1307,15 @@ function rTabla(){
     const eD=cod?`<span class="badge b-sky">${h2d(cod.horas)}d</span>`:'—';
     const lock=o.finalizada?'<span title="Finalizada"><i class="ti ti-lock" style="font-size:13px;color:var(--gray-400);"></i></span>':'<span title="Editable"><i class="ti ti-lock-open" style="font-size:13px;color:var(--emerald);"></i></span>';
     const estadoBadge=o.finalizada?`<span class="badge b-slate"><i class="ti ti-lock" style="font-size:10px;margin-right:2px;vertical-align:-1px;"></i>${o.estado}</span>`:eBadge(o.estado);
+    const descCell=o.sinCatalogo
+      ?`<span style="font-size:10px;">${o.descCatalogo||'—'}</span><span class="badge b-amber" style="font-size:9px;margin-left:4px;">Sin catálogo</span>`
+      :`<span style="font-size:10px;">${o.descCatalogo||'—'}</span>`;
     return`<tr style="${o.finalizada?'opacity:.75;':''}" >
       <td style="font-family:'Space Grotesk',sans-serif;font-weight:700;">${o.um}</td>
       <td>${o.boleta}</td>
       <td style="max-width:80px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${o.cliente}</td>
-      <td>${o.tipoMaq}</td>
+      <td style="max-width:100px;">${descCell}</td>
+      <td style="font-size:10px;">${o.tipoMaq||'—'}</td>
       <td style="max-width:80px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:10px;" title="${o.falla||''}">${(o.falla||'—').slice(0,20)+(o.falla&&o.falla.length>20?'…':'')}</td>
       <td style="max-width:80px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:10px;">${o.diagnostico?o.diagnostico.slice(0,20)+(o.diagnostico.length>20?'…':''):'<span style="color:var(--gray-300);">Pendiente</span>'}</td>
       <td style="font-size:11px;">${o.tec||'<span style="color:var(--gray-300);">Sin asignar</span>'}</td>
@@ -1157,7 +1364,7 @@ function printOT(key){
   <p class="sub">Generado: ${new Date().toLocaleString('es-CR')}</p>
   <div class="section">Identificación</div>
   <div class="row"><div class="col"><div class="field"><div class="lbl">Código UM</div><div class="val">${o.um}</div></div></div><div class="col"><div class="field"><div class="lbl">Código Cliente</div><div class="val">${o.codcli}</div></div></div><div class="col"><div class="field"><div class="lbl">Boleta / Trámite UM</div><div class="val">${o.boleta}</div></div></div></div>
-  <div class="row"><div class="col"><div class="field"><div class="lbl">Cliente</div><div class="val">${o.cliente}</div></div></div><div class="col"><div class="field"><div class="lbl">Tipo de Máquina</div><div class="val">${o.tipoMaq}${o.otrosDesc?' — '+o.otrosDesc:''}</div></div></div></div>
+  <div class="row"><div class="col"><div class="field"><div class="lbl">Cliente</div><div class="val">${o.cliente}</div></div></div><div class="col"><div class="field"><div class="lbl">Descripción (Catálogo)</div><div class="val">${o.descCatalogo||'No registrada'}${o.sinCatalogo?' <span style="background:#FEF3C7;color:#92400E;font-size:10px;padding:1px 6px;border-radius:4px;">Sin catálogo</span>':''}</div></div></div><div class="col"><div class="field"><div class="lbl">Tipo de Máquina</div><div class="val">${o.tipoMaq||'—'}</div></div></div></div>
   ${cod?`<div style="background:#F0FDFA;border-left:3px solid #0D9488;padding:6px 10px;font-size:11px;margin-bottom:8px;"><strong>Estimado catálogo:</strong> ${cod.horas}h = ${h2d(cod.horas)} días laborales (8h · L–V)</div>`:''}
   <div class="section">Falla Reportada</div><div class="falla">${o.falla||'No registrada'}</div>
   <div class="section">Asignación y Tiempos</div>
@@ -1216,14 +1423,16 @@ function poblarFiltros(){
 
 function getOTFiltradas(){
   const meses=[...document.querySelectorAll('.month-chip.selected')].map(el=>el.dataset.key);
-  const cliente=g('fp-cliente').value;const codigo=g('fp-codigo').value;
+  const cliente=g('fp-cliente').value;
+  const codigo=g('fp-codigo').value;
   return Object.values(OTs).filter(o=>{
-    let ok=true;
-    if(meses.length>0)ok=ok&&(inMeses(o.fechaIn,meses)||inMeses(o.fechaSal,meses));
-    else ok=ok&&(inMesActual(o.fechaIn)||inMesActual(o.fechaSal));
-    if(cliente)ok=ok&&o.cliente===cliente;
-    if(codigo)ok=ok&&o.um===codigo;
-    return ok;
+    const estaActiva=!o.finalizada&&!ESTADOS_FINALES.includes(o.estado);
+    if(cliente&&o.cliente!==cliente)return false;
+    if(codigo&&o.um!==codigo)return false;
+    if(estaActiva)return true; // activas siempre incluidas
+    // cerradas → filtrar por período
+    if(meses.length>0)return inMeses(o.fechaSal,meses)||inMeses(o.fechaIn,meses);
+    return inMesActual(o.fechaSal)||inMesActual(o.fechaIn);
   });
 }
 
@@ -1329,16 +1538,44 @@ function renderChart(arr){
 
 // Dashboard
 function uDash(){
-  let arr;
+  // OTs activas: siempre visibles sin importar mes de ingreso
+  // OTs cerradas: filtradas por período seleccionado
+  // Esto garantiza que Espera de repuesto, En proceso y Pendiente
+  // siempre aparezcan aunque hayan ingresado en meses anteriores
+
+  let mesesFiltro=[];
+  let clienteFiltro='';
+  let codigoFiltro='';
+
   if(filtroActivo){
-    const{meses,cliente,codigo}=filtroActivo;
-    arr=Object.values(OTs).filter(o=>{
-      let ok=true;
-      if(meses&&meses.length>0)ok=ok&&(inMeses(o.fechaIn,meses)||inMeses(o.fechaSal,meses));
-      else ok=ok&&(inMesActual(o.fechaIn)||inMesActual(o.fechaSal));
-      if(cliente)ok=ok&&o.cliente===cliente;if(codigo)ok=ok&&o.um===codigo;return ok;
-    });
-  }else{arr=Object.values(OTs).filter(o=>inMesActual(o.fechaIn)||inMesActual(o.fechaSal));}
+    mesesFiltro=filtroActivo.meses||[];
+    clienteFiltro=filtroActivo.cliente||'';
+    codigoFiltro=filtroActivo.codigo||'';
+  }
+
+  const todasLasOTs=Object.values(OTs);
+
+  // Determinar qué OTs incluir en el array de análisis
+  const arr=todasLasOTs.filter(o=>{
+    const estaActiva=!o.finalizada&&!ESTADOS_FINALES.includes(o.estado);
+
+    // Filtro de cliente y código aplica siempre
+    if(clienteFiltro&&o.cliente!==clienteFiltro)return false;
+    if(codigoFiltro&&o.um!==codigoFiltro)return false;
+
+    if(estaActiva){
+      // OT activa: siempre incluir — no aplica filtro de mes
+      return true;
+    } else {
+      // OT cerrada: aplicar filtro de mes (por fechaSal o fechaIn)
+      if(mesesFiltro.length>0){
+        return inMeses(o.fechaSal,mesesFiltro)||inMeses(o.fechaIn,mesesFiltro);
+      } else {
+        // Sin filtro manual → mes actual
+        return inMesActual(o.fechaSal)||inMesActual(o.fechaIn);
+      }
+    }
+  });
 
   const ma=getMesActual();
   const mesLabel=filtroActivo&&filtroActivo.meses&&filtroActivo.meses.length
