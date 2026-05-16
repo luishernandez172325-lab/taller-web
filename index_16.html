@@ -1,0 +1,1835 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AELMODULOS — Sistema de Gestión de Taller</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<style>
+:root{
+  --teal:#0D9488;--teal-dark:#0F766E;--teal-light:#CCFBF1;--teal-faint:#F0FDFA;
+  --slate:#1E293B;--slate-mid:#334155;--slate-light:#64748B;
+  --sky:#0EA5E9;--sky-light:#E0F2FE;
+  --amber:#F59E0B;--amber-light:#FEF3C7;--amber-dark:#92400E;
+  --rose:#F43F5E;--rose-light:#FFE4E6;--rose-dark:#881337;
+  --emerald:#10B981;--emerald-light:#D1FAE5;
+  --violet:#7C3AED;--violet-light:#EDE9FE;
+  --white:#FFFFFF;--off:#F8FAFC;--gray-100:#F1F5F9;--gray-200:#E2E8F0;
+  --gray-300:#CBD5E1;--gray-400:#94A3B8;--gray-600:#475569;
+  --dark-bg:#1C2733;--dark-bg2:#243040;
+  --shadow-sm:0 1px 3px rgba(0,0,0,.06),0 1px 2px rgba(0,0,0,.04);
+  --shadow-md:0 4px 16px rgba(0,0,0,.08);
+  --shadow-float:0 4px 20px rgba(0,0,0,.22);
+  --r:10px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--off);color:var(--slate);font-size:14px;min-height:100vh;}
+
+.topbar{background:var(--slate);padding:0 22px;display:flex;align-items:center;justify-content:space-between;height:54px;position:sticky;top:0;z-index:200;box-shadow:0 2px 16px rgba(0,0,0,.18);}
+.tb-brand{display:flex;align-items:center;gap:12px;}
+.tb-logo{font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:700;letter-spacing:-.3px;display:flex;align-items:center;gap:0;}
+.tb-logo .ael{color:var(--teal);}
+.tb-logo .mod{color:rgba(255,255,255,.9);}
+.tb-logo .dot{width:6px;height:6px;border-radius:50%;background:var(--teal);margin:0 2px;display:inline-block;vertical-align:3px;}
+.tb-divider{width:1px;height:22px;background:rgba(255,255,255,.12);}
+.tb-sub{font-size:11px;font-weight:500;color:rgba(255,255,255,.45);letter-spacing:.07em;text-transform:uppercase;}
+.tb-right{display:flex;align-items:center;gap:16px;}
+.sync-wrap{display:flex;align-items:center;gap:6px;font-size:11px;color:rgba(255,255,255,.55);}
+.sdot{width:7px;height:7px;border-radius:50%;background:var(--gray-400);transition:background .4s;}
+.sdot.on{background:#34D399;box-shadow:0 0 8px rgba(52,211,153,.6);}
+.sdot.err{background:var(--rose);}
+.tb-clock{font-family:'Space Grotesk',sans-serif;font-size:12px;color:rgba(255,255,255,.4);}
+
+.nav{background:var(--white);border-bottom:1px solid var(--gray-200);padding:0 22px;display:flex;gap:0;overflow-x:auto;}
+.ntab{display:flex;align-items:center;gap:7px;padding:0 16px;height:46px;font-size:12px;font-weight:600;color:var(--gray-400);border:none;background:transparent;cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:color .2s,border-color .2s;}
+.ntab i{font-size:15px;}
+.ntab:hover{color:var(--slate);}
+.ntab.active{color:var(--teal);border-bottom-color:var(--teal);}
+
+.content{padding:22px;max-width:1440px;margin:0 auto;}
+
+/* Fondo oscuro profesional para Recepción y Gestión Técnica */
+#tab-rec,#tab-tec{
+  background:var(--dark-bg);
+  margin:-22px;
+  padding:22px;
+  min-height:calc(100vh - 100px);
+}
+#tab-rec .card,#tab-tec .card{
+  box-shadow:var(--shadow-float);
+  border-color:rgba(255,255,255,.06);
+}
+#tab-rec .ph h1,#tab-tec .ph h1{color:rgba(255,255,255,.92);}
+#tab-rec .ph p,#tab-tec .ph p{color:rgba(255,255,255,.4);}
+#tab-rec .ph h1 .ph-icon,#tab-tec .ph h1 .ph-icon{background:rgba(13,148,136,.25);color:var(--teal-light);}
+/* Fondo de búsqueda en Recepción lado derecho */
+#tab-rec .two-col > div:last-child .card,
+#tab-tec .card{background:rgba(255,255,255,.97);}
+/* Banner aviso de fecha salida */
+.banner-fecha-req{
+  background:rgba(245,158,11,.12);
+  border:1.5px solid rgba(245,158,11,.35);
+  border-radius:8px;
+  padding:9px 13px;
+  font-size:12px;
+  font-weight:500;
+  color:#FDE68A;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin-top:8px;
+}
+.tab-pane{display:none;}
+.tab-pane.active{display:block;}
+
+.ph{margin-bottom:20px;}
+.ph h1{font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:700;color:var(--slate);margin-bottom:3px;display:flex;align-items:center;gap:10px;}
+.ph h1 .ph-icon{width:34px;height:34px;border-radius:8px;background:var(--teal-light);color:var(--teal);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;}
+.ph p{font-size:12px;color:var(--gray-400);margin-left:44px;}
+
+.card{background:var(--white);border:1px solid var(--gray-200);border-radius:var(--r);padding:1.1rem 1.25rem;margin-bottom:14px;box-shadow:var(--shadow-sm);}
+.card-t{font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--gray-400);margin-bottom:10px;display:flex;align-items:center;gap:6px;}
+.card-t i{font-size:14px;color:var(--teal);}
+.rtag{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;padding:5px 12px;border-radius:20px;margin-bottom:14px;}
+.rt-rec{background:var(--sky-light);color:var(--sky);}
+.rt-tec{background:var(--emerald-light);color:#059669;}
+.rt-cod{background:var(--teal-light);color:var(--teal-dark);}
+
+.fsec{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gray-300);margin:14px 0 8px;display:flex;align-items:center;gap:8px;}
+.fsec::after{content:'';flex:1;height:1px;background:var(--gray-100);}
+.fsec i{font-size:12px;color:var(--teal);}
+.fgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:10px;margin-bottom:4px;}
+.fg{display:flex;flex-direction:column;gap:4px;}
+.fg label{font-size:11px;font-weight:600;color:var(--gray-600);}
+.fg label.req::after{content:' *';color:var(--rose);}
+.fg input,.fg select{font-size:12px;font-family:'Plus Jakarta Sans',sans-serif;width:100%;padding:7px 10px;border:1.5px solid var(--gray-200);border-radius:7px;background:var(--white);color:var(--slate);transition:border-color .2s,box-shadow .2s;}
+.fg input:focus,.fg select:focus{outline:none;border-color:var(--teal);box-shadow:0 0 0 3px rgba(13,148,136,.1);}
+.fg textarea{font-size:12px;font-family:'Plus Jakarta Sans',sans-serif;resize:vertical;min-height:62px;padding:7px 10px;border:1.5px solid var(--gray-200);border-radius:7px;background:var(--white);color:var(--slate);width:100%;transition:border-color .2s;}
+.fg textarea:focus{outline:none;border-color:var(--teal);}
+
+.btn{font-size:12px;font-weight:700;letter-spacing:.04em;padding:8px 16px;border-radius:8px;border:none;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:all .2s;font-family:'Plus Jakarta Sans',sans-serif;}
+.btn-primary{background:var(--teal);color:var(--white);}
+.btn-primary:hover{background:var(--teal-dark);transform:translateY(-1px);box-shadow:0 4px 14px rgba(13,148,136,.35);}
+.btn-primary:disabled{opacity:.5;cursor:not-allowed;transform:none;}
+.btn-ghost{background:transparent;color:var(--gray-600);border:1.5px solid var(--gray-200);}
+.btn-ghost:hover{background:var(--gray-100);}
+.btn-success{background:var(--emerald);color:var(--white);}
+.btn-success:hover{background:#059669;}
+.btn-finalizar{background:linear-gradient(135deg,#DC2626,#9F1239);color:var(--white);box-shadow:0 4px 14px rgba(220,38,38,.3);}
+.btn-finalizar:hover{background:linear-gradient(135deg,#B91C1C,#881337);transform:translateY(-1px);}
+.btn-sky{background:var(--sky-light);color:var(--sky);border:1px solid #BAE6FD;}
+.btn-sky:hover{background:#BAE6FD;}
+.btn-excel{background:#166534;color:var(--white);}
+.btn-excel:hover{background:#14532D;}
+.btn-pdf{background:var(--rose);color:var(--white);}
+.btn-pdf:hover{background:var(--rose-dark);}
+.icon-btn{font-size:11px;padding:3px 7px;border-radius:5px;border:1.5px solid var(--gray-200);background:transparent;color:var(--gray-400);cursor:pointer;display:inline-flex;align-items:center;transition:all .15s;}
+.icon-btn:hover{background:var(--gray-100);color:var(--slate);}
+.icon-btn.del:hover{background:var(--rose-light);color:var(--rose);border-color:var(--rose-light);}
+
+.badge{font-size:10px;font-weight:700;letter-spacing:.04em;padding:2px 8px;border-radius:20px;display:inline-block;white-space:nowrap;}
+.b-teal{background:var(--teal-light);color:var(--teal-dark);}
+.b-sky{background:var(--sky-light);color:#0369A1;}
+.b-amber{background:var(--amber-light);color:var(--amber-dark);}
+.b-rose{background:var(--rose-light);color:var(--rose-dark);}
+.b-emerald{background:var(--emerald-light);color:#065F46;}
+.b-slate{background:var(--gray-100);color:var(--gray-600);}
+.b-purple{background:var(--violet-light);color:var(--violet);}
+.b-violet{background:var(--violet-light);color:var(--violet);}
+
+.banner{border-radius:8px;padding:9px 13px;font-size:12px;display:flex;align-items:center;gap:8px;margin-bottom:12px;line-height:1.5;font-weight:500;}
+.bn-teal{background:var(--teal-faint);color:var(--teal-dark);border:1px solid #99F6E4;}
+.bn-amber{background:var(--amber-light);color:var(--amber-dark);border:1px solid #FDE68A;}
+.bn-sky{background:var(--sky-light);color:#0369A1;border:1px solid #BAE6FD;}
+.bn-rose{background:var(--rose-light);color:var(--rose-dark);border:1px solid #FECDD3;}
+.bn-locked{background:#1E293B;color:rgba(255,255,255,.8);border:1px solid #334155;}
+
+.tbl-wrap{overflow-x:auto;border:1px solid var(--gray-200);border-radius:var(--r);margin-bottom:14px;}
+table{width:100%;border-collapse:collapse;font-size:11px;}
+thead tr{background:linear-gradient(135deg,var(--slate) 0%,var(--slate-mid) 100%);}
+th{padding:10px 10px;text-align:left;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.8);white-space:nowrap;}
+td{padding:8px 10px;border-bottom:1px solid var(--gray-100);color:var(--slate);vertical-align:middle;}
+tbody tr:hover{background:var(--teal-faint);}
+tr:last-child td{border-bottom:none;}
+.empty-row{text-align:center;padding:28px;color:var(--gray-400);font-style:italic;font-size:12px;}
+
+.sr-box{border:1px solid var(--gray-200);border-radius:var(--r);overflow:hidden;margin-bottom:12px;box-shadow:var(--shadow-sm);}
+.sr-head{background:var(--gray-100);padding:7px 14px;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--gray-400);border-bottom:1px solid var(--gray-200);}
+.sr-row{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;border-bottom:1px solid var(--gray-100);cursor:pointer;transition:background .15s;}
+.sr-row:last-child{border-bottom:none;}
+.sr-row:hover{background:var(--teal-faint);}
+.sr-row.selected{background:var(--teal-faint);border-left:3px solid var(--teal);}
+
+.tl-item{display:flex;gap:10px;font-size:11px;margin-bottom:8px;}
+.tl-dot{width:8px;height:8px;border-radius:50%;margin-top:4px;flex-shrink:0;}
+.sep{height:1px;background:var(--gray-100);margin:12px 0;}
+
+/* CRONÓMETRO */
+.crono-badge{display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,#0F766E,#0369A1);color:var(--white);padding:6px 14px;border-radius:20px;font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:600;letter-spacing:.03em;}
+.crono-dot{width:8px;height:8px;border-radius:50%;background:#4ADE80;animation:pulse 1.2s ease-in-out infinite;}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.6;transform:scale(.85);}}
+
+/* COTIZACIÓN */
+.cot-wrap{background:linear-gradient(135deg,#F0FDFA,#E0F2FE);border:1.5px solid #99F6E4;border-radius:10px;padding:14px;margin-top:10px;}
+.cot-title{font-size:12px;font-weight:700;color:var(--teal-dark);margin-bottom:10px;display:flex;align-items:center;gap:6px;}
+.cot-table{width:100%;border-collapse:collapse;font-size:12px;}
+.cot-table th{background:var(--teal);color:var(--white);padding:7px 10px;text-align:left;font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;}
+.cot-table td{padding:6px 8px;border-bottom:1px solid #CCFBF1;vertical-align:middle;}
+.cot-table td input{border:1.5px solid #99F6E4;border-radius:5px;padding:5px 7px;font-size:12px;font-family:'Plus Jakarta Sans',sans-serif;background:var(--white);width:100%;transition:border-color .2s;}
+.cot-table td input:focus{outline:none;border-color:var(--teal);}
+.cot-total{display:flex;justify-content:flex-end;align-items:center;gap:10px;margin-top:10px;padding-top:10px;border-top:1.5px solid #99F6E4;}
+.cot-total-label{font-size:13px;font-weight:700;color:var(--teal-dark);}
+.cot-total-val{font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:700;color:var(--teal-dark);}
+.cot-add-btn{font-size:11px;padding:4px 10px;border-radius:6px;border:1.5px solid var(--teal);background:transparent;color:var(--teal);cursor:pointer;font-weight:600;display:inline-flex;align-items:center;gap:4px;}
+.cot-add-btn:hover{background:var(--teal-light);}
+.cot-del-btn{font-size:11px;padding:3px 6px;border-radius:5px;border:1.5px solid var(--rose-light);background:transparent;color:var(--rose);cursor:pointer;display:inline-flex;align-items:center;}
+.cot-del-btn:hover{background:var(--rose-light);}
+
+/* OT BLOQUEADA */
+.ot-locked-overlay{background:linear-gradient(135deg,#0F172A,#1E293B);border-radius:10px;padding:16px 18px;display:flex;align-items:center;gap:12px;margin-top:10px;}
+.locked-icon{font-size:28px;color:#F59E0B;flex-shrink:0;}
+.locked-msg{font-size:13px;color:rgba(255,255,255,.75);line-height:1.6;}
+.locked-msg strong{color:var(--white);}
+
+/* DASHBOARD */
+.dash-hero{background:linear-gradient(135deg,var(--slate) 0%,#0F4C75 60%,var(--teal-dark) 100%);border-radius:14px;padding:26px 30px;margin-bottom:22px;position:relative;overflow:hidden;box-shadow:0 8px 32px rgba(15,76,117,.25);}
+.dash-hero::before{content:'';position:absolute;top:-50px;right:-50px;width:220px;height:220px;border-radius:50%;background:rgba(255,255,255,.04);}
+.dash-hero::after{content:'';position:absolute;bottom:-70px;right:80px;width:180px;height:180px;border-radius:50%;background:rgba(13,148,136,.12);}
+.hero-grid{display:grid;grid-template-columns:1fr 1px 1fr 1px 1fr;position:relative;z-index:1;}
+.hero-item{text-align:center;padding:0 20px;}
+.hero-divider{background:rgba(255,255,255,.1);}
+.hi-num{font-family:'Space Grotesk',sans-serif;font-size:52px;font-weight:700;color:var(--white);line-height:1;letter-spacing:-2px;}
+.hi-lbl{font-size:11px;color:rgba(255,255,255,.55);margin-top:5px;text-transform:uppercase;letter-spacing:.08em;font-weight:500;}
+.hi-sub{font-size:10px;color:rgba(255,255,255,.35);margin-top:2px;}
+
+.kpi-strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(125px,1fr));gap:10px;margin-bottom:20px;}
+.kpi-box{background:var(--white);border:1px solid var(--gray-200);border-radius:var(--r);padding:14px 16px;box-shadow:var(--shadow-sm);position:relative;overflow:hidden;transition:transform .2s,box-shadow .2s;}
+.kpi-box:hover{transform:translateY(-2px);box-shadow:var(--shadow-md);}
+.kpi-box::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--gray-200);}
+.kpi-box.ka::before{background:linear-gradient(90deg,var(--teal),var(--sky));}
+.kpi-box.kb::before{background:var(--emerald);}
+.kpi-box.kc::before{background:var(--rose);}
+.kpi-box.kd::before{background:var(--amber);}
+.kl{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--gray-400);margin-bottom:7px;}
+.kv{font-family:'Space Grotesk',sans-serif;font-size:26px;font-weight:700;color:var(--slate);line-height:1;}
+.ks{font-size:10px;color:var(--gray-400);margin-top:3px;}
+
+.sem-strip{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:22px;}
+.sem-box{border-radius:var(--r);padding:18px;text-align:center;border:1px solid transparent;transition:transform .2s;}
+.sem-box:hover{transform:translateY(-2px);}
+.sem-g{background:#ECFDF5;border-color:#A7F3D0;}
+.sem-a{background:#FFFBEB;border-color:#FDE68A;}
+.sem-r{background:#FFF1F2;border-color:#FECDD3;}
+.sem-n{font-family:'Space Grotesk',sans-serif;font-size:48px;font-weight:700;line-height:1;}
+.sem-g .sem-n{color:#059669;}
+.sem-a .sem-n{color:#D97706;}
+.sem-r .sem-n{color:var(--rose);}
+.sem-l{font-size:11px;font-weight:700;margin-top:4px;text-transform:uppercase;letter-spacing:.07em;}
+.sem-g .sem-l{color:#059669;}
+.sem-a .sem-l{color:#D97706;}
+.sem-r .sem-l{color:var(--rose);}
+.sem-s{font-size:10px;opacity:.6;margin-top:2px;}
+
+.dash-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;}
+@media(max-width:660px){.dash-grid{grid-template-columns:1fr;}.hero-grid{grid-template-columns:1fr 1fr;}.sem-strip{grid-template-columns:1fr;}}
+.dc{background:var(--white);border:1px solid var(--gray-200);border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow-sm);}
+.dch{padding:12px 16px;border-bottom:1px solid var(--gray-100);display:flex;align-items:center;justify-content:space-between;}
+.dct{font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--gray-600);display:flex;align-items:center;gap:7px;}
+.dct i{font-size:14px;color:var(--teal);}
+.dcb{padding:14px 16px;}
+
+.bar-row{display:flex;align-items:center;gap:10px;margin-bottom:9px;}
+.bar-lbl{width:120px;font-size:11px;color:var(--gray-600);flex-shrink:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.bar-track{flex:1;height:8px;background:var(--gray-100);border-radius:4px;overflow:hidden;}
+.bar-fill{height:100%;border-radius:4px;background:var(--teal);transition:width .6s cubic-bezier(.4,0,.2,1);}
+.bar-val{font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:600;color:var(--gray-400);min-width:22px;text-align:right;}
+
+.chart-legend{display:flex;gap:16px;margin-bottom:10px;flex-wrap:wrap;}
+.legend-item{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--gray-600);font-weight:500;}
+.legend-dot{width:10px;height:10px;border-radius:3px;flex-shrink:0;}
+
+.tec-card{background:var(--gray-100);border:1px solid var(--gray-200);border-radius:8px;padding:12px 14px;margin-bottom:8px;}
+.tec-card:last-child{margin-bottom:0;}
+.tec-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+.tec-nm{display:flex;align-items:center;gap:8px;font-weight:600;font-size:13px;}
+.avatar{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--teal),var(--sky));color:var(--white);display:flex;align-items:center;justify-content:center;font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:700;flex-shrink:0;}
+.tec-stats{display:flex;gap:14px;flex-wrap:wrap;}
+.ts{text-align:center;}
+.ts-n{font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:700;line-height:1;}
+.ts-l{font-size:9px;text-transform:uppercase;letter-spacing:.06em;color:var(--gray-400);margin-top:1px;}
+.perf-bar{height:5px;background:var(--gray-200);border-radius:3px;overflow:hidden;margin-top:8px;}
+.perf-fill{height:100%;border-radius:3px;transition:width .6s;}
+
+.est-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--gray-100);font-size:12px;}
+.est-row:last-child{border-bottom:none;}
+.crit-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--gray-100);}
+.crit-row:last-child{border-bottom:none;}
+.crit-left{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+
+/* FILTER PANEL */
+.filter-panel{background:linear-gradient(135deg,var(--slate) 0%,var(--slate-mid) 100%);border-radius:14px;padding:22px 26px;margin-top:20px;color:var(--white);}
+.fp-title{font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:700;color:var(--white);margin-bottom:4px;display:flex;align-items:center;gap:8px;}
+.fp-sub{font-size:11px;color:rgba(255,255,255,.45);margin-bottom:18px;}
+.fp-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:16px;}
+.fp-fg{display:flex;flex-direction:column;gap:5px;}
+.fp-fg label{font-size:11px;font-weight:600;color:rgba(255,255,255,.55);letter-spacing:.05em;text-transform:uppercase;}
+.fp-fg select,.fp-fg input{font-size:12px;font-family:'Plus Jakarta Sans',sans-serif;width:100%;padding:8px 10px;border:1.5px solid rgba(255,255,255,.12);border-radius:8px;background:rgba(255,255,255,.08);color:var(--white);}
+.fp-fg select option{background:var(--slate);color:var(--white);}
+.months-grid{display:flex;flex-wrap:wrap;gap:8px;}
+.month-chip{padding:5px 12px;border-radius:20px;border:1.5px solid rgba(255,255,255,.15);background:rgba(255,255,255,.06);color:rgba(255,255,255,.6);font-size:11px;font-weight:600;cursor:pointer;transition:all .2s;user-select:none;}
+.month-chip.selected{background:var(--teal);border-color:var(--teal);color:var(--white);}
+.fp-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:14px;padding-top:14px;border-top:1px solid rgba(255,255,255,.08);}
+.fp-result-label{font-size:12px;color:rgba(255,255,255,.45);margin-left:auto;}
+.export-wrap{display:none;gap:8px;}
+.export-wrap.show{display:flex;}
+
+.loading-overlay{position:fixed;inset:0;background:rgba(248,250,252,.95);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:999;gap:14px;}
+.spinner{width:36px;height:36px;border:3px solid var(--gray-200);border-top-color:var(--teal);border-radius:50%;animation:spin .7s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-text{font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600;color:var(--gray-400);letter-spacing:.06em;text-transform:uppercase;}
+
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+@media(max-width:700px){.two-col{grid-template-columns:1fr;}}
+.tc-editing{background:var(--teal-faint);border:1px solid #99F6E4;border-radius:8px;padding:7px 12px;font-size:12px;color:var(--teal-dark);display:flex;align-items:center;gap:7px;margin-bottom:10px;font-weight:500;}
+
+/* MODAL ALERTA PERSONALIZADO */
+.modal-overlay{position:fixed;inset:0;background:rgba(15,23,42,.7);backdrop-filter:blur(4px);z-index:999;display:flex;align-items:center;justify-content:center;}
+.modal-box{background:var(--white);border-radius:16px;padding:28px 32px;max-width:400px;width:90%;box-shadow:0 20px 60px rgba(0,0,0,.3);text-align:center;}
+.modal-icon{font-size:40px;margin-bottom:12px;}
+.modal-title{font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:700;color:var(--slate);margin-bottom:8px;}
+.modal-msg{font-size:13px;color:var(--gray-600);line-height:1.6;margin-bottom:22px;}
+.modal-btns{display:flex;gap:10px;justify-content:center;}
+</style>
+</head>
+<body>
+
+<!-- MODAL CONFIRMACIÓN -->
+<div id="modal-overlay" class="modal-overlay" style="display:none;">
+  <div class="modal-box">
+    <div class="modal-icon">⚠️</div>
+    <div class="modal-title">Confirmar Finalización</div>
+    <div class="modal-msg" id="modal-msg">¿Está seguro que desea finalizar esta OT? Una vez finalizada, no podrá editarse a menos que se registre un retrabajo.</div>
+    <div class="modal-btns">
+      <button class="btn btn-ghost" id="modal-no" onclick="cerrarModal()"><i class="ti ti-x" style="font-size:14px;"></i>No, continuar editando</button>
+      <button class="btn btn-finalizar" id="modal-si"><i class="ti ti-check" style="font-size:14px;"></i>Sí, finalizar OT</button>
+    </div>
+  </div>
+</div>
+
+<div id="loading-overlay" class="loading-overlay">
+  <div class="spinner"></div>
+  <div class="loading-text">Conectando sistema...</div>
+</div>
+
+<div class="topbar">
+  <div class="tb-brand">
+    <div class="tb-logo"><span class="ael">AEL</span><span class="dot"></span><span class="mod">MODULOS</span></div>
+    <div class="tb-divider"></div>
+    <div class="tb-sub"><i class="ti ti-tool" style="font-size:11px;margin-right:4px;vertical-align:-1px;"></i>Gestión de Taller</div>
+  </div>
+  <div class="tb-right">
+    <div class="sync-wrap"><div class="sdot" id="sdot"></div><span id="slabel">Conectando...</span></div>
+    <div class="tb-clock" id="tclock"></div>
+  </div>
+</div>
+
+<div class="nav">
+  <button class="ntab active" id="btn-rec" onclick="showTab('rec')"><i class="ti ti-clipboard-plus"></i>Ingreso de Máquinas</button>
+  <button class="ntab" id="btn-tec" onclick="showTab('tec')"><i class="ti ti-tool"></i>Gestión Técnica</button>
+  <button class="ntab" id="btn-cod" onclick="showTab('cod')"><i class="ti ti-clock-check"></i>Tiempos por Código</button>
+  <button class="ntab" id="btn-tbl" onclick="showTab('tbl')"><i class="ti ti-table-options"></i>Registro de OT</button>
+  <button class="ntab" id="btn-dash" onclick="showTab('dash')"><i class="ti ti-chart-bar"></i>Panel de Control</button>
+</div>
+
+<div class="content">
+
+<!-- RECEPCIÓN -->
+<div id="tab-rec" class="tab-pane active">
+  <div class="ph"><h1><span class="ph-icon"><i class="ti ti-clipboard-plus"></i></span>Ingreso de Máquinas al Taller</h1><p>Registro de nuevas órdenes de trabajo — Personal de Recepción</p></div>
+  <div class="two-col">
+    <div class="card">
+      <div class="rtag rt-rec"><i class="ti ti-user-check" style="font-size:12px;"></i>Nueva Orden de Trabajo</div>
+      <div class="fsec"><i class="ti ti-id"></i>Identificación</div>
+      <div class="fgrid">
+        <div class="fg">
+          <label class="req">Código UM</label>
+          <input id="r-um" type="text" placeholder="UM-00312" autocomplete="off"
+            onblur="buscarCodUM()"
+            onkeydown="if(event.key==='Enter'){event.preventDefault();buscarCodUM();}">
+        </div>
+        <div class="fg"><label class="req">Código Cliente</label><input id="r-codcli" type="text" placeholder="CLI-0084"></div>
+        <div class="fg"><label class="req">Boleta / Trámite UM</label><input id="r-boleta" type="text" placeholder="BT-2025-441"></div>
+        <div class="fg"><label class="req">Nombre del Cliente</label><input id="r-cliente" type="text" placeholder="Nombre o empresa"></div>
+      </div>
+      <!-- Banner autocompletado catálogo -->
+      <div id="r-cod-info" style="display:none;margin-bottom:10px;"></div>
+      <div class="fsec"><i class="ti ti-alert-triangle"></i>Falla Reportada</div>
+      <div class="fg" style="margin-bottom:10px;"><label class="req">Descripción de falla del cliente</label><textarea id="r-falla" placeholder="Describa con detalle la falla que indica el cliente al entregar la máquina..." style="min-height:76px;"></textarea></div>
+      <div class="fsec"><i class="ti ti-package"></i>Accesorios y Documentación</div>
+      <div class="fgrid">
+        <div class="fg"><label>Accesorios</label><select id="r-acc" onchange="tog('r-acc','r-acc-w','Sí')"><option value="No">No</option><option value="Sí">Sí</option></select></div>
+        <div class="fg" id="r-acc-w" style="display:none;"><label>Detalle accesorios</label><textarea id="r-accdesc" placeholder="Liste los accesorios..."></textarea></div>
+        <div class="fg"><label>Con Factura</label><select id="r-factura"><option value="No">No</option><option value="Sí">Sí</option></select></div>
+      </div>
+      <div class="fsec"><i class="ti ti-calendar"></i>Fecha de Ingreso</div>
+      <div class="fgrid">
+        <div class="fg"><label class="req">Fecha de Ingreso a Taller</label><input id="r-fechaIn" type="date"></div>
+      </div>
+      <div class="banner bn-sky" style="margin-top:8px;"><i class="ti ti-info-circle" style="font-size:14px;flex-shrink:0;"></i>El técnico será asignado desde la pestaña <strong>Gestión Técnica</strong> al iniciar la reparación.</div>
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+        <button class="btn btn-primary" id="r-btn" onclick="addOT()"><i class="ti ti-device-floppy" style="font-size:14px;"></i>Registrar OT</button>
+        <span id="r-msg" style="font-size:12px;"></span>
+      </div>
+      <p style="font-size:10px;color:var(--gray-400);margin-top:8px;">* Campos obligatorios</p>
+    </div>
+    <div>
+      <div class="card">
+        <div class="card-t"><i class="ti ti-search"></i>Buscar y Editar OT — Recepción</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;align-items:flex-end;">
+          <div class="fg" style="flex:1;min-width:130px;"><label>Boleta / Trámite UM</label><input id="rb-boleta" type="text" placeholder="BT-2025-441" oninput="buscar('rb')"></div>
+          <div class="fg" style="flex:1;min-width:130px;"><label>Código Cliente</label><input id="rb-codcli" type="text" placeholder="CLI-0084" oninput="buscar('rb')"></div>
+          <button class="btn btn-ghost" onclick="limpiarB('rb')"><i class="ti ti-x" style="font-size:13px;"></i>Limpiar</button>
+        </div>
+        <div id="rb-results"></div><div id="rb-panel" style="display:none;"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TÉCNICO -->
+<div id="tab-tec" class="tab-pane">
+  <div class="ph"><h1><span class="ph-icon"><i class="ti ti-tool"></i></span>Gestión Técnica de Reparaciones</h1><p>El técnico busca su OT asignada, registra su nombre e inicia el proceso de reparación</p></div>
+  <div class="card">
+    <div class="rtag rt-tec"><i class="ti ti-tool" style="font-size:12px;"></i>Técnico — Búsqueda y Gestión de OT</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;align-items:flex-end;">
+      <div class="fg" style="flex:1;min-width:130px;"><label>Boleta / Trámite UM</label><input id="tb-boleta" type="text" placeholder="BT-2025-441" oninput="buscar('tb')"></div>
+      <div class="fg" style="flex:1;min-width:130px;"><label>Código Cliente</label><input id="tb-codcli" type="text" placeholder="CLI-0084" oninput="buscar('tb')"></div>
+      <button class="btn btn-ghost" onclick="limpiarB('tb')"><i class="ti ti-x" style="font-size:13px;"></i>Limpiar</button>
+    </div>
+    <div id="tb-results"></div><div id="tb-panel" style="display:none;"></div>
+  </div>
+</div>
+
+<!-- TIEMPOS -->
+<div id="tab-cod" class="tab-pane">
+  <div class="ph"><h1><span class="ph-icon"><i class="ti ti-clock-check"></i></span>Catálogo de Tiempos por Código UM</h1><p>Estándares de tiempo para medición de rendimiento técnico · Jornada 8h · L–V</p></div>
+  <div class="two-col">
+    <div>
+      <div class="card">
+        <div class="rtag rt-cod"><i class="ti ti-clock" style="font-size:12px;"></i>Nuevo Código / Editar</div>
+        <div id="tc-edit-ind" style="display:none;" class="tc-editing"><i class="ti ti-edit" style="font-size:14px;"></i><span id="tc-edit-lbl">Editando código</span></div>
+        <div class="fgrid">
+          <div class="fg"><label class="req">Código UM</label><input id="tc-um" type="text" placeholder="UM-001"></div>
+          <div class="fg"><label class="req">Descripción</label><input id="tc-desc" type="text" placeholder="Motor taladro 1/2"></div>
+          <div class="fg"><label class="req">Horas Estimadas</label><input id="tc-horas" type="number" min="0.5" step="0.5" placeholder="4"></div>
+          <div class="fg"><label class="req">Tipo de Máquina</label><select id="tc-cat"><option>Eléctrica</option><option>Combustión</option><option>Hidráulica</option><option>General</option></select></div>
+          <div class="fg"><label>Observaciones</label><input id="tc-obs" type="text" placeholder="Opcional..."></div>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+          <button class="btn btn-primary" id="tc-btn-g" onclick="guardarCodigo()"><i class="ti ti-device-floppy" style="font-size:14px;"></i>Guardar</button>
+          <button class="btn btn-ghost" id="tc-btn-c" onclick="cancelarEditCodigo()" style="display:none;"><i class="ti ti-x" style="font-size:13px;"></i>Cancelar</button>
+          <span id="tc-msg" style="font-size:12px;"></span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-t"><i class="ti ti-search"></i>Buscar en Catálogo</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;">
+          <div class="fg" style="flex:1;min-width:130px;"><label>Código o descripción</label><input id="tc-search" type="text" placeholder="Buscar..." oninput="rCodigos()"></div>
+          <div class="fg"><label>Categoría</label><select id="tc-cat-f" onchange="rCodigos()"><option value="">Todas</option><option>Eléctrica</option><option>Combustión</option><option>Hidráulica</option><option>General</option></select></div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Código UM</th><th>Descripción</th><th>Tipo de Máquina</th><th>Horas</th><th>Días Lab.</th><th>Obs.</th><th></th></tr></thead>
+          <tbody id="tc-tbody"><tr><td colspan="7" class="empty-row">Cargando...</td></tr></tbody>
+        </table>
+      </div>
+      <p style="font-size:10px;color:var(--gray-400);">* Días laborales = Horas ÷ 8 · Jornada L–V</p>
+    </div>
+  </div>
+</div>
+
+<!-- TABLA OT -->
+<div id="tab-tbl" class="tab-pane">
+  <div class="ph"><div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:10px;"><div><h1><span class="ph-icon"><i class="ti ti-table-options"></i></span>Registro Completo de Órdenes de Trabajo</h1><p>Vista consolidada de todas las OT activas y cerradas</p></div></div></div>
+  <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;align-items:center;">
+    <input id="filtro-txt" type="text" placeholder="Filtrar por cualquier campo..." style="font-size:12px;flex:1;min-width:180px;padding:7px 10px;border:1.5px solid var(--gray-200);border-radius:7px;font-family:'Plus Jakarta Sans',sans-serif;" oninput="rTabla()">
+    <select id="filtro-est" style="font-size:12px;padding:7px 10px;border:1.5px solid var(--gray-200);border-radius:7px;font-family:'Plus Jakarta Sans',sans-serif;" onchange="rTabla()">
+      <option value="">Todos los estados</option><option>En proceso</option><option>Reparado</option><option>Cotizado</option><option>Espera de repuesto</option><option>Cambio</option><option>Nota de crédito</option>
+    </select>
+  </div>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Cód. UM</th><th>Boleta</th><th>Cliente</th><th>Descripción</th><th>Tipo</th><th>Falla</th><th>Diagnóstico</th><th>Técnico</th><th>Estado</th><th>Retrabajo</th><th>F. Ingreso</th><th>Inicio Rep.</th><th>F. Salida</th><th>Días</th><th>Est.</th><th>🔒</th><th></th></tr></thead>
+      <tbody id="ot-tbody"><tr><td colspan="16" class="empty-row">Cargando...</td></tr></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div id="tab-dash" class="tab-pane">
+
+  <!-- HEADER KPIs — Propuesta 4 con logo Unidos Mayoreo -->
+  <div style="background:var(--white);padding:14px 22px;display:flex;align-items:center;justify-content:space-between;border-bottom:2px solid #C70B00;margin:-22px -22px 20px -22px;border-radius:0;">
+    <div style="display:flex;align-items:center;gap:14px;">
+      <div style="width:3px;height:40px;background:#C70B00;border-radius:2px;flex-shrink:0;"></div>
+      <div>
+        <div style="font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:700;color:#000;letter-spacing:-.3px;line-height:1.15;">KPIs Taller</div>
+        <div style="font-size:11px;color:var(--gray-400);margin-top:3px;font-weight:500;">Indicadores en tiempo real · <span id="dash-mes-label" style="color:#C70B00;font-weight:700;"></span></div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:16px;">
+      <div id="dash-ts" style="font-size:11px;color:var(--gray-400);text-align:right;"></div>
+      <div style="border-left:0.5px solid var(--gray-200);padding-left:18px;display:flex;align-items:center;">
+        <img src="https://luishernandez172325-lab.github.io/taller-web/Unidos_Mayoreo.png"
+             onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
+             alt="Unidos Mayoreo"
+             style="height:46px;width:auto;object-fit:contain;display:block;">
+        <div style="display:none;flex-direction:column;align-items:center;gap:2px;">
+          <div style="font-family:'Arial Black',sans-serif;font-size:13px;font-weight:900;color:#C70B00;letter-spacing:.04em;">UNIDOS</div>
+          <div style="font-size:10px;font-weight:700;color:#000;letter-spacing:.03em;">Mayoreo</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="dash-hero">
+    <div class="hero-grid">
+      <div class="hero-item"><div class="hi-num" id="dh-act">—</div><div class="hi-lbl">OT Activas</div><div class="hi-sub">del período</div></div>
+      <div class="hero-divider"></div>
+      <div class="hero-item"><div class="hi-num" id="dh-proc">—</div><div class="hi-lbl">En Proceso</div><div class="hi-sub">con técnico activo</div></div>
+      <div class="hero-divider"></div>
+      <div class="hero-item"><div class="hi-num" id="dh-crit">—</div><div class="hi-lbl">Críticas +10d</div><div class="hi-sub">requieren atención</div></div>
+    </div>
+  </div>
+
+  <!-- KPI FILA 1: Volumen y cierre — colores sistema actual -->
+  <div style="font-size:10px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--gray-400);margin-bottom:8px;display:flex;align-items:center;gap:6px;"><i class="ti ti-layout-grid" style="font-size:13px;color:var(--teal);"></i>Volumen y Cierre</div>
+  <div class="kpi-strip" style="margin-bottom:10px;">
+    <div class="kpi-box" id="kpi-total" style="border-top:3px solid transparent;border-image:linear-gradient(90deg,var(--teal),var(--sky)) 1;">
+      <div class="kl">Total OT del período</div>
+      <div class="kv" id="d-total">—</div>
+      <div class="ks" id="d-total-s">activas + cerradas</div>
+      <div style="height:4px;background:var(--gray-100);border-radius:2px;margin-top:10px;overflow:hidden;"><div id="bar-total" style="height:100%;border-radius:2px;background:linear-gradient(90deg,var(--teal),var(--sky));width:100%;"></div></div>
+    </div>
+    <div class="kpi-box" id="kpi-cerradas" style="border-top:3px solid var(--emerald);">
+      <div class="kl">OT cerradas</div>
+      <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:4px;">
+        <div class="kv" id="d-cerradas">—</div>
+        <span id="pct-cerradas" style="font-size:12px;font-weight:700;padding:2px 7px;border-radius:20px;"></span>
+      </div>
+      <div class="ks">de totales · meta &gt;60%</div>
+      <div style="height:4px;background:var(--gray-100);border-radius:2px;margin-top:10px;overflow:hidden;"><div id="bar-cerradas" style="height:100%;border-radius:2px;background:var(--emerald);width:0%;transition:width .6s;"></div></div>
+    </div>
+    <div class="kpi-box" id="kpi-activas" style="border-top:3px solid var(--rose);">
+      <div class="kl">OT activas pendientes</div>
+      <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:4px;">
+        <div class="kv" id="d-activas-n">—</div>
+        <span id="pct-activas" style="font-size:12px;font-weight:700;padding:2px 7px;border-radius:20px;"></span>
+      </div>
+      <div class="ks">en proceso · espera · cotizadas</div>
+      <div style="height:4px;background:var(--gray-100);border-radius:2px;margin-top:10px;overflow:hidden;"><div id="bar-activas" style="height:100%;border-radius:2px;background:var(--rose);width:0%;transition:width .6s;"></div></div>
+    </div>
+  </div>
+
+  <!-- KPI FILA 2: Calidad y documentación — paleta Unidos Mayoreo -->
+  <div style="font-size:10px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--gray-400);margin-bottom:8px;display:flex;align-items:center;gap:6px;"><i class="ti ti-chart-pie" style="font-size:13px;color:#C70B00;"></i>Calidad y Documentación</div>
+  <div class="kpi-strip" style="margin-bottom:10px;">
+    <div class="kpi-box" id="kpi-retrabajo" style="border-top:3px solid #C70B00;">
+      <div class="kl">OT por retrabajo</div>
+      <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:4px;">
+        <div class="kv" id="d-ret-n">—</div>
+        <span id="pct-ret" style="font-size:12px;font-weight:700;padding:2px 7px;border-radius:20px;"></span>
+      </div>
+      <div class="ks" id="d-ret-s">de totales · meta &lt;5%</div>
+      <div style="height:4px;background:var(--gray-100);border-radius:2px;margin-top:10px;overflow:hidden;"><div id="bar-ret" style="height:100%;border-radius:2px;background:#C70B00;width:0%;transition:width .6s;"></div></div>
+    </div>
+    <div class="kpi-box" id="kpi-factura" style="border-top:3px solid #1A5C2A;">
+      <div class="kl">Con factura</div>
+      <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:4px;">
+        <div class="kv" id="d-factura">—</div>
+        <span id="pct-factura" style="font-size:12px;font-weight:700;padding:2px 7px;border-radius:20px;"></span>
+      </div>
+      <div class="ks">de totales documentadas</div>
+      <div style="height:4px;background:var(--gray-100);border-radius:2px;margin-top:10px;overflow:hidden;"><div id="bar-factura" style="height:100%;border-radius:2px;background:#1A5C2A;width:0%;transition:width .6s;"></div></div>
+    </div>
+    <div class="kpi-box" id="kpi-espera" style="border-top:3px solid #E8B113;">
+      <div class="kl">Espera de repuesto</div>
+      <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:4px;">
+        <div class="kv" id="d-espera">—</div>
+        <span id="pct-espera" style="font-size:12px;font-weight:700;padding:2px 7px;border-radius:20px;"></span>
+      </div>
+      <div class="ks">de activas · detenidas</div>
+      <div style="height:4px;background:var(--gray-100);border-radius:2px;margin-top:10px;overflow:hidden;"><div id="bar-espera" style="height:100%;border-radius:2px;background:#E8B113;width:0%;transition:width .6s;"></div></div>
+    </div>
+    <div class="kpi-box" id="kpi-ciclo" style="border-top:3px solid #3D3D3D;">
+      <div class="kl">Ciclo promedio</div>
+      <div class="kv" id="d-ciclo">—</div>
+      <div class="ks" id="d-ciclo-s">días en taller</div>
+      <div style="height:4px;background:var(--gray-100);border-radius:2px;margin-top:10px;overflow:hidden;"><div id="bar-ciclo" style="height:100%;border-radius:2px;width:0%;transition:width .6s;"></div></div>
+    </div>
+    <div class="kpi-box" style="border-top:3px solid #3D3D3D;"><div class="kl">Catálogo</div><div class="kv" id="d-codigos">—</div><div class="ks">códigos UM</div></div>
+  </div>
+
+  <!-- TARJETA INTEGRADA: distribución visual -->
+  <div class="dc" style="margin-bottom:18px;">
+    <div class="dch">
+      <div class="dct"><i class="ti ti-chart-donut"></i>Distribución del Total de OT del Período</div>
+      <span style="font-size:10px;color:var(--gray-400);" id="dist-total-label"></span>
+    </div>
+    <div class="dcb">
+      <!-- Barra segmentada -->
+      <div id="seg-bar" style="display:flex;height:10px;border-radius:5px;overflow:hidden;gap:2px;margin-bottom:8px;"></div>
+      <div id="seg-legend" style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:14px;"></div>
+      <!-- Mini KPIs de síntesis -->
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;border-top:1px solid var(--gray-100);padding-top:12px;">
+        <div style="text-align:center;">
+          <div style="font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:700;color:var(--slate);" id="syn-ciclo">—</div>
+          <div style="font-size:10px;color:var(--gray-400);margin-top:2px;">Ciclo prom.</div>
+        </div>
+        <div style="text-align:center;">
+          <div style="font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:700;" id="syn-ret">—</div>
+          <div style="font-size:10px;color:var(--gray-400);margin-top:2px;">Tasa retrabajo</div>
+        </div>
+        <div style="text-align:center;">
+          <div style="font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:700;" id="syn-cierre">—</div>
+          <div style="font-size:10px;color:var(--gray-400);margin-top:2px;">Tasa cierre</div>
+        </div>
+        <div style="text-align:center;">
+          <div style="font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:700;" id="syn-fac">—</div>
+          <div style="font-size:10px;color:var(--gray-400);margin-top:2px;">Con factura</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--gray-400);margin-bottom:10px;display:flex;align-items:center;gap:8px;"><i class="ti ti-traffic-lights" style="font-size:14px;color:var(--teal);"></i>Semáforo de Antigüedad — OT Activas del Período</div>
+  <div class="sem-strip">
+    <div class="sem-box sem-g"><div class="sem-n" id="s-g">0</div><div class="sem-l">En Tiempo</div><div class="sem-s">0 – 5 días</div></div>
+    <div class="sem-box sem-a"><div class="sem-n" id="s-y">0</div><div class="sem-l">Atención</div><div class="sem-s">6 – 10 días</div></div>
+    <div class="sem-box sem-r"><div class="sem-n" id="s-r">0</div><div class="sem-l">Crítico</div><div class="sem-s">Más de 10 días</div></div>
+  </div>
+
+  <div class="dc" style="margin-bottom:14px;">
+    <div class="dch">
+      <div class="dct"><i class="ti ti-chart-bar-popular"></i>Línea de Tiempo — Herramientas Recibidas vs Finalizadas por Día</div>
+      <span style="font-size:10px;color:var(--gray-400);" id="chart-periodo-label"></span>
+    </div>
+    <div class="dcb">
+      <div class="chart-legend">
+        <div class="legend-item"><div class="legend-dot" style="background:var(--teal);"></div>Recibidas</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--rose);"></div>Finalizadas</div>
+      </div>
+      <div style="overflow-x:auto;"><div id="chart-container" style="min-width:500px;"></div></div>
+    </div>
+  </div>
+
+  <div class="dc" style="margin-bottom:14px;">
+    <div class="dch">
+      <div class="dct"><i class="ti ti-chart-bar"></i>Rendimiento por Técnico — Días Estimados vs Reales</div>
+      <span style="font-size:10px;color:var(--gray-400);">Catálogo de tiempos · 8h/día</span>
+    </div>
+    <div class="dcb">
+      <div style="font-size:10px;color:var(--gray-400);margin-bottom:12px;display:flex;gap:14px;flex-wrap:wrap;">
+        <span><span style="display:inline-block;width:10px;height:10px;background:var(--sky);border-radius:2px;margin-right:4px;vertical-align:-1px;"></span>Días Estimados</span>
+        <span><span style="display:inline-block;width:10px;height:10px;background:var(--emerald);border-radius:2px;margin-right:4px;vertical-align:-1px;"></span>En Tiempo</span>
+        <span><span style="display:inline-block;width:10px;height:10px;background:var(--rose);border-radius:2px;margin-right:4px;vertical-align:-1px;"></span>Excede Estimado</span>
+      </div>
+      <div id="d-rendimiento"><p style="font-size:12px;color:var(--gray-400);text-align:center;padding:16px 0;font-style:italic;">Registre OT con códigos del catálogo para ver rendimiento.</p></div>
+    </div>
+  </div>
+
+  <div class="dash-grid">
+    <div class="dc"><div class="dch"><div class="dct"><i class="ti ti-device-analytics"></i>Por Tipo de Máquina</div></div><div class="dcb"><div id="d-maq"><p style="font-size:12px;color:var(--gray-400);text-align:center;padding:14px 0;font-style:italic;">Sin datos</p></div></div></div>
+    <div class="dc"><div class="dch"><div class="dct"><i class="ti ti-list-check"></i>OT por Estado</div></div><div class="dcb"><div id="d-est"><p style="font-size:12px;color:var(--gray-400);text-align:center;padding:14px 0;font-style:italic;">Sin datos</p></div></div></div>
+    <div class="dc"><div class="dch"><div class="dct"><i class="ti ti-users"></i>Rendimiento de Técnicos</div></div><div class="dcb"><div id="d-tec"><p style="font-size:12px;color:var(--gray-400);text-align:center;padding:14px 0;font-style:italic;">Sin datos</p></div></div></div>
+    <div class="dc"><div class="dch"><div class="dct"><i class="ti ti-refresh-alert"></i>Causas de Retrabajo</div></div><div class="dcb"><div id="d-ret"><p style="font-size:12px;color:var(--gray-400);text-align:center;padding:14px 0;font-style:italic;">Sin retrabajos</p></div></div></div>
+  </div>
+
+  <div class="dc" style="margin-bottom:22px;">
+    <div class="dch"><div class="dct"><i class="ti ti-alert-triangle"></i>OT Críticas — Más de 10 Días sin Cierre</div><span class="badge b-rose" id="d-crit-count">0</span></div>
+    <div class="dcb"><div id="d-crit"><p style="font-size:12px;color:var(--gray-400);text-align:center;padding:14px 0;font-style:italic;">Sin OT críticas</p></div></div>
+  </div>
+
+  <div class="filter-panel">
+    <div class="fp-title"><i class="ti ti-filter" style="font-size:16px;color:var(--teal);"></i>Filtros de Análisis y Exportación</div>
+    <div class="fp-sub">Seleccione meses, cliente o código UM para filtrar el panel. Al aplicar un filtro aparecen las opciones de exportación.</div>
+    <div class="fp-grid">
+      <div class="fp-fg" style="grid-column:1/-1;">
+        <label><i class="ti ti-calendar" style="font-size:12px;margin-right:4px;vertical-align:-1px;"></i>Meses a incluir</label>
+        <div class="months-grid" id="months-grid"></div>
+      </div>
+      <div class="fp-fg"><label>Cliente</label><select id="fp-cliente"><option value="">Todos los clientes</option></select></div>
+      <div class="fp-fg"><label>Código UM (OT finalizadas)</label><select id="fp-codigo"><option value="">Todos los códigos</option></select></div>
+    </div>
+    <div class="fp-actions">
+      <button class="btn btn-primary" onclick="aplicarFiltro()"><i class="ti ti-filter" style="font-size:14px;"></i>Aplicar Filtro</button>
+      <button class="btn btn-ghost" style="border-color:rgba(255,255,255,.15);color:rgba(255,255,255,.6);" onclick="limpiarFiltro()"><i class="ti ti-x" style="font-size:13px;"></i>Limpiar</button>
+      <span id="fp-result" class="fp-result-label"></span>
+      <div class="export-wrap" id="export-wrap">
+        <button class="btn btn-excel" onclick="exportarExcel()"><i class="ti ti-file-spreadsheet" style="font-size:14px;"></i>Exportar Excel</button>
+        <button class="btn btn-pdf" onclick="exportarPDF()"><i class="ti ti-file-type-pdf" style="font-size:14px;"></i>Exportar PDF</button>
+      </div>
+    </div>
+  </div>
+  <p style="font-size:10px;color:var(--gray-400);text-align:right;margin-top:10px;">Actualización en tiempo real · AELMODULOS Sistema de Gestión de Taller</p>
+</div>
+
+</div>
+
+<script type="module">
+import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import{getDatabase,ref,push,onValue,update,remove}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+const fc={apiKey:"AIzaSyDOl9tblEjRneTu4LkDgE8n5VMeKX40HKI",authDomain:"modulo-taller-4032f.firebaseapp.com",databaseURL:"https://modulo-taller-4032f-default-rtdb.firebaseio.com",projectId:"modulo-taller-4032f",storageBucket:"modulo-taller-4032f.firebasestorage.app",messagingSenderId:"375555657071",appId:"1:375555657071:web:c9c29e0ee92c225f8dac9a"};
+const app=initializeApp(fc);const db=getDatabase(app);
+
+let OTs={},CODIGOS={},editKey=null,filtroActivo=null;
+let modalCallback=null;
+// Flag por prefijo de panel: si true → limpiar al salir de la pestaña
+const panelGuardado={tb:false,rb:false};
+const J=8;
+const CRITICO_DIAS=10;
+const TECNICOS=['Gerald Duran Ardon','Alberto Fallas Granados','Viach Vargas Hidalgo','Heiner Leon Beita'];
+const ESTADOS_TEC=['En proceso','Reparado','Cotizado','Espera de repuesto','Cambio','Nota de crédito'];
+const ESTADOS_FINALES=['Reparado','Cotizado','Cambio','Nota de crédito'];
+const MESES_ES=['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+
+function clock(){const n=new Date();document.getElementById('tclock').textContent=n.toLocaleTimeString('es-CR',{hour:'2-digit',minute:'2-digit'});}
+setInterval(clock,1000);clock();
+
+const g=id=>document.getElementById(id);
+function showTab(t){
+  // Antes de cambiar, limpiar pestañas que tuvieron guardado exitoso
+  if(panelGuardado.tb){limpiarB('tb');panelGuardado.tb=false;}
+  if(panelGuardado.rb){limpiarB('rb');panelGuardado.rb=false;}
+  ['rec','tec','cod','tbl','dash'].forEach(x=>{
+    g('tab-'+x).classList.toggle('active',x===t);
+    g('btn-'+x).classList.toggle('active',x===t);
+  });
+  if(t==='dash')uDash();if(t==='tbl')rTabla();if(t==='cod')rCodigos();
+}
+window.showTab=showTab;
+function tog(s,d,v){g(d).style.display=g(s).value===v?'block':'none';}
+window.tog=tog;
+
+function dSince(d){if(!d)return null;const n=new Date();n.setHours(0,0,0,0);return Math.floor((n-new Date(d))/86400000);}
+function cDays(o){if(!o.fechaIn)return null;const e=o.fechaSal?new Date(o.fechaSal):new Date();return Math.max(0,Math.floor((e-new Date(o.fechaIn))/86400000));}
+function isAct(o){return!ESTADOS_FINALES.includes(o.estado)&&!o.finalizada;}
+function isCerrada(o){return ESTADOS_FINALES.includes(o.estado)&&o.finalizada;}
+function isEditable(o){
+  // Editable si: no finalizada, O si tiene retrabajo distinto de 'No'
+  if(!o.finalizada)return true;
+  return o.retrabajo&&o.retrabajo!=='No';
+}
+function h2d(h){return h>0?(h/J).toFixed(1):0;}
+function mEl(id,t,c,dur=3000){const el=g(id);if(!el)return;el.style.color=c;el.textContent=t;if(dur)setTimeout(()=>{if(el)el.textContent='';},dur);}
+function eBadge(e){const m={'En proceso':'b-teal','Reparado':'b-emerald','Cotizado':'b-amber','Espera de repuesto':'b-amber','Cambio':'b-rose','Nota de crédito':'b-rose','Finalizado':'b-slate','Pendiente':'b-slate'};return`<span class="badge ${m[e]||'b-slate'}">${e||'—'}</span>`;}
+function avatarLetters(nm){if(!nm)return'?';const parts=nm.split(' ');return(parts[0][0]+(parts[1]?parts[1][0]:'')).toUpperCase();}
+function inicialesTec(nm){if(!nm)return'?';const p=nm.split(' ');return p.map(x=>x[0]).join('').toUpperCase().slice(0,2);}
+
+// Modal
+function abrirModal(msg,onSi){
+  g('modal-msg').textContent=msg;
+  g('modal-overlay').style.display='flex';
+  modalCallback=onSi;
+  // Asignar onclick al botón Sí — ejecuta callback ANTES de cerrar
+  const btnSi=g('modal-si');
+  if(btnSi){
+    // Clonar el botón para eliminar cualquier listener previo
+    const btnClone=btnSi.cloneNode(true);
+    btnSi.parentNode.replaceChild(btnClone,btnSi);
+    btnClone.onclick=function(){
+      const cb=modalCallback; // capturar antes de cerrar
+      g('modal-overlay').style.display='none';
+      modalCallback=null;
+      if(cb)cb();
+    };
+  }
+}
+function cerrarModal(){
+  g('modal-overlay').style.display='none';
+  modalCallback=null;
+}
+window.cerrarModal=cerrarModal;
+
+// Firebase
+onValue(ref(db,'OTs'),s=>{
+  OTs=s.val()||{};rTabla();if(g('tab-dash').classList.contains('active'))uDash();poblarFiltros();
+  g('loading-overlay').style.display='none';g('sdot').className='sdot on';
+  g('slabel').textContent='En línea · '+new Date().toLocaleTimeString('es-CR',{hour:'2-digit',minute:'2-digit'});
+},()=>{g('sdot').className='sdot err';g('slabel').textContent='Error';g('loading-overlay').style.display='none';});
+onValue(ref(db,'codigos'),s=>{CODIGOS=s.val()||{};rCodigos();});
+
+// Variable que guarda el dato del catálogo encontrado para el código UM actual
+let codUMActual = null; // {desc, cat} o null
+
+function buscarCodUM(){
+  const um=g('r-um').value.trim();
+  const infoEl=g('r-cod-info');
+  const btnReg=g('r-btn');
+  const btnSinCat=g('r-btn-sincat');
+
+  // Limpiar estado anterior
+  codUMActual=null;
+  infoEl.style.display='none';
+  infoEl.innerHTML='';
+  if(btnSinCat)btnSinCat.style.display='none';
+
+  if(!um){
+    if(btnReg)btnReg.disabled=false;
+    return;
+  }
+
+  // Buscar coincidencia exacta en catálogo
+  const encontrado=Object.values(CODIGOS).find(c=>(c.um||'').trim()===um);
+
+  if(encontrado){
+    codUMActual={desc:encontrado.desc||'',cat:encontrado.cat||''};
+    infoEl.style.display='block';
+    infoEl.innerHTML=`
+      <div style="background:var(--teal-faint);border:1.5px solid #99F6E4;border-radius:8px;padding:10px 14px;display:flex;align-items:center;gap:12px;">
+        <i class="ti ti-circle-check" style="font-size:22px;color:var(--teal);flex-shrink:0;"></i>
+        <div>
+          <div style="font-size:10px;font-weight:700;color:var(--teal-dark);text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px;">Código encontrado en catálogo</div>
+          <div style="display:flex;gap:16px;flex-wrap:wrap;">
+            <div><span style="font-size:10px;color:var(--gray-400);">Descripción</span><br><span style="font-size:13px;font-weight:600;color:var(--slate);">${encontrado.desc||'—'}</span></div>
+            <div><span style="font-size:10px;color:var(--gray-400);">Tipo de Máquina</span><br><span style="font-size:13px;font-weight:600;color:var(--slate);">${encontrado.cat||'—'}</span></div>
+          </div>
+        </div>
+      </div>`;
+    if(btnReg){btnReg.disabled=false;btnReg.style.display='';}
+    if(btnSinCat)btnSinCat.style.display='none';
+  } else {
+    codUMActual=null;
+    infoEl.style.display='block';
+    infoEl.innerHTML=`
+      <div style="background:var(--rose-light);border:1.5px solid #FECDD3;border-radius:8px;padding:10px 14px;display:flex;align-items:center;gap:12px;">
+        <i class="ti ti-alert-circle" style="font-size:22px;color:var(--rose);flex-shrink:0;"></i>
+        <div style="flex:1;">
+          <div style="font-size:12px;font-weight:700;color:var(--rose-dark);">Código No registrado en catálogo</div>
+          <div style="font-size:11px;color:var(--rose-dark);margin-top:2px;opacity:.8;">El código <strong>${um}</strong> no existe en Tiempos por Código. Agréguelo primero o use "Registrar sin catálogo".</div>
+        </div>
+      </div>`;
+    // Bloquear botón principal, mostrar botón alternativo
+    if(btnReg){btnReg.disabled=true;btnReg.style.display='';}
+    // Crear/mostrar botón sin catálogo si no existe
+    let bsc=g('r-btn-sincat');
+    if(!bsc){
+      bsc=document.createElement('button');
+      bsc.id='r-btn-sincat';
+      bsc.className='btn btn-ghost';
+      bsc.innerHTML='<i class="ti ti-alert-triangle" style="font-size:14px;"></i>Registrar sin catálogo';
+      bsc.onclick=()=>{codUMActual={desc:'',cat:''};addOT(true);};
+      g('r-btn').parentNode.insertBefore(bsc,g('r-btn').nextSibling);
+    }
+    bsc.style.display='';
+  }
+}
+window.buscarCodUM=buscarCodUM;
+
+// Agregar OT
+async function addOT(sinCatalogo=false){
+  const v=id=>g(id)&&g(id).value?g(id).value.trim():'';
+  const um=v('r-um');
+
+  // Validar que se haya buscado el código (codUMActual seteado o sinCatalogo)
+  if(!sinCatalogo&&codUMActual===null&&um){
+    // Forzar búsqueda primero
+    buscarCodUM();
+    if(codUMActual===null){mEl('r-msg','Verifique el Código UM antes de registrar.','var(--rose)');return;}
+  }
+
+  if(!um||!v('r-codcli')||!v('r-boleta')||!v('r-cliente')||!v('r-falla')||!g('r-fechaIn').value){
+    mEl('r-msg','Complete los campos obligatorios (*)','var(--rose)');return;
+  }
+
+  const tipoMaq=codUMActual?codUMActual.cat:'';
+  const descCat=codUMActual?codUMActual.desc:'';
+
+  g('r-btn').disabled=true;
+  const bsc=g('r-btn-sincat');if(bsc)bsc.disabled=true;
+  const ts=new Date().toLocaleString('es-CR');
+  try{
+    await push(ref(db,'OTs'),{
+      um,codcli:v('r-codcli'),boleta:v('r-boleta'),cliente:v('r-cliente'),
+      tipoMaq,descCatalogo:descCat,
+      falla:v('r-falla'),diagnostico:'',
+      accesorios:g('r-acc').value,accdesc:v('r-accdesc'),factura:g('r-factura').value,
+      fechaIn:g('r-fechaIn').value,tec:'',estado:'Pendiente',retrabajo:'No',
+      fechaSal:'',finalizada:false,inicioRep:'',cotizacion:[],
+      sinCatalogo:sinCatalogo||false,
+      historial:[{ts,accion:`OT creada por Recepción · ${sinCatalogo?'Sin código de catálogo':'Código de catálogo validado'} · Pendiente de técnico`}],
+      creadoEn:Date.now()
+    });
+    // Limpiar formulario
+    ['r-um','r-codcli','r-boleta','r-cliente','r-falla','r-accdesc','r-fechaIn'].forEach(id=>{if(g(id))g(id).value='';});
+    g('r-acc').value='No';g('r-factura').value='No';
+    if(g('r-acc-w'))g('r-acc-w').style.display='none';
+    g('r-cod-info').style.display='none';g('r-cod-info').innerHTML='';
+    codUMActual=null;
+    if(bsc)bsc.style.display='none';
+    mEl('r-msg',sinCatalogo?'OT registrada sin catálogo. Pendiente de asignación técnica.':'OT registrada. Pendiente de asignación técnica.','var(--teal)');
+    panelGuardado.rb=true; // al navegar fuera de Recepción se limpiará el buscador
+  }catch(e){mEl('r-msg','Error: '+e.message,'var(--rose)',0);}
+  g('r-btn').disabled=false;
+  if(bsc)bsc.disabled=false;
+}
+window.addOT=addOT;
+
+// Buscar OT
+function buscar(p){
+  const sb=g(p+'-boleta').value.trim().toLowerCase(),sc=g(p+'-codcli').value.trim().toLowerCase();
+  const ri=p+'-results',pi=p+'-panel';
+  if(!sb&&!sc){g(ri).innerHTML='';g(pi).style.display='none';return;}
+  const enc=Object.entries(OTs).filter(([k,o])=>{
+    const mb=!sb||(o.boleta||'').toLowerCase().includes(sb);
+    const mc=!sc||(o.codcli||'').toLowerCase().includes(sc);
+    return(sb||sc)&&mb&&mc;
+  });
+  if(!enc.length){g(ri).innerHTML='<p style="font-size:12px;color:var(--rose);padding:8px 0;">No se encontraron resultados.</p>';g(pi).style.display='none';return;}
+  g(ri).innerHTML=`<div class="sr-box"><div class="sr-head">${enc.length} resultado(s) — seleccione para editar</div>${enc.map(([k,o])=>`
+    <div class="sr-row" id="sr-${pi}-${k}" onclick="selOT('${k}','${pi}')">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <span style="font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700;">${o.boleta}</span>
+        <span style="font-size:11px;color:var(--gray-400);">${o.codcli}</span>
+        <span style="font-size:11px;color:var(--gray-400);">${o.cliente}</span>
+        ${o.finalizada?'<span class="badge b-slate" style="font-size:9px;"><i class="ti ti-lock" style="font-size:10px;margin-right:2px;vertical-align:-1px;"></i>Finalizada</span>':''}
+      </div>
+      <div style="display:flex;gap:6px;align-items:center;">${eBadge(o.estado)}<span style="font-size:11px;color:var(--gray-400);">${o.tec||'Sin técnico'}</span><i class="ti ti-chevron-right" style="font-size:13px;color:var(--gray-300);"></i></div>
+    </div>`).join('')}</div>`;
+}
+window.buscar=buscar;
+
+function selOT(key,pi){
+  const o=OTs[key];if(!o)return;
+  document.querySelectorAll('.sr-row').forEach(el=>el.classList.remove('selected'));
+  const sr=g('sr-'+pi+'-'+key);if(sr)sr.classList.add('selected');
+  const cc=Object.values(CODIGOS).find(c=>(c.um||'').toLowerCase()===(o.um||'').toLowerCase());
+  const estInfo=cc?`<div class="banner bn-teal"><i class="ti ti-clock" style="font-size:14px;flex-shrink:0;"></i>Catálogo: <strong>${cc.horas}h</strong> = <strong>${h2d(cc.horas)} días laborales</strong></div>`
+    :`<div class="banner bn-amber"><i class="ti ti-alert-triangle" style="font-size:14px;flex-shrink:0;"></i>Código UM no encontrado en catálogo.</div>`;
+  const hist=o.historial||[];
+  const hH=hist.length?`<div class="sep"></div><div class="card-t"><i class="ti ti-history" style="font-size:14px;color:var(--teal);"></i>Historial de Cambios</div>${hist.slice().reverse().map((h,i)=>`<div class="tl-item"><div class="tl-dot" style="background:${i===0?'var(--teal)':'var(--gray-300)'};"></div><div><span style="font-size:11px;">${h.accion}</span><br><span style="font-size:10px;color:var(--gray-400);">${h.ts}</span></div></div>`).join('')}`:'';
+  const isTec=pi==='tb-panel';
+  const editable=isEditable(o);
+
+  // OT BLOQUEADA: finalizada y retrabajo = No → todo readonly, solo retrabajo para reactivar
+  if(o.finalizada&&o.retrabajo==='No'){
+    const cots=o.cotizacion||[];
+    const cotTotal=cots.reduce((s,c)=>s+(parseFloat(c.costo)||0),0);
+    const cotSec=cots.length?`<div class="sep"></div>
+      <p style="font-size:11px;font-weight:700;color:var(--teal-dark);text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px;">Cotización Registrada</p>
+      <table style="width:100%;border-collapse:collapse;font-size:12px;margin-bottom:6px;">
+        <thead><tr style="background:var(--teal);"><th style="padding:6px 8px;color:#fff;text-align:left;font-size:10px;">Código</th><th style="padding:6px 8px;color:#fff;text-align:left;font-size:10px;">Descripción</th><th style="padding:6px 8px;color:#fff;text-align:right;font-size:10px;">Costo</th></tr></thead>
+        <tbody>${cots.map(c=>`<tr><td style="padding:5px 8px;border-bottom:1px solid #F1F5F9;">${c.codigo||'—'}</td><td style="padding:5px 8px;border-bottom:1px solid #F1F5F9;">${c.descripcion||'—'}</td><td style="padding:5px 8px;border-bottom:1px solid #F1F5F9;text-align:right;">₡${(parseFloat(c.costo)||0).toLocaleString('es-CR',{minimumFractionDigits:2})}</td></tr>`).join('')}</tbody>
+      </table>
+      <div style="text-align:right;font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:700;color:var(--teal-dark);">Total: ₡${cotTotal.toLocaleString('es-CR',{minimumFractionDigits:2})}</div>`:'';
+    g(pi).innerHTML=`<div class="card" style="margin-top:12px;border-top:3px solid var(--gray-300);">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px;">
+        <div>
+          <span style="font-family:'Space Grotesk',sans-serif;font-size:16px;font-weight:700;">${o.boleta}</span>
+          <span class="badge b-slate" style="margin-left:8px;font-size:10px;"><i class="ti ti-lock" style="font-size:10px;margin-right:3px;vertical-align:-1px;"></i>Finalizado</span>
+        </div>
+        <button class="btn btn-sky" onclick="printOT('${key}')"><i class="ti ti-printer" style="font-size:14px;"></i>Imprimir</button>
+      </div>
+      <div class="ot-locked-overlay" style="margin-bottom:14px;">
+        <div class="locked-icon"><i class="ti ti-lock"></i></div>
+        <div class="locked-msg">
+          <strong>OT Finalizada — Modo solo lectura</strong><br>
+          Todos los campos están bloqueados. Para habilitar la edición, seleccione una causa de <strong>Retrabajo</strong> en la sección inferior y confirme.
+        </div>
+      </div>
+      <div class="fsec"><i class="ti ti-id"></i>Información de la OT</div>
+      <div class="fgrid">
+        <div class="fg"><label>Código UM</label><input type="text" value="${o.um||''}" readonly style="background:var(--gray-100);color:var(--gray-400);cursor:not-allowed;border-color:var(--gray-100);"></div>
+        <div class="fg"><label>Código Cliente</label><input type="text" value="${o.codcli||''}" readonly style="background:var(--gray-100);color:var(--gray-400);cursor:not-allowed;border-color:var(--gray-100);"></div>
+        <div class="fg"><label>Boleta / Trámite UM</label><input type="text" value="${o.boleta||''}" readonly style="background:var(--gray-100);color:var(--gray-400);cursor:not-allowed;border-color:var(--gray-100);"></div>
+        <div class="fg"><label>Cliente</label><input type="text" value="${o.cliente||''}" readonly style="background:var(--gray-100);color:var(--gray-400);cursor:not-allowed;border-color:var(--gray-100);"></div>
+        <div class="fg"><label>Descripción (catálogo)</label><input type="text" value="${o.descCatalogo||'—'}" readonly style="background:var(--gray-100);color:var(--gray-400);cursor:not-allowed;border-color:var(--gray-100);"></div>
+        <div class="fg"><label>Tipo de Máquina</label><input type="text" value="${o.tipoMaq||'—'}" readonly style="background:var(--gray-100);color:var(--gray-400);cursor:not-allowed;border-color:var(--gray-100);"></div>
+        <div class="fg"><label>Técnico</label><input type="text" value="${o.tec||'No asignado'}" readonly style="background:var(--gray-100);color:var(--gray-400);cursor:not-allowed;border-color:var(--gray-100);"></div>
+        <div class="fg"><label>Estado</label><input type="text" value="${o.estado||''}" readonly style="background:var(--gray-100);color:var(--gray-400);cursor:not-allowed;border-color:var(--gray-100);font-weight:600;"></div>
+        <div class="fg"><label>Fecha Ingreso</label><input type="text" value="${o.fechaIn||''}" readonly style="background:var(--gray-100);color:var(--gray-400);cursor:not-allowed;border-color:var(--gray-100);"></div>
+        <div class="fg"><label>Fecha Salida</label><input type="text" value="${o.fechaSal||''}" readonly style="background:var(--gray-100);color:var(--gray-400);cursor:not-allowed;border-color:var(--gray-100);"></div>
+      </div>
+      <div class="fg" style="margin-top:8px;"><label>Falla Reportada por el Cliente</label>
+        <textarea readonly style="background:var(--gray-100);color:var(--gray-400);cursor:not-allowed;border-color:var(--gray-100);min-height:52px;">${o.falla||'No registrada'}</textarea>
+      </div>
+      <div class="fg" style="margin-top:8px;"><label>Diagnóstico Final del Técnico</label>
+        <textarea readonly style="background:var(--gray-100);color:var(--gray-400);cursor:not-allowed;border-color:var(--gray-100);min-height:52px;">${o.diagnostico||'No registrado'}</textarea>
+      </div>
+      ${cotSec}
+      <div class="sep"></div>
+      <div style="background:var(--amber-light);border:1.5px solid #FDE68A;border-radius:10px;padding:14px 16px;">
+        <p style="font-size:12px;font-weight:700;color:var(--amber-dark);margin-bottom:10px;display:flex;align-items:center;gap:6px;">
+          <i class="ti ti-lock-open" style="font-size:14px;"></i>Registrar Retrabajo para Reactivar la OT
+        </p>
+        <div class="fg" style="max-width:320px;margin-bottom:12px;">
+          <label style="color:var(--amber-dark);">Causa del Retrabajo</label>
+          <select id="ret-unlock-${pi}" style="border-color:#FDE68A;">
+            <option value="">Seleccionar causa...</option>
+            <option value="Dañado en transporte">Dañado en transporte</option>
+            <option value="Cliente no recibe">Cliente no recibe</option>
+            <option value="Fallo de repuesto">Fallo de repuesto</option>
+          </select>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <button class="btn btn-primary" onclick="desbloquearOT('${key}','${pi}')"><i class="ti ti-lock-open" style="font-size:14px;"></i>Confirmar Retrabajo y Reactivar</button>
+          <button class="btn btn-ghost" onclick="cerrar('${pi}')"><i class="ti ti-x" style="font-size:13px;"></i>Cerrar</button>
+        </div>
+      </div>
+      ${hH}
+    </div>`;
+    g(pi).style.display='block';
+    g(pi).dataset.otKey=key;
+    g(pi).scrollIntoView({behavior:'smooth',block:'nearest'});
+    return;
+  }
+
+  // Cronómetro si está en proceso
+  let cronoHTML='';
+  if(o.inicioRep&&o.estado==='En proceso'){
+    const inicio=new Date(o.inicioRep);const ahora=new Date();
+    const diffMin=Math.floor((ahora-inicio)/60000);const hh=Math.floor(diffMin/60);const mm=diffMin%60;
+    cronoHTML=`<div style="margin-bottom:12px;"><div class="crono-badge"><div class="crono-dot"></div>En proceso: ${hh}h ${mm}min transcurridos desde el ${new Date(o.inicioRep).toLocaleString('es-CR')}</div></div>`;
+  }
+
+  // Tabla cotización
+  const cots=o.cotizacion||[];
+  let cotHTML='';
+  if(isTec){
+    const cotFilas=cots.map((c,i)=>`<tr>
+      <td><input type="text" id="cot-cod-${pi}-${i}" value="${c.codigo||''}" placeholder="CÓD-001" onchange="actualizarCot('${pi}')"></td>
+      <td><input type="text" id="cot-desc-${pi}-${i}" value="${c.descripcion||''}" placeholder="Descripción del trabajo o repuesto" onchange="actualizarCot('${pi}')"></td>
+      <td><input type="number" id="cot-costo-${pi}-${i}" value="${c.costo||''}" placeholder="0.00" step="0.01" min="0" onchange="actualizarCot('${pi}')"></td>
+      <td style="text-align:center;"><button class="cot-del-btn" onclick="eliminarFilaCot('${pi}',${i})"><i class="ti ti-trash" style="font-size:12px;"></i></button></td>
+    </tr>`).join('');
+    const total=cots.reduce((s,c)=>s+(parseFloat(c.costo)||0),0);
+    cotHTML=`<div id="cot-wrap-${pi}" class="cot-wrap" style="display:${o.estado==='Cotizado'?'block':'none'};">
+      <div class="cot-title"><i class="ti ti-receipt" style="font-size:14px;"></i>Detalle de Cotización</div>
+      <table class="cot-table">
+        <thead><tr><th style="width:120px;">Código</th><th>Descripción</th><th style="width:110px;">Costo (₡)</th><th style="width:40px;"></th></tr></thead>
+        <tbody id="cot-tbody-${pi}">${cotFilas}</tbody>
+      </table>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;">
+        <button class="cot-add-btn" onclick="agregarFilaCot('${pi}')"><i class="ti ti-plus" style="font-size:12px;"></i>Agregar línea</button>
+        <div class="cot-total"><span class="cot-total-label">Total:</span><span class="cot-total-val" id="cot-total-${pi}">₡${total.toLocaleString('es-CR',{minimumFractionDigits:2})}</span></div>
+      </div>
+    </div>`;
+  }
+
+  // Selector de técnico solo en gestión técnica
+  const tecPreseleccionado=isTec&&o.tec&&TECNICOS.includes(o.tec);
+  const tecSelector=isTec?`
+    <div class="fgrid" style="margin-bottom:10px;">
+      <div class="fg"><label class="req">Técnico que atiende</label>
+        <select id="e-tec-${pi}" onchange="onTecChange('${key}','${pi}')">
+          <option value="">Seleccionar técnico...</option>
+          ${TECNICOS.map(t=>`<option value="${t}"${o.tec===t?' selected':''}>${t}</option>`).join('')}
+        </select>
+      </div>
+    </div>
+    ${!tecPreseleccionado?`<div id="aviso-tec-${pi}" style="background:rgba(14,165,233,.12);border:1.5px solid rgba(14,165,233,.3);border-radius:8px;padding:9px 13px;font-size:12px;font-weight:500;color:#0369A1;display:flex;align-items:center;gap:8px;margin-bottom:10px;"><i class="ti ti-user-exclamation" style="font-size:16px;flex-shrink:0;"></i><span>Seleccione su nombre como técnico para habilitar los cambios.</span></div>`:''}
+    `:'';
+
+  // Estado options — recepción tiene todos, técnico sin Asignado/En proceso como restricción
+  const estadoOpts=isTec
+    ?ESTADOS_TEC.map(s=>`<option${o.estado===s?' selected':''}>${s}</option>`).join('')
+    :`<option${o.estado==='Pendiente'?' selected':''}>Pendiente</option>${ESTADOS_TEC.map(s=>`<option${o.estado===s?' selected':''}>${s}</option>`).join('')}`;
+
+  g(pi).innerHTML=`<div class="card" style="margin-top:12px;border-top:3px solid var(--teal);">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px;">
+    <div><span style="font-family:'Space Grotesk',sans-serif;font-size:16px;font-weight:700;">${o.boleta}</span><span style="font-size:12px;color:var(--gray-400);margin-left:10px;">${o.um} · ${o.cliente}</span></div>
+    <button class="btn btn-sky" onclick="printOT('${key}')"><i class="ti ti-printer" style="font-size:14px;"></i>Imprimir</button>
+  </div>
+  ${estInfo}
+  ${cronoHTML}
+  ${isTec?`<div class="fsec" style="color:#059669;"><i class="ti ti-user-cog" style="font-size:12px;color:#059669;"></i>Técnico que atiende esta OT</div>${tecSelector}`:''}
+  <div class="fsec" style="color:var(--sky);"><i class="ti ti-user" style="font-size:12px;color:var(--sky);"></i>Datos de Recepción</div>
+  <div class="fgrid">
+    <div class="fg"><label>Código UM</label><input id="e-um-${pi}" type="text" value="${o.um||''}"></div>
+    <div class="fg"><label>Código Cliente</label><input id="e-codcli-${pi}" type="text" value="${o.codcli||''}"></div>
+    <div class="fg"><label>Boleta</label><input id="e-boleta-${pi}" type="text" value="${o.boleta||''}"></div>
+    <div class="fg"><label>Cliente</label><input id="e-cliente-${pi}" type="text" value="${o.cliente||''}"></div>
+    <div class="fg"><label>Descripción (catálogo)</label><input type="text" value="${o.descCatalogo||'—'}" readonly style="background:var(--gray-100);color:var(--gray-600);cursor:not-allowed;border-color:var(--gray-100);"></div>
+    <div class="fg"><label>Tipo de Máquina (catálogo)</label><input type="text" value="${o.tipoMaq||'—'}" readonly style="background:var(--gray-100);color:var(--gray-600);cursor:not-allowed;border-color:var(--gray-100);"></div>
+    <div class="fg"><label>Accesorios</label><select id="e-acc-${pi}"><option${o.accesorios==='No'?' selected':''} value="No">No</option><option${o.accesorios==='Sí'?' selected':''} value="Sí">Sí</option></select></div>
+    <div class="fg"><label>Factura</label><select id="e-fac-${pi}"><option${o.factura==='No'?' selected':''} value="No">No</option><option${o.factura==='Sí'?' selected':''} value="Sí">Sí</option></select></div>
+    <div class="fg"><label>Fecha Ingreso</label><input id="e-fi-${pi}" type="date" value="${o.fechaIn||''}"></div>
+  </div>
+  <div class="fg" style="margin-top:6px;"><label>Falla Reportada</label><textarea id="e-falla-${pi}" style="min-height:56px;">${o.falla||''}</textarea></div>
+  <div class="fsec" style="color:var(--teal);margin-top:14px;"><i class="ti ti-tool" style="font-size:12px;color:var(--teal);"></i>Cierre de OT — Técnico</div>
+  <div class="fgrid">
+    <div class="fg"><label>Estado</label>
+      <select id="e-est-${pi}" onchange="onEstadoChange('${pi}')">
+        ${estadoOpts}
+      </select>
+    </div>
+    <div class="fg"><label>Retrabajo</label>
+      <select id="e-ret-${pi}">
+        <option${o.retrabajo==='No'?' selected':''} value="No">No</option>
+        <option${o.retrabajo==='Dañado en transporte'?' selected':''} value="Dañado en transporte">Dañado en transporte</option>
+        <option${o.retrabajo==='Cliente no recibe'?' selected':''} value="Cliente no recibe">Cliente no recibe</option>
+        <option${o.retrabajo==='Fallo de repuesto'?' selected':''} value="Fallo de repuesto">Fallo de repuesto</option>
+      </select>
+    </div>
+    <div class="fg"><label>Fecha Salida</label><input id="e-fs-${pi}" type="date" value="${o.fechaSal||''}" onchange="onFechaSalChange('${pi}')"></div>
+  </div>
+  ${isTec?cotHTML:''}
+  <div class="fg" style="margin-top:6px;"><label>Diagnóstico Final del Técnico</label><textarea id="e-diag-${pi}" placeholder="Diagnóstico y trabajo realizado..." style="min-height:72px;">${o.diagnostico||''}</textarea></div>
+  ${hH}
+  <div id="btns-${pi}" style="margin-top:14px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+    <button class="btn btn-success" id="btn-guardar-${pi}" onclick="guardar('${key}','${pi}',false)"
+      ${isTec&&!o.tec?'disabled style="opacity:.4;cursor:not-allowed;"':''}
+    ><i class="ti ti-check" style="font-size:14px;"></i>Guardar Cambios</button>
+    <button class="btn btn-ghost" onclick="cerrar('${pi}')"><i class="ti ti-x" style="font-size:13px;"></i>Cancelar</button>
+  </div>
+  <div id="emsg-${pi}" style="font-size:12px;margin-top:8px;"></div>
+  </div>`;
+
+  // Guardar key en el panel para usarlo luego en Finalizar
+  g(pi).dataset.otKey=key;
+
+  // Mostrar/ocultar botón finalizar según estado actual de la OT
+  setTimeout(()=>onEstadoChange(pi),80);
+  g(pi).style.display='block';
+  g(pi).scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+window.selOT=selOT;
+
+function onEstadoChange(pi){
+  const est=g(`e-est-${pi}`);if(!est)return;
+  const val=est.value;
+  const btnG=g(`btn-guardar-${pi}`);
+  const btnArea=g(`btns-${pi}`);
+  if(!btnArea)return;
+
+  // Mostrar/ocultar cotización
+  const cotWrap=g(`cot-wrap-${pi}`);
+  if(cotWrap)cotWrap.style.display=val==='Cotizado'?'block':'none';
+
+  // Limpiar aviso anterior de fecha y botón finalizar
+  const avisoExist=g(`aviso-fecha-${pi}`);
+  if(avisoExist)avisoExist.remove();
+  const bfExist=g(`btn-finalizar-${pi}`);
+  if(bfExist)bfExist.remove();
+
+  // Si no hay técnico seleccionado en panel técnico → no habilitar nada más
+  const tecEl=g(`e-tec-${pi}`);
+  const hayTecnico=tecEl?tecEl.value.trim()!=='':true; // si no hay selector (rb-panel), asumir ok
+  if(!hayTecnico){
+    if(btnG)btnG.style.display='';
+    return;
+  }
+
+  // Restaurar Guardar visible
+  if(btnG)btnG.style.display='';
+
+  // Solo aplica lógica de Finalizar en estados finales
+  const esFinal=ESTADOS_FINALES.includes(val);
+  if(!esFinal)return;
+
+  // Es estado final: verificar si tiene fecha de salida
+  const fechaSalEl=g(`e-fs-${pi}`);
+  const tieneFecha=fechaSalEl&&fechaSalEl.value.trim()!=='';
+
+  if(tieneFecha){
+    // Tiene fecha → mostrar botón Finalizar, ocultar Guardar
+    if(btnG)btnG.style.display='none';
+    const bf=document.createElement('button');
+    bf.className='btn btn-finalizar';
+    bf.id=`btn-finalizar-${pi}`;
+    bf.innerHTML='<i class="ti ti-flag-check" style="font-size:14px;"></i>Finalizar OT';
+    bf.onclick=()=>pedirFinalizacion(pi);
+    btnArea.insertBefore(bf,btnArea.firstChild);
+  } else {
+    // Sin fecha → mantener Guardar, mostrar aviso ámbar
+    if(btnG)btnG.style.display='';
+    const aviso=document.createElement('div');
+    aviso.id=`aviso-fecha-${pi}`;
+    aviso.className='banner-fecha-req';
+    aviso.innerHTML=`<i class="ti ti-calendar-x" style="font-size:16px;flex-shrink:0;"></i><span>Debe registrar la <strong>Fecha de Salida</strong> antes de poder Finalizar esta OT.</span>`;
+    btnArea.insertAdjacentElement('afterend',aviso);
+  }
+}
+window.onEstadoChange=onEstadoChange;
+
+// Escuchar cambios en fecha de salida para actualizar botón en tiempo real
+function onFechaSalChange(pi){
+  const est=g(`e-est-${pi}`);
+  if(est&&ESTADOS_FINALES.includes(est.value)){
+    onEstadoChange(pi);
+  }
+}
+window.onFechaSalChange=onFechaSalChange;
+
+function pedirFinalizacion(pi){
+  const est=g(`e-est-${pi}`);if(!est)return;
+  // Obtener key directamente del dataset del panel — no depende del DOM interno
+  const panelEl=g(pi);
+  const key=panelEl?panelEl.dataset.otKey:null;
+  if(!key){
+    alert('Error: no se pudo identificar la OT. Cierre y busque nuevamente.');
+    return;
+  }
+  const estadoVal=est.value;
+  abrirModal(
+    `¿Está seguro que desea FINALIZAR esta OT?\n\nEstado final: "${estadoVal}"\n\nUna vez finalizada quedará bloqueada. Solo se podrá reactivar registrando un Retrabajo.`,
+    ()=>guardar(key,pi,true)
+  );
+}
+window.pedirFinalizacion=pedirFinalizacion;
+
+async function guardar(key,pi,finalizar=false){
+  if(!key)return;
+  const o=OTs[key];
+  if(!o){alert('OT no encontrada. Actualice la página e intente nuevamente.');return;}
+  const nv=id=>g(id)?g(id).value:'';
+  const cambios=[];
+
+  // Si es finalización: usar datos existentes de Firebase, solo actualizar campos de cierre
+  if(finalizar){
+    const estadoSeleccionado=nv(`e-est-${pi}`)||o.estado;
+    const diagSeleccionado=nv(`e-diag-${pi}`).trim()||o.diagnostico||'';
+    const retSeleccionado=nv(`e-ret-${pi}`)||o.retrabajo||'No';
+    let cots=o.cotizacion||[];
+    if(g(`cot-tbody-${pi}`))cots=recogerCotizacion(pi);
+    const fechaSalVal=nv(`e-fs-${pi}`)||o.fechaSal||'';
+    const tecVal=nv(`e-tec-${pi}`)||o.tec||'';
+    const u={
+      ...o, // conservar todos los datos existentes
+      tec:tecVal,
+      estado:'Finalizado',
+      diagnostico:diagSeleccionado,
+      retrabajo:retSeleccionado,
+      fechaSal:fechaSalVal,
+      cotizacion:cots,
+      finalizada:true,
+    };
+    cambios.push(`Estado: ${o.estado||'—'} → Finalizado`);
+    if(diagSeleccionado&&diagSeleccionado!==o.diagnostico)cambios.push('Diagnóstico registrado');
+    cambios.push('OT FINALIZADA — bloqueada para edición');
+    const ts=new Date().toLocaleString('es-CR');
+    u.historial=[...(o.historial||[]),{ts,accion:cambios.join(' · ')}];
+    // Eliminar campo que no existe en Firebase (historial ya copiado desde o)
+    const btn=g(`btns-${pi}`);if(btn)btn.querySelectorAll('button').forEach(b=>b.disabled=true);
+    try{
+      await update(ref(db,`OTs/${key}`),u);
+      g(pi).style.display='none';
+      const pfx=pi.replace('-panel','');
+      // Finalizar limpia manualmente — no necesita flag, resetear por si acaso
+      if(panelGuardado.hasOwnProperty(pfx))panelGuardado[pfx]=false;
+      if(g(pfx+'-boleta'))g(pfx+'-boleta').value='';
+      if(g(pfx+'-codcli'))g(pfx+'-codcli').value='';
+      if(g(pfx+'-results')){
+        g(pfx+'-results').innerHTML=`
+          <div style="background:var(--emerald-light);border:1px solid #6EE7B7;border-radius:10px;padding:14px 18px;display:flex;align-items:center;gap:12px;margin-bottom:10px;">
+            <i class="ti ti-flag-check" style="font-size:28px;color:var(--emerald);flex-shrink:0;"></i>
+            <div>
+              <div style="font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:700;color:#065F46;">OT Finalizada exitosamente</div>
+              <div style="font-size:12px;color:#059669;margin-top:3px;">Estado: <strong>Finalizado</strong>. OT bloqueada. Para reactivar registre un Retrabajo al buscarla.</div>
+            </div>
+          </div>`;
+        setTimeout(()=>{const el=g(pfx+'-results');if(el)el.innerHTML='';},5000);
+      }
+    }catch(e){
+      if(btn)btn.querySelectorAll('button').forEach(b=>b.disabled=false);
+      alert('Error al finalizar: '+e.message);
+    }
+    return; // salir — no continuar con el flujo normal
+  }
+
+  // Flujo normal (no finalizar)
+  let cots=o.cotizacion||[];
+  if(g(`cot-tbody-${pi}`)){cots=recogerCotizacion(pi);}
+  const u={
+    um:nv(`e-um-${pi}`).trim()||o.um,
+    codcli:nv(`e-codcli-${pi}`).trim()||o.codcli,
+    boleta:nv(`e-boleta-${pi}`).trim()||o.boleta,
+    cliente:nv(`e-cliente-${pi}`).trim()||o.cliente,
+    tipoMaq:o.tipoMaq, // solo lectura — no se edita desde el panel
+    descCatalogo:o.descCatalogo||'',
+    accesorios:nv(`e-acc-${pi}`)||o.accesorios,
+    factura:nv(`e-fac-${pi}`)||o.factura,
+    fechaIn:nv(`e-fi-${pi}`)||o.fechaIn,
+    falla:nv(`e-falla-${pi}`).trim()||o.falla,
+    diagnostico:nv(`e-diag-${pi}`).trim()||o.diagnostico,
+    estado:nv(`e-est-${pi}`)||o.estado,
+    retrabajo:nv(`e-ret-${pi}`)||o.retrabajo,
+    fechaSal:nv(`e-fs-${pi}`)||o.fechaSal,
+    cotizacion:cots,
+  };
+  const tecEl=g(`e-tec-${pi}`);if(tecEl&&tecEl.value)u.tec=tecEl.value;
+  if(u.estado==='En proceso'&&!o.inicioRep){u.inicioRep=new Date().toISOString();}
+  Object.keys(u).forEach(k=>{
+    const a=JSON.stringify(o[k])||'',d=JSON.stringify(u[k])||'';
+    if(a!==d){
+      if(k==='estado')cambios.push(`Estado: ${o.estado||'—'} → ${u[k]}`);
+      else if(k==='tec'&&u[k])cambios.push(`Técnico: ${u[k]}`);
+      else if(k==='fechaSal'&&u[k])cambios.push(`F. salida: ${u[k]}`);
+      else if(k==='diagnostico'&&u[k])cambios.push('Diagnóstico registrado');
+      else if(k==='inicioRep'&&u[k])cambios.push('Cronómetro iniciado — OT En proceso');
+      else if(k==='cotizacion')cambios.push('Cotización actualizada');
+      else if(k!=='finalizada'&&k!=='cotizacion')cambios.push(`${k}: actualizado`);
+    }
+  });
+  if(cambios.length){const ts=new Date().toLocaleString('es-CR');u.historial=[...(o.historial||[]),{ts,accion:cambios.join(' · ')}];}
+  const btn=g(`btns-${pi}`);if(btn)btn.querySelectorAll('button').forEach(b=>b.disabled=true);
+  try{
+    await update(ref(db,`OTs/${key}`),u);
+    if(btn)btn.style.display='none';
+    const em=g(`emsg-${pi}`);
+    if(em){em.style.color='var(--teal)';em.innerHTML='<i class="ti ti-circle-check" style="font-size:14px;vertical-align:-2px;margin-right:4px;"></i>Cambios guardados. Realice nueva búsqueda para editar nuevamente.';}
+    // Marcar flag: al salir de esta pestaña se limpiará automáticamente
+    const pfx=pi.replace('-panel','');
+    if(panelGuardado.hasOwnProperty(pfx))panelGuardado[pfx]=true;
+  }catch(e){
+    if(btn)btn.querySelectorAll('button').forEach(b=>b.disabled=false);
+    const em=g(`emsg-${pi}`);if(em){em.style.color='var(--rose)';em.textContent='Error: '+e.message;}
+  }
+}
+window.guardar=guardar;
+
+// Desbloquear OT con retrabajo
+async function desbloquearOT(key,pi){
+  const retVal=g(`ret-unlock-${pi}`).value;
+  if(!retVal||retVal==='No'){alert('Seleccione una causa de retrabajo para reactivar la OT.');return;}
+  const o=OTs[key];if(!o)return;
+  const ts=new Date().toLocaleString('es-CR');
+  await update(ref(db,`OTs/${key}`),{
+    retrabajo:retVal,finalizada:false,estado:'En proceso',inicioRep:'',
+    tec:'', // limpiar técnico para que el nuevo responsable se identifique
+    fechaSal:'', // limpiar fecha para que registre la nueva al cerrar
+    historial:[...(o.historial||[]),{ts,accion:`OT REACTIVADA — Retrabajo: ${retVal} · Técnico y fecha de salida limpiados para nuevo cierre`}]
+  });
+  limpiarB(pi.replace('-panel',''));
+}
+window.desbloquearOT=desbloquearOT;
+
+function onTecChange(key,pi){
+  const el=g(`e-tec-${pi}`);if(!el)return;
+  const o=OTs[key];if(!o)return;
+  const btnG=g(`btn-guardar-${pi}`);
+  const aviso=g(`aviso-tec-${pi}`);
+
+  if(el.value){
+    // Técnico seleccionado → habilitar Guardar y ocultar aviso
+    if(btnG){btnG.disabled=false;btnG.style.opacity='';btnG.style.cursor='';}
+    if(aviso)aviso.style.display='none';
+    // Si la OT no tenía técnico → cambiar automáticamente a En proceso
+    if(!o.tec){
+      const estEl=g(`e-est-${pi}`);
+      if(estEl&&estEl.value==='Pendiente'){
+        estEl.value='En proceso';
+        onEstadoChange(pi);
+      }
+    }
+  } else {
+    // Sin técnico → deshabilitar Guardar y mostrar aviso
+    if(btnG){btnG.disabled=true;btnG.style.opacity='.4';btnG.style.cursor='not-allowed';}
+    if(aviso)aviso.style.display='flex';
+    // Quitar Finalizar si existía
+    const bfExist=g(`btn-finalizar-${pi}`);if(bfExist)bfExist.remove();
+  }
+}
+window.onTecChange=onTecChange;
+
+// Cotización
+function recogerCotizacion(pi){
+  const tb=g(`cot-tbody-${pi}`);if(!tb)return[];
+  const rows=tb.querySelectorAll('tr');const cots=[];
+  rows.forEach((row,i)=>{
+    const cod=g(`cot-cod-${pi}-${i}`);const desc=g(`cot-desc-${pi}-${i}`);const costo=g(`cot-costo-${pi}-${i}`);
+    if(cod||desc||costo)cots.push({codigo:cod?cod.value:'',descripcion:desc?desc.value:'',costo:costo?parseFloat(costo.value)||0:0});
+  });
+  return cots;
+}
+function actualizarCot(pi){
+  const cots=recogerCotizacion(pi);
+  const total=cots.reduce((s,c)=>s+(c.costo||0),0);
+  const tv=g(`cot-total-${pi}`);if(tv)tv.textContent='₡'+total.toLocaleString('es-CR',{minimumFractionDigits:2});
+}
+function agregarFilaCot(pi){
+  const tb=g(`cot-tbody-${pi}`);if(!tb)return;
+  const i=tb.querySelectorAll('tr').length;
+  const tr=document.createElement('tr');
+  tr.innerHTML=`<td><input type="text" id="cot-cod-${pi}-${i}" placeholder="CÓD-001" onchange="actualizarCot('${pi}')"></td><td><input type="text" id="cot-desc-${pi}-${i}" placeholder="Descripción" onchange="actualizarCot('${pi}')"></td><td><input type="number" id="cot-costo-${pi}-${i}" placeholder="0.00" step="0.01" min="0" onchange="actualizarCot('${pi}')"></td><td style="text-align:center;"><button class="cot-del-btn" onclick="eliminarFilaCot('${pi}',${i})"><i class="ti ti-trash" style="font-size:12px;"></i></button></td>`;
+  tb.appendChild(tr);
+}
+function eliminarFilaCot(pi,idx){
+  const cots=recogerCotizacion(pi);cots.splice(idx,1);
+  const tb=g(`cot-tbody-${pi}`);if(!tb)return;
+  const total=cots.reduce((s,c)=>s+(c.costo||0),0);
+  tb.innerHTML=cots.map((c,i)=>`<tr><td><input type="text" id="cot-cod-${pi}-${i}" value="${c.codigo||''}" placeholder="CÓD-001" onchange="actualizarCot('${pi}')"></td><td><input type="text" id="cot-desc-${pi}-${i}" value="${c.descripcion||''}" placeholder="Descripción" onchange="actualizarCot('${pi}')"></td><td><input type="number" id="cot-costo-${pi}-${i}" value="${c.costo||''}" placeholder="0.00" step="0.01" min="0" onchange="actualizarCot('${pi}')"></td><td style="text-align:center;"><button class="cot-del-btn" onclick="eliminarFilaCot('${pi}',${i})"><i class="ti ti-trash" style="font-size:12px;"></i></button></td></tr>`).join('');
+  const tv=g(`cot-total-${pi}`);if(tv)tv.textContent='₡'+total.toLocaleString('es-CR',{minimumFractionDigits:2});
+}
+window.agregarFilaCot=agregarFilaCot;window.eliminarFilaCot=eliminarFilaCot;window.actualizarCot=actualizarCot;
+
+function cerrar(pi){g(pi).style.display='none';const p=pi.replace('-panel','');if(g(p+'-boleta'))g(p+'-boleta').value='';if(g(p+'-codcli'))g(p+'-codcli').value='';if(g(p+'-results'))g(p+'-results').innerHTML='';}
+window.cerrar=cerrar;
+function limpiarB(p){if(g(p+'-boleta'))g(p+'-boleta').value='';if(g(p+'-codcli'))g(p+'-codcli').value='';if(g(p+'-results'))g(p+'-results').innerHTML='';if(g(p+'-panel'))g(p+'-panel').style.display='none';}
+window.limpiarB=limpiarB;
+
+// Catálogo
+async function guardarCodigo(){
+  const um=g('tc-um').value.trim(),desc=g('tc-desc').value.trim(),horas=parseFloat(g('tc-horas').value),cat=g('tc-cat').value,obs=g('tc-obs').value.trim();
+  if(!um||!desc||!horas||horas<=0){mEl('tc-msg','Complete código, descripción y horas.','var(--rose)');return;}
+  g('tc-btn-g').disabled=true;
+  try{
+    if(editKey){await update(ref(db,`codigos/${editKey}`),{um,desc,horas,cat,obs});mEl('tc-msg','Actualizado.','var(--teal)');cancelarEditCodigo();}
+    else{if(Object.values(CODIGOS).find(c=>(c.um||'').toLowerCase()===um.toLowerCase())){mEl('tc-msg','Ya existe ese código UM.','var(--rose)');g('tc-btn-g').disabled=false;return;}await push(ref(db,'codigos'),{um,desc,horas,cat,obs});mEl('tc-msg','Código agregado.','var(--teal)');['tc-um','tc-desc','tc-horas','tc-obs'].forEach(id=>g(id).value='');g('tc-cat').value='Eléctrica';}
+  }catch(e){mEl('tc-msg','Error: '+e.message,'var(--rose)',0);}
+  g('tc-btn-g').disabled=false;
+}
+window.guardarCodigo=guardarCodigo;
+function editarCodigo(k){const c=CODIGOS[k];if(!c)return;editKey=k;g('tc-um').value=c.um||'';g('tc-desc').value=c.desc||'';g('tc-horas').value=c.horas||'';g('tc-cat').value=c.cat||'Eléctrica';g('tc-obs').value=c.obs||'';g('tc-edit-lbl').textContent='Editando: '+c.um;g('tc-edit-ind').style.display='flex';g('tc-btn-c').style.display='inline-flex';}
+window.editarCodigo=editarCodigo;
+function cancelarEditCodigo(){editKey=null;['tc-um','tc-desc','tc-horas','tc-obs'].forEach(id=>g(id).value='');g('tc-cat').value='Eléctrica';g('tc-edit-ind').style.display='none';g('tc-btn-c').style.display='none';}
+window.cancelarEditCodigo=cancelarEditCodigo;
+async function eliminarCodigo(k){const c=CODIGOS[k];if(!c||!confirm(`¿Eliminar "${c.um}"?`))return;try{await remove(ref(db,`codigos/${k}`));}catch(e){alert('Error: '+e.message);}}
+window.eliminarCodigo=eliminarCodigo;
+
+function rCodigos(){
+  const ft=g('tc-search')?g('tc-search').value.toLowerCase():'',fc=g('tc-cat-f')?g('tc-cat-f').value:'';
+  const cb={Eléctrica:'b-sky',Combustión:'b-amber',Hidráulica:'b-purple',General:'b-emerald'};
+  const lista=Object.entries(CODIGOS).filter(([k,c])=>{const oT=!ft||((c.um||'').toLowerCase().includes(ft)||(c.desc||'').toLowerCase().includes(ft));const oC=!fc||c.cat===fc;return oT&&oC;});
+  const tb=g('tc-tbody');if(!tb)return;
+  if(!lista.length){tb.innerHTML=`<tr><td colspan="7" class="empty-row">No hay códigos${ft||fc?' que coincidan':' registrados'}.</td></tr>`;return;}
+  tb.innerHTML=lista.map(([k,c])=>`<tr><td style="font-family:'Space Grotesk',sans-serif;font-weight:700;">${c.um}</td><td>${c.desc}</td><td><span class="badge ${cb[c.cat]||'b-slate'}">${c.cat}</span></td><td><strong>${c.horas}h</strong></td><td><span class="badge b-teal">${h2d(c.horas)}d</span></td><td style="font-size:10px;color:var(--gray-400);">${c.obs||'—'}</td><td><div style="display:flex;gap:4px;"><button class="icon-btn" onclick="editarCodigo('${k}')"><i class="ti ti-edit" style="font-size:12px;"></i></button><button class="icon-btn del" onclick="eliminarCodigo('${k}')"><i class="ti ti-trash" style="font-size:12px;"></i></button></div></td></tr>`).join('');
+}
+window.rCodigos=rCodigos;
+
+function rTabla(){
+  const ft=g('filtro-txt')?g('filtro-txt').value.toLowerCase():'',fe=g('filtro-est')?g('filtro-est').value:'';
+  const lista=Object.entries(OTs).filter(([k,o])=>(!ft||JSON.stringify(o).toLowerCase().includes(ft))&&(!fe||o.estado===fe)).sort((a,b)=>(b[1].creadoEn||0)-(a[1].creadoEn||0));
+  const tb=g('ot-tbody');if(!tb)return;
+  if(!lista.length){tb.innerHTML=`<tr><td colspan="16" class="empty-row">No hay OT${ft||fe?' que coincidan':' registradas'}.</td></tr>`;return;}
+  tb.innerHTML=lista.map(([k,o])=>{
+    const d=dSince(o.fechaIn);
+    const dB=d!==null?`<span class="badge ${d<=5?'b-emerald':d<=CRITICO_DIAS?'b-amber':'b-rose'}">${d}d</span>`:'—';
+    const cod=Object.values(CODIGOS).find(c=>(c.um||'').toLowerCase()===(o.um||'').toLowerCase());
+    const eD=cod?`<span class="badge b-sky">${h2d(cod.horas)}d</span>`:'—';
+    const lock=o.finalizada?'<span title="Finalizada"><i class="ti ti-lock" style="font-size:13px;color:var(--gray-400);"></i></span>':'<span title="Editable"><i class="ti ti-lock-open" style="font-size:13px;color:var(--emerald);"></i></span>';
+    const estadoBadge=o.finalizada?`<span class="badge b-slate"><i class="ti ti-lock" style="font-size:10px;margin-right:2px;vertical-align:-1px;"></i>${o.estado}</span>`:eBadge(o.estado);
+    const descCell=o.sinCatalogo
+      ?`<span style="font-size:10px;">${o.descCatalogo||'—'}</span><span class="badge b-amber" style="font-size:9px;margin-left:4px;">Sin catálogo</span>`
+      :`<span style="font-size:10px;">${o.descCatalogo||'—'}</span>`;
+    return`<tr style="${o.finalizada?'opacity:.75;':''}" >
+      <td style="font-family:'Space Grotesk',sans-serif;font-weight:700;">${o.um}</td>
+      <td>${o.boleta}</td>
+      <td style="max-width:80px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${o.cliente}</td>
+      <td style="max-width:100px;">${descCell}</td>
+      <td style="font-size:10px;">${o.tipoMaq||'—'}</td>
+      <td style="max-width:80px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:10px;" title="${o.falla||''}">${(o.falla||'—').slice(0,20)+(o.falla&&o.falla.length>20?'…':'')}</td>
+      <td style="max-width:80px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:10px;">${o.diagnostico?o.diagnostico.slice(0,20)+(o.diagnostico.length>20?'…':''):'<span style="color:var(--gray-300);">Pendiente</span>'}</td>
+      <td style="font-size:11px;">${o.tec||'<span style="color:var(--gray-300);">Sin asignar</span>'}</td>
+      <td>${estadoBadge}</td>
+      <td>${o.retrabajo!=='No'?`<span class="badge b-rose" style="font-size:9px;">${o.retrabajo}</span>`:'<span class="badge b-emerald">No</span>'}</td>
+      <td style="font-size:11px;">${o.fechaIn||'—'}</td>
+      <td style="font-size:11px;">${o.inicioRep?new Date(o.inicioRep).toLocaleDateString('es-CR'):'—'}</td>
+      <td style="font-size:11px;">${o.fechaSal||'—'}</td>
+      <td>${dB}</td><td>${eD}</td>
+      <td style="text-align:center;">${lock}</td>
+      <td><button class="icon-btn" onclick="irEditar('${k}')"><i class="ti ti-edit" style="font-size:12px;"></i></button></td>
+    </tr>`;
+  }).join('');
+}
+window.rTabla=rTabla;
+function irEditar(k){const o=OTs[k];if(!o)return;showTab('tec');setTimeout(()=>{g('tb-boleta').value=o.boleta;buscar('tb');},80);}
+window.irEditar=irEditar;
+
+// Print
+function printOT(key){
+  const o=OTs[key];if(!o)return;
+  const d=dSince(o.fechaIn);
+  const cod=Object.values(CODIGOS).find(c=>(c.um||'').toLowerCase()===(o.um||'').toLowerCase());
+  const hist=(o.historial||[]).slice().reverse().map(h=>`<tr><td style="padding:4px 8px;font-size:11px;">${h.ts}</td><td style="padding:4px 8px;font-size:11px;">${h.accion}</td></tr>`).join('');
+  const cots=o.cotizacion||[];
+  const cotTotal=cots.reduce((s,c)=>s+(parseFloat(c.costo)||0),0);
+  const cotTable=cots.length?`<table class="cot-print"><thead><tr><th>Código</th><th>Descripción</th><th>Costo (₡)</th></tr></thead><tbody>${cots.map(c=>`<tr><td>${c.codigo||'—'}</td><td>${c.descripcion||'—'}</td><td style="text-align:right;">₡${(parseFloat(c.costo)||0).toLocaleString('es-CR',{minimumFractionDigits:2})}</td></tr>`).join('')}<tr style="background:#F0FDFA;font-weight:700;"><td colspan="2" style="text-align:right;padding:6px 8px;">Total Cotización:</td><td style="text-align:right;padding:6px 8px;color:#0F766E;">₡${cotTotal.toLocaleString('es-CR',{minimumFractionDigits:2})}</td></tr></tbody></table>`:'<p style="font-size:12px;color:#94A3B8;font-style:italic;">Sin cotización registrada</p>';
+  const html=`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>OT ${o.boleta}</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500&display=swap" rel="stylesheet">
+  <style>body{font-family:'Plus Jakarta Sans',sans-serif;color:#1E293B;padding:24px;max-width:720px;margin:auto;}
+  h1{font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:700;color:#0D9488;margin:0 0 2px;}
+  .sub{font-size:11px;color:#94A3B8;border-bottom:2px solid #0D9488;padding-bottom:8px;margin:0 0 14px;}
+  .row{display:flex;gap:16px;}.col{flex:1;}.field{margin-bottom:8px;}
+  .lbl{font-size:10px;font-weight:700;color:#94A3B8;text-transform:uppercase;letter-spacing:.06em;margin-bottom:1px;}
+  .val{font-size:12px;border-bottom:1px solid #E2E8F0;padding-bottom:3px;}
+  .section{margin:14px 0 7px;font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#0D9488;border-bottom:1px solid #CCFBF1;padding-bottom:4px;}
+  table{width:100%;border-collapse:collapse;}
+  th{background:#1E293B;color:#fff;padding:6px 8px;text-align:left;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;}
+  td{border-bottom:1px solid #F1F5F9;padding:4px 8px;}
+  .cot-print th{background:#0D9488;}
+  .falla{background:#FFFBEB;border-left:3px solid #F59E0B;padding:8px;font-size:12px;min-height:36px;}
+  .diag{background:#F0FDFA;border-left:3px solid #0D9488;padding:8px;font-size:12px;min-height:36px;}
+  .locked-badge{background:#F1F5F9;border:1px solid #CBD5E1;border-radius:4px;padding:4px 10px;font-size:11px;color:#64748B;display:inline-flex;align-items:center;gap:4px;}
+  @media print{body{padding:8px;}}</style></head><body>
+  <h1>AELMODULOS — Orden de Trabajo ${o.finalizada?'<span class="locked-badge">🔒 Finalizada</span>':''}</h1>
+  <p class="sub">Generado: ${new Date().toLocaleString('es-CR')}</p>
+  <div class="section">Identificación</div>
+  <div class="row"><div class="col"><div class="field"><div class="lbl">Código UM</div><div class="val">${o.um}</div></div></div><div class="col"><div class="field"><div class="lbl">Código Cliente</div><div class="val">${o.codcli}</div></div></div><div class="col"><div class="field"><div class="lbl">Boleta / Trámite UM</div><div class="val">${o.boleta}</div></div></div></div>
+  <div class="row"><div class="col"><div class="field"><div class="lbl">Cliente</div><div class="val">${o.cliente}</div></div></div><div class="col"><div class="field"><div class="lbl">Descripción (Catálogo)</div><div class="val">${o.descCatalogo||'No registrada'}${o.sinCatalogo?' <span style="background:#FEF3C7;color:#92400E;font-size:10px;padding:1px 6px;border-radius:4px;">Sin catálogo</span>':''}</div></div></div><div class="col"><div class="field"><div class="lbl">Tipo de Máquina</div><div class="val">${o.tipoMaq||'—'}</div></div></div></div>
+  ${cod?`<div style="background:#F0FDFA;border-left:3px solid #0D9488;padding:6px 10px;font-size:11px;margin-bottom:8px;"><strong>Estimado catálogo:</strong> ${cod.horas}h = ${h2d(cod.horas)} días laborales (8h · L–V)</div>`:''}
+  <div class="section">Falla Reportada</div><div class="falla">${o.falla||'No registrada'}</div>
+  <div class="section">Asignación y Tiempos</div>
+  <table><thead><tr><th>Campo</th><th>Valor</th></tr></thead><tbody>
+  <tr><td>Técnico</td><td>${o.tec||'No asignado'}</td></tr>
+  <tr><td>Estado</td><td>${o.estado}</td></tr>
+  <tr><td>Accesorios</td><td>${o.accesorios}${o.accdesc?' — '+o.accdesc:''}</td></tr>
+  <tr><td>Factura</td><td>${o.factura}</td></tr>
+  <tr><td>Retrabajo</td><td>${o.retrabajo}</td></tr>
+  <tr><td>Fecha Ingreso</td><td>${o.fechaIn||'—'}</td></tr>
+  <tr><td>Inicio Reparación</td><td>${o.inicioRep?new Date(o.inicioRep).toLocaleString('es-CR'):'—'}</td></tr>
+  <tr><td>Fecha Salida</td><td>${o.fechaSal||'Pendiente'}</td></tr>
+  <tr><td>Días en Taller</td><td>${d!==null?d+'d':'—'}</td></tr>
+  </tbody></table>
+  ${o.estado==='Cotizado'||cots.length?`<div class="section">Cotización</div>${cotTable}`:''}
+  <div class="section">Diagnóstico Final</div><div class="diag">${o.diagnostico||'Pendiente'}</div>
+  <div class="section">Historial</div>
+  <table><thead><tr><th>Fecha y Hora</th><th>Acción</th></tr></thead><tbody>${hist||'<tr><td colspan="2" style="font-style:italic;color:#94A3B8;">Sin cambios</td></tr>'}</tbody></table>
+  <div style="margin-top:28px;display:flex;gap:40px;">
+    <div style="flex:1;border-top:2px solid #0D9488;padding-top:5px;font-size:10px;color:#94A3B8;text-align:center;">Firma Recepción</div>
+    <div style="flex:1;border-top:2px solid #0D9488;padding-top:5px;font-size:10px;color:#94A3B8;text-align:center;">Firma Técnico — ${o.tec||'_______________'}</div>
+    <div style="flex:1;border-top:2px solid #0D9488;padding-top:5px;font-size:10px;color:#94A3B8;text-align:center;">Firma Cliente</div>
+  </div>
+  <script>window.onload=function(){window.print();}<\/script></body></html>`;
+  const w=window.open('','_blank','width=800,height=700');if(w){w.document.write(html);w.document.close();}
+}
+window.printOT=printOT;
+
+// Filtros
+function getMesActual(){const n=new Date();return{y:n.getFullYear(),m:n.getMonth()};}
+function inMesActual(d){if(!d)return false;const dt=new Date(d);const ma=getMesActual();return dt.getFullYear()===ma.y&&dt.getMonth()===ma.m;}
+function inMeses(d,meses){if(!d||!meses||!meses.length)return false;const dt=new Date(d);return meses.some(k=>{const[y,m]=k.split('-').map(Number);return dt.getFullYear()===y&&dt.getMonth()===m;});}
+
+function poblarFiltros(){
+  const mesesSet=new Set();
+  Object.values(OTs).forEach(o=>{
+    if(o.fechaIn){const d=new Date(o.fechaIn);mesesSet.add(`${d.getFullYear()}-${d.getMonth()}`);}
+    if(o.fechaSal){const d=new Date(o.fechaSal);mesesSet.add(`${d.getFullYear()}-${d.getMonth()}`);}
+  });
+  const mesesArr=[...mesesSet].sort((a,b)=>b.localeCompare(a));
+  const ma=getMesActual();const mesActualKey=`${ma.y}-${ma.m}`;
+  const mg=g('months-grid');if(!mg)return;
+  const prevSel=new Set([...mg.querySelectorAll('.month-chip.selected')].map(el=>el.dataset.key));
+  mg.innerHTML=mesesArr.map(k=>{
+    const[y,m]=k.split('-').map(Number);
+    const isCur=k===mesActualKey;
+    const isSel=prevSel.has(k)||(prevSel.size===0&&isCur);
+    return`<div class="month-chip ${isSel?'selected':''}" data-key="${k}" onclick="this.classList.toggle('selected')">${MESES_ES[m]} ${y}${isCur?' ●':''}</div>`;
+  }).join('');
+  const clientes=new Set(Object.values(OTs).map(o=>o.cliente).filter(Boolean));
+  const fpCli=g('fp-cliente');if(fpCli){const cur=fpCli.value;fpCli.innerHTML='<option value="">Todos los clientes</option>'+[...clientes].sort().map(c=>`<option${cur===c?' selected':''} value="${c}">${c}</option>`).join('');}
+  const fin=Object.values(OTs).filter(o=>o.finalizada||ESTADOS_FINALES.includes(o.estado));
+  const codigos=new Set(fin.map(o=>o.um).filter(Boolean));
+  const fpCod=g('fp-codigo');if(fpCod){const cur=fpCod.value;fpCod.innerHTML='<option value="">Todos los códigos</option>'+[...codigos].sort().map(c=>`<option${cur===c?' selected':''} value="${c}">${c}</option>`).join('');}
+}
+
+function getOTFiltradas(){
+  const meses=[...document.querySelectorAll('.month-chip.selected')].map(el=>el.dataset.key);
+  const cliente=g('fp-cliente').value;
+  const codigo=g('fp-codigo').value;
+  return Object.values(OTs).filter(o=>{
+    const estaActiva=!o.finalizada&&!ESTADOS_FINALES.includes(o.estado);
+    if(cliente&&o.cliente!==cliente)return false;
+    if(codigo&&o.um!==codigo)return false;
+    if(estaActiva)return true; // activas siempre incluidas
+    // cerradas → filtrar por período
+    if(meses.length>0)return inMeses(o.fechaSal,meses)||inMeses(o.fechaIn,meses);
+    return inMesActual(o.fechaSal)||inMesActual(o.fechaIn);
+  });
+}
+
+function aplicarFiltro(){
+  const meses=[...document.querySelectorAll('.month-chip.selected')].map(el=>el.dataset.key);
+  const cliente=g('fp-cliente').value;const codigo=g('fp-codigo').value;
+  filtroActivo={meses,cliente,codigo};uDash();
+  const hayFiltro=meses.length>0||cliente||codigo;
+  g('export-wrap').className=hayFiltro?'export-wrap show':'export-wrap';
+  g('fp-result').textContent=getOTFiltradas().length+' registros en el filtro';
+}
+window.aplicarFiltro=aplicarFiltro;
+
+function limpiarFiltro(){
+  filtroActivo=null;document.querySelectorAll('.month-chip').forEach(el=>el.classList.remove('selected'));
+  const ma=getMesActual();const chip=document.querySelector(`.month-chip[data-key="${ma.y}-${ma.m}"]`);if(chip)chip.classList.add('selected');
+  if(g('fp-cliente'))g('fp-cliente').value='';if(g('fp-codigo'))g('fp-codigo').value='';
+  g('export-wrap').className='export-wrap';g('fp-result').textContent='';uDash();
+}
+window.limpiarFiltro=limpiarFiltro;
+
+function exportarExcel(){
+  const datos=getOTFiltradas();if(!datos.length){alert('No hay datos para exportar.');return;}
+  const rows=datos.map(o=>({
+    'Código UM':o.um||'','Código Cliente':o.codcli||'','Boleta UM':o.boleta||'','Cliente':o.cliente||'',
+    'Tipo Máquina':o.tipoMaq||'','Técnico':o.tec||'No asignado','Estado':o.estado||'',
+    'Falla Reportada':o.falla||'','Diagnóstico':o.diagnostico||'',
+    'Accesorios':o.accesorios||'','Con Factura':o.factura||'','Retrabajo':o.retrabajo||'',
+    'F. Ingreso':o.fechaIn||'','Inicio Reparación':o.inicioRep?new Date(o.inicioRep).toLocaleString('es-CR'):'',
+    'F. Salida':o.fechaSal||'','Días en Taller':dSince(o.fechaIn)!==null?dSince(o.fechaIn):'',
+    'Finalizada':o.finalizada?'Sí':'No',
+    'Total Cotización':o.cotizacion?(o.cotizacion.reduce((s,c)=>s+(parseFloat(c.costo)||0),0)):0,
+  }));
+  const ws=XLSX.utils.json_to_sheet(rows);const wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,'OT Taller',ws);
+  XLSX.writeFile(wb,`AELMODULOS_Taller_${new Date().toISOString().slice(0,10)}.xlsx`);
+}
+window.exportarExcel=exportarExcel;
+
+function exportarPDF(){
+  const datos=getOTFiltradas();if(!datos.length){alert('No hay datos para exportar.');return;}
+  const meses=[...document.querySelectorAll('.month-chip.selected')].map(el=>el.dataset.key);
+  const cliente=g('fp-cliente').value;const codigo=g('fp-codigo').value;
+  const filas=datos.map(o=>`<tr>
+    <td>${o.um||'—'}</td><td>${o.boleta||'—'}</td><td>${o.cliente||'—'}</td>
+    <td>${o.tec||'Sin asignar'}</td><td>${o.estado||'—'}</td>
+    <td>${o.fechaIn||'—'}</td><td>${o.fechaSal||'Pendiente'}</td>
+    <td>${dSince(o.fechaIn)!==null?dSince(o.fechaIn)+'d':'—'}</td>
+    <td>${o.retrabajo||'No'}</td>
+    <td>${o.cotizacion?(o.cotizacion.reduce((s,c)=>s+(parseFloat(c.costo)||0),0)).toLocaleString('es-CR',{minimumFractionDigits:2}):0}</td>
+    <td>${o.finalizada?'✓':''}</td>
+  </tr>`).join('');
+  const html=`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Reporte Taller</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500&display=swap" rel="stylesheet">
+  <style>body{font-family:'Plus Jakarta Sans',sans-serif;color:#1E293B;padding:20px;font-size:11px;}
+  h1{font-family:'Space Grotesk',sans-serif;color:#0D9488;font-size:18px;margin:0 0 4px;}
+  .sub{color:#94A3B8;font-size:10px;margin:0 0 10px;border-bottom:2px solid #0D9488;padding-bottom:6px;}
+  .filtros{background:#F0FDFA;border:1px solid #CCFBF1;border-radius:6px;padding:7px 12px;font-size:10px;margin-bottom:12px;color:#0F766E;}
+  table{width:100%;border-collapse:collapse;font-size:10px;}
+  th{background:#1E293B;color:rgba(255,255,255,.85);padding:7px 8px;text-align:left;font-weight:600;letter-spacing:.04em;text-transform:uppercase;}
+  td{padding:5px 8px;border-bottom:1px solid #F1F5F9;}tr:nth-child(even) td{background:#F8FAFC;}
+  .footer{margin-top:12px;font-size:10px;color:#94A3B8;text-align:right;}
+  @media print{body{padding:8px;}}</style></head><body>
+  <h1>AELMODULOS — Reporte de Taller</h1>
+  <p class="sub">Generado: ${new Date().toLocaleString('es-CR')} · ${datos.length} registros</p>
+  <div class="filtros"><strong>Filtros:</strong> ${meses.length?meses.map(k=>{const[y,m]=k.split('-').map(Number);return MESES_ES[m]+' '+y;}).join(', '):'Mes actual'}${cliente?' · Cliente: '+cliente:''}${codigo?' · Código UM: '+codigo:''}</div>
+  <table><thead><tr><th>Cód. UM</th><th>Boleta</th><th>Cliente</th><th>Técnico</th><th>Estado</th><th>F. Ingreso</th><th>F. Salida</th><th>Días</th><th>Retrabajo</th><th>Total Cot. ₡</th><th>Finalizada</th></tr></thead>
+  <tbody>${filas}</tbody></table>
+  <div class="footer">AELMODULOS Sistema de Gestión de Taller</div>
+  <script>window.onload=function(){window.print();}<\/script></body></html>`;
+  const w=window.open('','_blank','width=900,height=700');if(w){w.document.write(html);w.document.close();}
+}
+window.exportarPDF=exportarPDF;
+
+// Gráfico
+function renderChart(arr){
+  const container=g('chart-container');if(!container)return;
+  if(!arr.length){container.innerHTML='<p style="font-size:12px;color:var(--gray-400);text-align:center;padding:20px 0;font-style:italic;">Sin datos para el período</p>';return;}
+  const recMap={},finMap={};
+  arr.forEach(o=>{if(o.fechaIn){recMap[o.fechaIn]=(recMap[o.fechaIn]||0)+1;}if(o.fechaSal){finMap[o.fechaSal]=(finMap[o.fechaSal]||0)+1;}});
+  const allDays=[...new Set([...Object.keys(recMap),...Object.keys(finMap)])].sort();
+  if(!allDays.length){container.innerHTML='<p style="font-size:12px;color:var(--gray-400);text-align:center;padding:20px 0;font-style:italic;">Sin datos</p>';return;}
+  const maxVal=Math.max(...allDays.map(d=>Math.max(recMap[d]||0,finMap[d]||0)),1);
+  const W=Math.max(500,allDays.length*54+80);const H=180;const PL=32;const PB=38;const PT=12;const barW=18;
+  let svg=`<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:${H}px;">`;
+  for(let i=0;i<=4;i++){const y=PT+(H-PT-PB)*(1-i/4);const val=Math.round(maxVal*i/4);svg+=`<line x1="${PL}" y1="${y}" x2="${W-10}" y2="${y}" stroke="#E2E8F0" stroke-width="1"/><text x="${PL-5}" y="${y+4}" text-anchor="end" font-size="9" fill="#94A3B8">${val}</text>`;}
+  allDays.forEach((day,i)=>{
+    const x=PL+12+i*54;const rec=recMap[day]||0;const fin=finMap[day]||0;
+    const hRec=(H-PT-PB)*(rec/maxVal);const hFin=(H-PT-PB)*(fin/maxVal);
+    const yRec=PT+(H-PT-PB)-hRec;const yFin=PT+(H-PT-PB)-hFin;
+    svg+=`<rect x="${x}" y="${yRec}" width="${barW}" height="${hRec}" rx="3" fill="#0D9488" opacity=".85"/>`;
+    if(rec>0)svg+=`<text x="${x+barW/2}" y="${yRec-3}" text-anchor="middle" font-size="9" fill="#0D9488" font-weight="600">${rec}</text>`;
+    svg+=`<rect x="${x+barW+4}" y="${yFin}" width="${barW}" height="${hFin}" rx="3" fill="#F43F5E" opacity=".85"/>`;
+    if(fin>0)svg+=`<text x="${x+barW+4+barW/2}" y="${yFin-3}" text-anchor="middle" font-size="9" fill="#F43F5E" font-weight="600">${fin}</text>`;
+    const dt=new Date(day+'T00:00:00');
+    svg+=`<text x="${x+barW}" y="${H-PB+14}" text-anchor="middle" font-size="9" fill="#64748B">${dt.getDate()}/${dt.getMonth()+1}</text>`;
+  });
+  svg+=`<line x1="${PL}" y1="${PT}" x2="${PL}" y2="${H-PB}" stroke="#CBD5E1" stroke-width="1.5"/>`;
+  svg+=`<line x1="${PL}" y1="${H-PB}" x2="${W-10}" y2="${H-PB}" stroke="#CBD5E1" stroke-width="1.5"/>`;
+  svg+='</svg>';
+  container.innerHTML=svg;
+  if(allDays.length>1)g('chart-periodo-label').textContent=`${allDays[0]} → ${allDays[allDays.length-1]}`;
+}
+
+// Dashboard
+function uDash(){
+  // OTs activas: siempre visibles sin importar mes de ingreso
+  // OTs cerradas: filtradas por período seleccionado
+  // Esto garantiza que Espera de repuesto, En proceso y Pendiente
+  // siempre aparezcan aunque hayan ingresado en meses anteriores
+
+  let mesesFiltro=[];
+  let clienteFiltro='';
+  let codigoFiltro='';
+
+  if(filtroActivo){
+    mesesFiltro=filtroActivo.meses||[];
+    clienteFiltro=filtroActivo.cliente||'';
+    codigoFiltro=filtroActivo.codigo||'';
+  }
+
+  const todasLasOTs=Object.values(OTs);
+
+  // Determinar qué OTs incluir en el array de análisis
+  const arr=todasLasOTs.filter(o=>{
+    const estaActiva=!o.finalizada&&!ESTADOS_FINALES.includes(o.estado);
+
+    // Filtro de cliente y código aplica siempre
+    if(clienteFiltro&&o.cliente!==clienteFiltro)return false;
+    if(codigoFiltro&&o.um!==codigoFiltro)return false;
+
+    if(estaActiva){
+      // OT activa: siempre incluir — no aplica filtro de mes
+      return true;
+    } else {
+      // OT cerrada: aplicar filtro de mes (por fechaSal o fechaIn)
+      if(mesesFiltro.length>0){
+        return inMeses(o.fechaSal,mesesFiltro)||inMeses(o.fechaIn,mesesFiltro);
+      } else {
+        // Sin filtro manual → mes actual
+        return inMesActual(o.fechaSal)||inMesActual(o.fechaIn);
+      }
+    }
+  });
+
+  const ma=getMesActual();
+  const mesLabel=filtroActivo&&filtroActivo.meses&&filtroActivo.meses.length
+    ?filtroActivo.meses.map(k=>{const[y,m]=k.split('-').map(Number);return MESES_ES[m]+' '+y;}).join(', ')
+    :MESES_ES[ma.m]+' '+ma.y;
+  if(g('dash-mes-label'))g('dash-mes-label').textContent=mesLabel;
+  if(g('dash-ts'))g('dash-ts').textContent='Actualizado: '+new Date().toLocaleString('es-CR');
+
+  const act=arr.filter(o=>!o.finalizada&&!ESTADOS_FINALES.includes(o.estado));
+  const proc=arr.filter(o=>o.estado==='En proceso');
+  const cer=arr.filter(o=>o.finalizada||ESTADOS_FINALES.includes(o.estado));
+  const esp=arr.filter(o=>o.estado==='Espera de repuesto');
+  const fac=arr.filter(o=>o.factura==='Sí');
+  const ret=arr.filter(o=>o.retrabajo!=='No');
+  const crit=act.filter(o=>{const d=dSince(o.fechaIn);return d!==null&&d>CRITICO_DIAS;});
+
+  g('dh-act').textContent=act.length;g('dh-proc').textContent=proc.length;g('dh-crit').textContent=crit.length;
+
+  const total=arr.length;
+  const pct=(n,d)=>d>0?Math.round((n/d)*100):0;
+  const setBadge=(id,p,meta,invert=false)=>{
+    const el=g(id);if(!el)return;
+    el.textContent=p+'%';
+    const ok=invert?(p<=meta):(p>=meta);
+    el.style.background=ok?'var(--emerald-light)':'var(--rose-light)';
+    el.style.color=ok?'#065F46':'var(--rose-dark)';
+  };
+  const setBar=(id,p,color)=>{const el=g(id);if(el){el.style.width=Math.min(p,100)+'%';el.style.background=color;}};
+
+  // Fila 1 — Volumen y cierre
+  g('d-total').textContent=total;
+  g('d-total-s').textContent=`${act.length} activas · ${cer.length} cerradas`;
+  g('d-cerradas').textContent=cer.length;
+  g('d-activas-n').textContent=act.length;
+  const pCerradas=pct(cer.length,total);
+  const pActivas=pct(act.length,total);
+  setBadge('pct-cerradas',pCerradas,60);
+  setBadge('pct-activas',pActivas,40,true);
+  setBar('bar-cerradas',pCerradas,'var(--emerald)');
+  setBar('bar-activas',pActivas,'var(--rose)');
+  g('kpi-cerradas').className='kpi-box '+(pCerradas>=60?'kb':'kc');
+  g('kpi-activas').className='kpi-box '+(pActivas<=40?'kb':'kc');
+
+  // Fila 2 — Calidad y documentación
+  const pRet=pct(ret.length,total);
+  const pFac=pct(fac.length,total);
+  const pEsp=act.length?pct(esp.length,act.length):0;
+  g('d-ret-n').textContent=ret.length;
+  g('d-factura').textContent=fac.length;
+  g('d-espera').textContent=esp.length;
+  g('d-codigos').textContent=Object.keys(CODIGOS).length;
+  setBadge('pct-ret',pRet,5,true);
+  setBadge('pct-factura',pFac,70);
+  setBadge('pct-espera',pEsp,20,true);
+  setBar('bar-ret',pRet,'var(--amber)');
+  setBar('bar-factura',pFac,'var(--violet)');
+  setBar('bar-espera',pEsp,'var(--amber)');
+  g('d-ret-s').textContent=pRet>5?'⚠ Supera meta del 5%':'✓ Dentro de meta';
+  g('d-ret-s').style.color=pRet>5?'var(--rose)':'var(--emerald)';
+  g('kpi-retrabajo').className='kpi-box '+(pRet>5?'kc':'kb');
+
+  // Ciclo promedio
+  const ciclos=arr.filter(o=>o.fechaSal).map(o=>cDays(o)).filter(d=>d!==null);
+  let cicloVal='—';
+  if(ciclos.length){
+    const a=parseFloat((ciclos.reduce((x,y)=>x+y,0)/ciclos.length).toFixed(1));
+    cicloVal=a+'d';
+    g('d-ciclo').textContent=cicloVal;
+    const ok=a<=5;
+    g('d-ciclo-s').textContent=ok?'✓ Dentro de meta':'⚠ Meta: ≤5 días';
+    g('d-ciclo-s').style.color=ok?'var(--emerald)':'var(--rose)';
+    g('kpi-ciclo').className='kpi-box '+(ok?'kb':'kc');
+    const barCiclo=g('bar-ciclo');
+    if(barCiclo){barCiclo.style.width=Math.min(Math.round(a/10*100),100)+'%';barCiclo.style.background=ok?'var(--emerald)':'var(--rose)';}
+  } else {g('d-ciclo').textContent='—';g('d-ciclo-s').textContent='Sin datos cerrados';}
+
+  // Tarjeta integrada — distribución visual
+  if(g('dist-total-label'))g('dist-total-label').textContent=total+' órdenes de trabajo';
+  // Segmentos: Cerradas / En proceso / Espera repuesto / Cotizadas / Retrabajo
+  const enProc=arr.filter(o=>o.estado==='En proceso').length;
+  const cotiz=arr.filter(o=>o.estado==='Cotizado'&&!o.finalizada).length;
+  const segs=[
+    {label:'Cerradas',n:cer.length,color:'var(--emerald)'},
+    {label:'En proceso',n:enProc,color:'var(--teal)'},
+    {label:'Espera repuesto',n:esp.length,color:'var(--amber)'},
+    {label:'Cotizadas',n:cotiz,color:'var(--violet)'},
+    {label:'Retrabajo',n:ret.length,color:'var(--rose)'},
+  ].filter(s=>s.n>0);
+  const sb=g('seg-bar');const sl=g('seg-legend');
+  if(sb&&sl&&total>0){
+    sb.innerHTML=segs.map(s=>`<div style="flex:${s.n};background:${s.color};height:100%;border-radius:2px;min-width:4px;" title="${s.label}: ${s.n}"></div>`).join('');
+    sl.innerHTML=segs.map(s=>`<span style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--gray-600);"><span style="width:8px;height:8px;border-radius:50%;background:${s.color};flex-shrink:0;"></span>${s.label} ${pct(s.n,total)}%</span>`).join('');
+  } else if(sb){sb.innerHTML='<div style="flex:1;background:var(--gray-100);height:100%;border-radius:2px;"></div>';}
+
+  // Mini KPIs síntesis
+  if(g('syn-ciclo'))g('syn-ciclo').textContent=cicloVal;
+  if(g('syn-ret')){g('syn-ret').textContent=pRet+'%';g('syn-ret').style.color=pRet>5?'var(--rose)':'var(--emerald)';}
+  if(g('syn-cierre')){g('syn-cierre').textContent=pCerradas+'%';g('syn-cierre').style.color=pCerradas>=60?'var(--emerald)':'var(--rose)';}
+  if(g('syn-fac')){g('syn-fac').textContent=pFac+'%';g('syn-fac').style.color='var(--violet)';}
+
+  let sg=0,sy=0,sr=0;
+  act.forEach(o=>{const d=dSince(o.fechaIn);if(d===null)return;if(d<=5)sg++;else if(d<=CRITICO_DIAS)sy++;else sr++;});
+  g('s-g').textContent=sg;g('s-y').textContent=sy;g('s-r').textContent=sr;
+
+  renderChart(arr);
+
+  // Rendimiento técnicos
+  const tD={};TECNICOS.forEach(u=>{tD[u]={est:0,real:0,n:0,enT:0,exc:0,sinCod:0};});
+  arr.forEach(o=>{if(!o.tec||!tD[o.tec])return;const td=tD[o.tec];td.n++;const cod=Object.values(CODIGOS).find(c=>(c.um||'').toLowerCase()===(o.um||'').toLowerCase());const real=cDays(o);if(cod){const eD=parseFloat(h2d(cod.horas));td.est+=eD;if(real!==null){td.real+=real;if(real>eD)td.exc++;else td.enT++;}}else{td.sinCod++;if(real!==null)td.real+=real;}});
+  const tC=Object.entries(tD).filter(([,s])=>s.n>0);
+  g('d-rendimiento').innerHTML=tC.length?tC.map(([nm,s])=>{
+    const ini=inicialesTec(nm);const pct=s.est>0?Math.min(Math.round((s.real/s.est)*100),200):null;
+    const col=pct===null?'var(--gray-300)':pct<=100?'var(--emerald)':pct<=130?'var(--amber)':'var(--rose)';
+    const eb=pct===null?'b-slate':pct<=100?'b-emerald':pct<=130?'b-amber':'b-rose';
+    const el=pct===null?'Sin estimado':pct<=100?`${pct}% — En tiempo`:`${pct}% — Excede`;
+    return`<div class="tec-card"><div class="tec-hdr"><div class="tec-nm"><div class="avatar">${ini}</div>${nm}</div><span class="badge ${eb}">${el}</span></div>
+    <div class="tec-stats">
+      <div class="ts"><div class="ts-n" style="color:var(--sky);">${s.est>0?s.est.toFixed(1):'—'}</div><div class="ts-l">días est.</div></div>
+      <div class="ts"><div class="ts-n" style="color:${col};">${s.real>0?s.real.toFixed(1):'—'}</div><div class="ts-l">días reales</div></div>
+      <div class="ts"><div class="ts-n">${s.n}</div><div class="ts-l">OT total</div></div>
+      <div class="ts"><div class="ts-n" style="color:var(--emerald);">${s.enT}</div><div class="ts-l">en tiempo</div></div>
+      <div class="ts"><div class="ts-n" style="color:var(--rose);">${s.exc}</div><div class="ts-l">exceden</div></div>
+      ${s.sinCod>0?`<div class="ts"><div class="ts-n" style="color:var(--amber);">${s.sinCod}</div><div class="ts-l">sin catálogo</div></div>`:''}
+    </div>
+    ${s.est>0?`<div class="perf-bar"><div class="perf-fill" style="width:${Math.min(pct,100)}%;background:${col};"></div></div>`:''}
+    </div>`;
+  }).join(''):'<p style="font-size:12px;color:var(--gray-400);text-align:center;padding:14px 0;font-style:italic;">Sin OT con códigos de catálogo en este período.</p>';
+
+  const mC={};arr.forEach(o=>{if(o.tipoMaq)mC[o.tipoMaq]=(mC[o.tipoMaq]||0)+1;});
+  const mA=Object.entries(mC).sort((a,b)=>b[1]-a[1]);const mX=mA[0]?mA[0][1]:1;
+  g('d-maq').innerHTML=mA.length?mA.map(([k,v])=>`<div class="bar-row"><span class="bar-lbl">${k}</span><div class="bar-track"><div class="bar-fill" style="width:${Math.round(v/mX*100)}%;"></div></div><span class="bar-val">${v}</span></div>`).join(''):'<p style="font-size:12px;color:var(--gray-400);text-align:center;padding:14px 0;font-style:italic;">Sin datos</p>';
+
+  const eC={};arr.forEach(o=>{if(o.estado)eC[o.estado]=(eC[o.estado]||0)+1;});
+  const eCls={'En proceso':'b-teal','Reparado':'b-emerald','Cotizado':'b-amber','Espera de repuesto':'b-amber','Cambio':'b-rose','Nota de crédito':'b-rose','Finalizado':'b-slate','Pendiente':'b-slate'};
+  g('d-est').innerHTML=Object.entries(eC).length?Object.entries(eC).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`<div class="est-row"><span>${k}</span><span class="badge ${eCls[k]||'b-slate'}">${v} OT</span></div>`).join(''):'<p style="font-size:12px;color:var(--gray-400);text-align:center;padding:14px 0;font-style:italic;">Sin datos</p>';
+
+  const tS={};arr.forEach(o=>{if(!o.tec)return;if(!tS[o.tec])tS[o.tec]={n:0,c:[],r:0};tS[o.tec].n++;const c=cDays(o);if(c!==null)tS[o.tec].c.push(c);if(o.retrabajo!=='No')tS[o.tec].r++;});
+  g('d-tec').innerHTML=Object.entries(tS).length?Object.entries(tS).sort((a,b)=>b[1].n-a[1].n).map(([nm,s])=>{const a=s.c.length?(s.c.reduce((x,y)=>x+y,0)/s.c.length).toFixed(1):'—';const cl=parseFloat(a)>CRITICO_DIAS?'b-rose':parseFloat(a)>5?'b-amber':'b-emerald';const ini=inicialesTec(nm);return`<div class="est-row"><div style="display:flex;align-items:center;gap:7px;"><div class="avatar" style="width:24px;height:24px;font-size:9px;">${ini}</div><span style="font-size:12px;">${nm}</span></div><div style="display:flex;gap:6px;align-items:center;"><span style="font-size:11px;color:var(--gray-400);">${a}d prom.</span><span class="badge ${cl}">${s.n} OT</span>${s.r?`<span class="badge b-rose">${s.r} ret.</span>`:''}</div></div>`;}).join(''):'<p style="font-size:12px;color:var(--gray-400);text-align:center;padding:14px 0;font-style:italic;">Sin datos</p>';
+
+  const rC={};ret.forEach(o=>{rC[o.retrabajo]=(rC[o.retrabajo]||0)+1;});
+  g('d-ret').innerHTML=Object.keys(rC).length?Object.entries(rC).map(([k,v])=>`<div class="est-row"><span>${k}</span><span class="badge b-rose">${v}</span></div>`).join(''):'<p style="font-size:12px;color:var(--gray-400);text-align:center;padding:14px 0;font-style:italic;">Sin retrabajos</p>';
+
+  g('d-crit-count').textContent=crit.length;
+  g('d-crit').innerHTML=crit.length?crit.sort((a,b)=>dSince(b.fechaIn)-dSince(a.fechaIn)).slice(0,8).map(o=>`<div class="crit-row"><div class="crit-left"><span style="font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700;">${o.boleta}</span><span style="font-size:11px;color:var(--gray-400);">${o.cliente}</span><span class="badge b-sky" style="font-size:10px;">${o.tec||'Sin técnico'}</span>${eBadge(o.estado)}</div><span class="badge b-rose">${dSince(o.fechaIn)}d</span></div>`).join(''):'<p style="font-size:12px;color:var(--gray-400);text-align:center;padding:14px 0;font-style:italic;">Sin OT críticas — buena gestión</p>';
+}
+window.uDash=uDash;
+</script>
+</body>
+</html>
