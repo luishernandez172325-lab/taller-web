@@ -2380,26 +2380,22 @@ window._cliRender=function(){
 
 // Exponer buscarCodCli para uso global
 window.buscarCodCli=buscarCodCli;
-</script>
+
+// Exponer funciones de clientes directamente desde el módulo
+window.guardarCliente=async function(){
+  const cod=(g('cli-cod')&&g('cli-cod').value||'').trim();
+  const nom=(g('cli-nom')&&g('cli-nom').value||'').trim();
+  const tel=(g('cli-tel')&&g('cli-tel').value||'').trim();
+  const email=(g('cli-email')&&g('cli-email').value||'').trim();
+  if(!cod||!nom){mElCliente('Complete código y nombre del cliente.','var(--rose)');return;}
+  const btn=g('cli-btn-g');if(btn)btn.disabled=true;
+  await window._cliGuardar(cod,nom,tel,email);
+  if(btn)btn.disabled=false;
+};
+window.cancelarEditCliente=function(){window._cliCancelar&&window._cliCancelar();};
+window.editarCliente=function(key){window._cliEditar&&window._cliEditar(key);};
+window.eliminarCliente=function(key){window._cliEliminar&&window._cliEliminar(key);};
+window.rClientes=function(){window._cliRender&&window._cliRender();};</script>
 </body>
 </html>
-<script>
-// ── CATÁLOGO DE CLIENTES ──────────────────────────────────────────
-// Estas funciones se agregan fuera del módulo para evitar conflictos de scope
-// pero usan las variables globales expuestas via window por el módulo
-window.guardarCliente=async function(){
-  const g=id=>document.getElementById(id);
-  const cod=(g('cli-cod').value||'').trim();
-  const nom=(g('cli-nom').value||'').trim();
-  const tel=(g('cli-tel').value||'').trim();
-  const email=(g('cli-email').value||'').trim();
-  if(!cod||!nom){window._mElCliente('Complete código y nombre del cliente.','var(--rose-dark)');return;}
-  g('cli-btn-g').disabled=true;
-  await window._cliGuardar(cod,nom,tel,email);
-  g('cli-btn-g').disabled=false;
-};
-window.cancelarEditCliente=function(){window._cliCancelar();};
-window.editarCliente=function(key){window._cliEditar(key);};
-window.eliminarCliente=function(key){window._cliEliminar(key);};
-window.rClientes=function(){window._cliRender();};
-</script>
+
