@@ -1685,8 +1685,8 @@ function printOT(key){
     <div style="flex:1;border-top:2px solid #0D9488;padding-top:5px;font-size:10px;color:#94A3B8;text-align:center;">Firma Técnico — ${o.tec||'_______________'}</div>
     <div style="flex:1;border-top:2px solid #0D9488;padding-top:5px;font-size:10px;color:#94A3B8;text-align:center;">Firma Cliente</div>
   </div>
-  <script>window.onload=function(){window.print();}<\/script></body></html>`;
-  const w=window.open('','_blank','width=800,height=700');if(w){w.document.write(html);w.document.close();}
+  </body></html>`;
+  const w=window.open('','_blank','width=800,height=700');if(w){w.document.write(html);w.document.close();setTimeout(()=>w.print(),400);}
 }
 window.printOT=printOT;
 
@@ -2028,11 +2028,11 @@ function exportarPDF(){
     <tbody>${filas}</tbody>
   </table>
   <div class="footer">AELMODULOS Sistema de Gestión de Taller · ${new Date().toLocaleString('es-CR')}</div>
-  <script>window.onload=function(){window.print();}<\/script>
+  
   </body></html>`;
 
   const w=window.open('','_blank','width=1000,height=700');
-  if(w){w.document.write(htmlPdf);w.document.close();}
+  if(w){w.document.write(htmlPdf);w.document.close();setTimeout(()=>w.print(),400);}
   else{alert('El navegador bloqueó la ventana emergente. Permita popups para este sitio.');}
 }
 window.exportarPDF=exportarPDF;
@@ -2288,7 +2288,7 @@ function uDash(){
 window.uDash=uDash;
 
 // ── CATÁLOGO DE CLIENTES — funciones internas del módulo ──────────
-let editClienteKey=null;
+// editClienteKey ya declarado en variables globales arriba
 
 function mElCliente(msg,col){
   const el=g('cli-msg');if(!el)return;
