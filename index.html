@@ -362,6 +362,7 @@ tr:last-child td{border-bottom:none;}
   <button class="ntab active" id="btn-rec" onclick="showTab('rec')"><i class="ti ti-clipboard-plus"></i>Ingreso de Máquinas</button>
   <button class="ntab" id="btn-tec" onclick="showTab('tec')"><i class="ti ti-tool"></i>Gestión Técnica</button>
   <button class="ntab" id="btn-cod" onclick="showTab('cod')"><i class="ti ti-clock-check"></i>Tiempos por Código</button>
+  <button class="ntab" id="btn-cli" onclick="showTab('cli')"><i class="ti ti-users"></i>Catálogo de Clientes</button>
   <button class="ntab" id="btn-tbl" onclick="showTab('tbl')"><i class="ti ti-table-options"></i>Registro de OT</button>
   <button class="ntab" id="btn-dash" onclick="showTab('dash')"><i class="ti ti-chart-bar"></i>Panel de Control</button>
 </div>
@@ -382,12 +383,18 @@ tr:last-child td{border-bottom:none;}
             onblur="buscarCodUM()"
             onkeydown="if(event.key==='Enter'){event.preventDefault();buscarCodUM();}">
         </div>
-        <div class="fg"><label class="req">Código Cliente</label><input id="r-codcli" type="text" placeholder="CLI-0084"></div>
+        <div class="fg">
+          <label class="req">Código Cliente</label>
+          <input id="r-codcli" type="text" placeholder="10001" autocomplete="off"
+            onblur="buscarCodCli()"
+            onkeydown="if(event.key==='Enter'){event.preventDefault();buscarCodCli();}">
+        </div>
         <div class="fg"><label class="req">Boleta / Trámite UM</label><input id="r-boleta" type="text" placeholder="BT-2025-441"></div>
-        <div class="fg"><label class="req">Nombre del Cliente</label><input id="r-cliente" type="text" placeholder="Nombre o empresa"></div>
       </div>
-      <!-- Banner autocompletado catálogo -->
+      <!-- Banner autocompletado catálogo UM -->
       <div id="r-cod-info" style="display:none;margin-bottom:10px;"></div>
+      <!-- Banner autocompletado catálogo Cliente -->
+      <div id="r-cli-info" style="display:none;margin-bottom:10px;"></div>
       <div class="fsec"><i class="ti ti-alert-triangle"></i>Falla Reportada</div>
       <div class="fg" style="margin-bottom:10px;"><label class="req">Descripción de falla del cliente</label><textarea id="r-falla" placeholder="Describa con detalle la falla que indica el cliente al entregar la máquina..." style="min-height:76px;"></textarea></div>
       <div class="fsec"><i class="ti ti-package"></i>Accesorios y Documentación</div>
@@ -472,6 +479,49 @@ tr:last-child td{border-bottom:none;}
         </table>
       </div>
       <p style="font-size:10px;color:var(--gray-400);">* Días laborales = Horas ÷ 8 · Jornada L–V</p>
+    </div>
+  </div>
+</div>
+
+<!-- CATÁLOGO DE CLIENTES -->
+<div id="tab-cli" class="tab-pane">
+  <div class="ph">
+    <h1><span class="ph-icon"><i class="ti ti-users"></i></span>Catálogo de Clientes</h1>
+    <p>Registro maestro de clientes · Búsqueda por código · 6,684 registros importados</p>
+  </div>
+  <div class="two-col">
+    <div>
+      <div class="card">
+        <div class="rtag rt-cod"><i class="ti ti-user-plus" style="font-size:12px;"></i>Nuevo Cliente / Editar</div>
+        <div id="cli-edit-ind" style="display:none;" class="tc-editing"><i class="ti ti-edit" style="font-size:14px;"></i><span id="cli-edit-lbl">Editando cliente</span></div>
+        <div class="fgrid">
+          <div class="fg"><label class="req">Código Cliente</label><input id="cli-cod" type="text" placeholder="10001"></div>
+          <div class="fg"><label class="req">Nombre</label><input id="cli-nom" type="text" placeholder="Nombre completo o empresa"></div>
+          <div class="fg"><label>Teléfono</label><input id="cli-tel" type="text" placeholder="2200-0000 / 8888-0000"></div>
+          <div class="fg"><label>Correo Electrónico</label><input id="cli-email" type="email" placeholder="correo@empresa.com"></div>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+          <button class="btn btn-primary" id="cli-btn-g" onclick="guardarCliente()"><i class="ti ti-device-floppy" style="font-size:14px;"></i>Guardar</button>
+          <button class="btn btn-ghost" id="cli-btn-c" onclick="cancelarEditCliente()" style="display:none;"><i class="ti ti-x" style="font-size:13px;"></i>Cancelar</button>
+          <span id="cli-msg" style="font-size:12px;"></span>
+        </div>
+        <p style="font-size:10px;color:var(--gray-400);margin-top:8px;">* Campos obligatorios · Teléfono y correo opcionales</p>
+      </div>
+      <div class="card">
+        <div class="card-t"><i class="ti ti-search"></i>Buscar en el Catálogo</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;">
+          <div class="fg" style="flex:1;min-width:130px;"><label>Código o nombre</label><input id="cli-search" type="text" placeholder="Buscar..." oninput="rClientes()"></div>
+        </div>
+        <div style="font-size:11px;color:var(--gray-400);margin-top:8px;" id="cli-count"></div>
+      </div>
+    </div>
+    <div>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Código</th><th>Nombre</th><th>Teléfono</th><th>Correo</th><th>OTs</th><th></th></tr></thead>
+          <tbody id="cli-tbody"><tr><td colspan="6" class="empty-row">Cargando clientes...</td></tr></tbody>
+        </table>
+      </div>
     </div>
   </div>
 </div>
@@ -754,7 +804,8 @@ import{getDatabase,ref,push,onValue,update,remove}from"https://www.gstatic.com/f
 const fc={apiKey:"AIzaSyDOl9tblEjRneTu4LkDgE8n5VMeKX40HKI",authDomain:"modulo-taller-4032f.firebaseapp.com",databaseURL:"https://modulo-taller-4032f-default-rtdb.firebaseio.com",projectId:"modulo-taller-4032f",storageBucket:"modulo-taller-4032f.firebasestorage.app",messagingSenderId:"375555657071",appId:"1:375555657071:web:c9c29e0ee92c225f8dac9a"};
 const app=initializeApp(fc);const db=getDatabase(app);
 
-let OTs={},CODIGOS={},editKey=null,filtroActivo=null;
+let OTs={},CODIGOS={},CLIENTES={},editKey=null,filtroActivo=null;
+let editClienteKey=null;
 let modalCallback=null;
 // Flag por prefijo de panel: si true → limpiar al salir de la pestaña
 const panelGuardado={tb:false,rb:false};
@@ -773,11 +824,11 @@ function showTab(t){
   // Antes de cambiar, limpiar pestañas que tuvieron guardado exitoso
   if(panelGuardado.tb){limpiarB('tb');panelGuardado.tb=false;}
   if(panelGuardado.rb){limpiarB('rb');panelGuardado.rb=false;}
-  ['rec','tec','cod','tbl','dash'].forEach(x=>{
+  ['rec','tec','cod','cli','tbl','dash'].forEach(x=>{
     g('tab-'+x).classList.toggle('active',x===t);
     g('btn-'+x).classList.toggle('active',x===t);
   });
-  if(t==='dash')uDash();if(t==='tbl')rTabla();if(t==='cod')rCodigos();
+  if(t==='dash')uDash();if(t==='tbl')rTabla();if(t==='cod')rCodigos();if(t==='cli')rClientes();
 }
 window.showTab=showTab;
 function tog(s,d,v){g(d).style.display=g(s).value===v?'block':'none';}
@@ -830,6 +881,12 @@ onValue(ref(db,'OTs'),s=>{
   g('slabel').textContent='En línea · '+new Date().toLocaleTimeString('es-CR',{hour:'2-digit',minute:'2-digit'});
 },()=>{g('sdot').className='sdot err';g('slabel').textContent='Error';g('loading-overlay').style.display='none';});
 onValue(ref(db,'codigos'),s=>{CODIGOS=s.val()||{};rCodigos();});
+onValue(ref(db,'clientes'),s=>{
+  CLIENTES=s.val()||{};
+  if(g('tab-cli')&&g('tab-cli').classList.contains('active')){
+    if(window._cliRender)window._cliRender();
+  }
+});
 
 // Variable que guarda el dato del catálogo encontrado para el código UM actual
 let codUMActual = null; // {desc, cat} o null
@@ -898,49 +955,115 @@ function buscarCodUM(){
 }
 window.buscarCodUM=buscarCodUM;
 
+// Buscar código de cliente en catálogo
+let codCliActual=null; // {nombre, telefono, correo} o null
+
+function buscarCodCli(){
+  const cod=g('r-codcli').value.trim();
+  const infoEl=g('r-cli-info');
+  const btnReg=g('r-btn');
+  const btnSinCat=g('r-btn-sincat');
+
+  codCliActual=null;
+  if(infoEl){infoEl.style.display='none';infoEl.innerHTML='';}
+
+  if(!cod){if(btnReg)btnReg.disabled=false;return;}
+
+  // Buscar clave exacta en CLIENTES (las keys son el código sanitizado)
+  const key=cod.replace(/[.#$[\]]/g,'_');
+  const encontrado=CLIENTES[key];
+
+  if(encontrado&&encontrado.codcli===cod){
+    codCliActual={nombre:encontrado.nombre||'',telefono:encontrado.telefono||'',correo:encontrado.correo||''};
+    if(infoEl){
+      infoEl.style.display='block';
+      infoEl.innerHTML=`
+        <div style="background:var(--teal-faint);border:1.5px solid #99F6E4;border-radius:8px;padding:10px 14px;display:flex;align-items:center;gap:12px;">
+          <i class="ti ti-user-check" style="font-size:22px;color:var(--teal);flex-shrink:0;"></i>
+          <div>
+            <div style="font-size:10px;font-weight:700;color:var(--teal-dark);text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px;">Cliente encontrado en catálogo</div>
+            <div style="display:flex;gap:16px;flex-wrap:wrap;">
+              <div><span style="font-size:10px;color:var(--gray-400);">Nombre</span><br><span style="font-size:13px;font-weight:600;color:var(--slate);">${encontrado.nombre||'—'}</span></div>
+              ${encontrado.telefono?`<div><span style="font-size:10px;color:var(--gray-400);">Teléfono</span><br><span style="font-size:13px;font-weight:600;color:var(--slate);">${encontrado.telefono}</span></div>`:''}
+              ${encontrado.correo?`<div><span style="font-size:10px;color:var(--gray-400);">Correo</span><br><span style="font-size:13px;font-weight:600;color:var(--slate);">${encontrado.correo}</span></div>`:''}
+            </div>
+          </div>
+        </div>`;
+    }
+    if(btnReg){btnReg.disabled=false;btnReg.style.display='';}
+    if(btnSinCat)btnSinCat.style.display='none';
+  } else {
+    codCliActual=null;
+    if(infoEl){
+      infoEl.style.display='block';
+      infoEl.innerHTML=`
+        <div style="background:var(--rose-light);border:1.5px solid #FECDD3;border-radius:8px;padding:10px 14px;display:flex;align-items:center;gap:12px;">
+          <i class="ti ti-alert-circle" style="font-size:22px;color:var(--rose);flex-shrink:0;"></i>
+          <div>
+            <div style="font-size:12px;font-weight:700;color:var(--rose-dark);">Código de cliente no registrado</div>
+            <div style="font-size:11px;color:var(--rose-dark);margin-top:2px;opacity:.8;">El código <strong>${cod}</strong> no existe en el catálogo de clientes. Verifique o regístrelo en la pestaña <strong>Catálogo de Clientes</strong>.</div>
+          </div>
+        </div>`;
+    }
+    if(btnReg){btnReg.disabled=true;btnReg.style.display='';}
+  }
+}
+window.buscarCodCli=buscarCodCli;
+
 // Agregar OT
 async function addOT(sinCatalogo=false){
   const v=id=>g(id)&&g(id).value?g(id).value.trim():'';
   const um=v('r-um');
+  const codcli=v('r-codcli');
 
-  // Validar que se haya buscado el código (codUMActual seteado o sinCatalogo)
+  // Validar código UM
   if(!sinCatalogo&&codUMActual===null&&um){
-    // Forzar búsqueda primero
     buscarCodUM();
     if(codUMActual===null){mEl('r-msg','Verifique el Código UM antes de registrar.','var(--rose)');return;}
   }
 
-  if(!um||!v('r-codcli')||!v('r-boleta')||!v('r-cliente')||!v('r-falla')||!g('r-fechaIn').value){
+  // Validar código cliente obligatoriamente
+  if(codcli&&codCliActual===null){
+    buscarCodCli();
+    if(codCliActual===null){mEl('r-msg','El código de cliente no existe en el catálogo.','var(--rose)');return;}
+  }
+
+  if(!um||!codcli||!v('r-boleta')||!v('r-falla')||!g('r-fechaIn').value){
     mEl('r-msg','Complete los campos obligatorios (*)','var(--rose)');return;
   }
 
+  // Si no se buscó el cliente aún, buscarlo ahora
+  if(!codCliActual){buscarCodCli();if(!codCliActual){mEl('r-msg','El código de cliente no existe en el catálogo.','var(--rose)');return;}}
+
   const tipoMaq=codUMActual?codUMActual.cat:'';
   const descCat=codUMActual?codUMActual.desc:'';
+  const nombreCliente=codCliActual?codCliActual.nombre:'';
 
   g('r-btn').disabled=true;
   const bsc=g('r-btn-sincat');if(bsc)bsc.disabled=true;
   const ts=new Date().toLocaleString('es-CR');
   try{
     await push(ref(db,'OTs'),{
-      um,codcli:v('r-codcli'),boleta:v('r-boleta'),cliente:v('r-cliente'),
+      um,codcli,boleta:v('r-boleta'),cliente:nombreCliente,
       tipoMaq,descCatalogo:descCat,
       falla:v('r-falla'),diagnostico:'',
       accesorios:g('r-acc').value,accdesc:v('r-accdesc'),factura:g('r-factura').value,
       fechaIn:g('r-fechaIn').value,tec:'',estado:'Pendiente',retrabajo:'No',
       fechaSal:'',finalizada:false,inicioRep:'',cotizacion:[],
       sinCatalogo:sinCatalogo||false,
-      historial:[{ts,accion:`OT creada por Recepción · ${sinCatalogo?'Sin código de catálogo':'Código de catálogo validado'} · Pendiente de técnico`}],
+      historial:[{ts,accion:`OT creada · Cliente: ${nombreCliente} (${codcli}) · ${sinCatalogo?'Sin código UM en catálogo':'UM validado'} · Pendiente de técnico`}],
       creadoEn:Date.now()
     });
     // Limpiar formulario
-    ['r-um','r-codcli','r-boleta','r-cliente','r-falla','r-accdesc','r-fechaIn'].forEach(id=>{if(g(id))g(id).value='';});
+    ['r-um','r-codcli','r-boleta','r-falla','r-accdesc','r-fechaIn'].forEach(id=>{if(g(id))g(id).value='';});
     g('r-acc').value='No';g('r-factura').value='No';
     if(g('r-acc-w'))g('r-acc-w').style.display='none';
-    g('r-cod-info').style.display='none';g('r-cod-info').innerHTML='';
-    codUMActual=null;
+    if(g('r-cod-info')){g('r-cod-info').style.display='none';g('r-cod-info').innerHTML='';}
+    if(g('r-cli-info')){g('r-cli-info').style.display='none';g('r-cli-info').innerHTML='';}
+    codUMActual=null;codCliActual=null;
     if(bsc)bsc.style.display='none';
-    mEl('r-msg',sinCatalogo?'OT registrada sin catálogo. Pendiente de asignación técnica.':'OT registrada. Pendiente de asignación técnica.','var(--teal)');
-    panelGuardado.rb=true; // al navegar fuera de Recepción se limpiará el buscador
+    mEl('r-msg',sinCatalogo?'OT registrada sin catálogo UM. Pendiente de asignación técnica.':'OT registrada. Pendiente de asignación técnica.','var(--teal)');
+    panelGuardado.rb=true;
   }catch(e){mEl('r-msg','Error: '+e.message,'var(--rose)',0);}
   g('r-btn').disabled=false;
   if(bsc)bsc.disabled=false;
@@ -1774,24 +1897,86 @@ window.limpiarFiltro=limpiarFiltro;
 function exportarExcel(){
   const datos=getOTFiltradas();
   if(!datos.length){alert('No hay datos para exportar con el filtro actual.');return;}
-  const rows=datos.map(o=>({
-    'Código UM':o.um||'','Código Cliente':o.codcli||'','Boleta UM':o.boleta||'','Cliente':o.cliente||'',
-    'Tipo Máquina':o.tipoMaq||'','Técnico':o.tec||'No asignado','Estado':o.estado||'',
-    'Falla Reportada':o.falla||'','Diagnóstico':o.diagnostico||'',
-    'Accesorios':o.accesorios||'','Con Factura':o.factura||'','Retrabajo':o.retrabajo||'',
-    'F. Ingreso':o.fechaIn||'','Inicio Reparación':o.inicioRep?new Date(o.inicioRep).toLocaleString('es-CR'):'',
-    'F. Salida':o.fechaSal||'','Días en Taller':dSince(o.fechaIn)!==null?dSince(o.fechaIn):'',
-    'Finalizada':o.finalizada?'Sí':'No',
-    'Total Cotización':o.cotizacion?(o.cotizacion.reduce((s,c)=>s+(parseFloat(c.costo)||0),0)):0,
-  }));
-  try{
-    const ws=XLSX.utils.json_to_sheet(rows);
-    const wb=XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb,'OT Taller',ws);
-    XLSX.writeFile(wb,`AELMODULOS_Taller_${new Date().toISOString().slice(0,10)}.xlsx`);
-  }catch(e){alert('Error al generar Excel: '+e.message);}
+
+  const filas=datos.map(o=>[
+    o.um||'',
+    o.codcli||'',
+    o.boleta||'',
+    o.cliente||'',
+    o.tipoMaq||'',
+    o.tec||'No asignado',
+    o.estado||'',
+    o.falla||'',
+    o.diagnostico||'',
+    o.accesorios||'',
+    o.factura||'',
+    o.retrabajo||'',
+    o.fechaIn||'',
+    o.inicioRep?new Date(o.inicioRep).toLocaleString('es-CR'):'',
+    o.fechaSal||'',
+    dSince(o.fechaIn)!==null?String(dSince(o.fechaIn)):'',
+    o.finalizada?'Sí':'No',
+    o.cotizacion?String(o.cotizacion.reduce((s,c)=>s+(parseFloat(c.costo)||0),0)):'0',
+  ]);
+
+  const encabezados=[
+    'Código UM','Código Cliente','Boleta UM','Cliente','Tipo Máquina',
+    'Técnico','Estado','Falla Reportada','Diagnóstico','Accesorios',
+    'Con Factura','Retrabajo','F. Ingreso','Inicio Reparación',
+    'F. Salida','Días en Taller','Finalizada','Total Cotización'
+  ];
+
+  const fecha=new Date().toISOString().slice(0,10);
+  const nombre=`AELMODULOS_Taller_${fecha}`;
+
+  // Intentar XLSX via window si está disponible
+  const XL=typeof XLSX!=='undefined'?XLSX:(window.XLSX||null);
+  if(XL&&XL.utils){
+    try{
+      const wsData=[encabezados,...filas];
+      const ws=XL.utils.aoa_to_sheet(wsData);
+      // Ancho de columnas
+      ws['!cols']=[
+        {wch:12},{wch:14},{wch:16},{wch:22},{wch:14},
+        {wch:22},{wch:18},{wch:30},{wch:30},{wch:10},
+        {wch:10},{wch:20},{wch:12},{wch:20},
+        {wch:12},{wch:12},{wch:10},{wch:14}
+      ];
+      const wb=XL.utils.book_new();
+      XL.utils.book_append_sheet(wb,'OT Taller',ws);
+      const wbout=XL.write(wb,{bookType:'xlsx',type:'array'});
+      const blob=new Blob([wbout],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
+      descargarBlob(blob,nombre+'.xlsx');
+      return;
+    }catch(e){console.warn('XLSX lib error:',e);}
+  }
+
+  // Fallback nativo: CSV con separador punto y coma (estándar Excel español)
+  const csvLineas=[
+    encabezados.join(';'),
+    ...filas.map(fila=>fila.map(celda=>{
+      const val=String(celda||'').replace(/"/g,'""');
+      return val.includes(';')||val.includes('"')||val.includes('\n')?`"${val}"`:val;
+    }).join(';'))
+  ];
+  const csvContent=csvLineas.join('\r\n');
+  const bom='\uFEFF';
+  const blob=new Blob([bom+csvContent],{type:'text/csv;charset=utf-8;'});
+  descargarBlob(blob,nombre+'.csv');
+}
+
+function descargarBlob(blob,nombreArchivo){
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;
+  a.download=nombreArchivo;
+  a.style.display='none';
+  document.body.appendChild(a);
+  a.click();
+  setTimeout(()=>{URL.revokeObjectURL(url);if(a.parentNode)a.parentNode.removeChild(a);},2000);
 }
 window.exportarExcel=exportarExcel;
+window.descargarBlob=descargarBlob;
 
 function exportarPDF(){
   const datos=getOTFiltradas();
@@ -2101,6 +2286,120 @@ function uDash(){
   g('d-crit').innerHTML=crit.length?crit.sort((a,b)=>dSince(b.fechaIn)-dSince(a.fechaIn)).slice(0,8).map(o=>`<div class="crit-row"><div class="crit-left"><span style="font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700;">${o.boleta}</span><span style="font-size:11px;color:var(--gray-400);">${o.cliente}</span><span class="badge b-sky" style="font-size:10px;">${o.tec||'Sin técnico'}</span>${eBadge(o.estado)}</div><span class="badge b-rose">${dSince(o.fechaIn)}d</span></div>`).join(''):'<p style="font-size:12px;color:var(--gray-400);text-align:center;padding:14px 0;font-style:italic;">Sin OT críticas — buena gestión</p>';
 }
 window.uDash=uDash;
+
+// ── CATÁLOGO DE CLIENTES — funciones internas del módulo ──────────
+let editClienteKey=null;
+
+function mElCliente(msg,col){
+  const el=g('cli-msg');if(!el)return;
+  el.style.color=col;el.textContent=msg;
+  setTimeout(()=>{if(el)el.textContent='';},3000);
+}
+window._mElCliente=mElCliente;
+
+window._cliGuardar=async function(cod,nom,tel,email){
+  const key=cod.replace(/[.#$[\]]/g,'_');
+  try{
+    if(editClienteKey){
+      await update(ref(db,`clientes/${editClienteKey}`),{codcli:cod,nombre:nom,telefono:tel,correo:email});
+      mElCliente('Cliente actualizado.','var(--teal)');
+      window._cliCancelar();
+    }else{
+      if(CLIENTES[key]&&CLIENTES[key].codcli===cod){mElCliente('Ya existe un cliente con ese código.','var(--rose)');return;}
+      await update(ref(db,`clientes/${key}`),{codcli:cod,nombre:nom,telefono:tel,correo:email,creadoEn:Date.now()});
+      mElCliente('Cliente agregado.','var(--teal)');
+      ['cli-cod','cli-nom','cli-tel','cli-email'].forEach(id=>{const el=g(id);if(el)el.value='';});
+    }
+  }catch(e){mElCliente('Error: '+e.message,'var(--rose)');}
+};
+
+window._cliEditar=function(key){
+  const c=CLIENTES[key];if(!c)return;
+  editClienteKey=key;
+  if(g('cli-cod'))g('cli-cod').value=c.codcli||'';
+  if(g('cli-nom'))g('cli-nom').value=c.nombre||'';
+  if(g('cli-tel'))g('cli-tel').value=c.telefono||'';
+  if(g('cli-email'))g('cli-email').value=c.correo||'';
+  if(g('cli-edit-lbl'))g('cli-edit-lbl').textContent='Editando: '+c.codcli+' — '+(c.nombre||'').slice(0,30);
+  if(g('cli-edit-ind'))g('cli-edit-ind').style.display='flex';
+  if(g('cli-btn-c'))g('cli-btn-c').style.display='inline-flex';
+  if(g('cli-cod'))g('cli-cod').focus();
+};
+
+window._cliCancelar=function(){
+  editClienteKey=null;
+  ['cli-cod','cli-nom','cli-tel','cli-email'].forEach(id=>{const el=g(id);if(el)el.value='';});
+  if(g('cli-edit-ind'))g('cli-edit-ind').style.display='none';
+  if(g('cli-btn-c'))g('cli-btn-c').style.display='none';
+};
+
+window._cliEliminar=async function(key){
+  const c=CLIENTES[key];if(!c)return;
+  const otsC=Object.values(OTs).filter(o=>o.codcli===c.codcli);
+  if(otsC.length>0){alert(`No se puede eliminar. El cliente "${c.nombre}" tiene ${otsC.length} OT(s) registrada(s).`);return;}
+  if(!confirm(`¿Eliminar el cliente "${c.codcli} — ${c.nombre}"?`))return;
+  try{await remove(ref(db,`clientes/${key}`));}
+  catch(e){alert('Error: '+e.message);}
+};
+
+window._cliRender=function(){
+  const ft=g('cli-search')?(g('cli-search').value||'').toLowerCase().trim():'';
+  const lista=Object.entries(CLIENTES).filter(([k,c])=>{
+    if(!c||!c.codcli)return false;
+    if(!ft)return true;
+    return(c.codcli||'').toLowerCase().includes(ft)||(c.nombre||'').toLowerCase().includes(ft);
+  }).sort((a,b)=>(a[1].codcli||'').localeCompare(b[1].codcli||''));
+  const tb=g('cli-tbody');if(!tb)return;
+  const total=Object.keys(CLIENTES).length;
+  const cntEl=g('cli-count');
+  if(cntEl)cntEl.textContent=ft?`${lista.length} resultado(s) de ${total} clientes`:`${total} clientes registrados`;
+  if(!lista.length){
+    tb.innerHTML=`<tr><td colspan="6" class="empty-row">${ft?'Sin resultados para "'+ft+'"':'Catálogo vacío. Suba importar_clientes.html a GitHub y ábrala para cargar los datos.'}</td></tr>`;
+    return;
+  }
+  const muestra=lista.slice(0,100);
+  tb.innerHTML=muestra.map(([key,c])=>{
+    const otsC=Object.values(OTs).filter(o=>o.codcli===c.codcli).length;
+    const puedeEliminar=otsC===0;
+    return`<tr>
+      <td style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:12px;">${c.codcli}</td>
+      <td style="font-size:12px;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${c.nombre||''}">${c.nombre||'—'}</td>
+      <td style="font-size:11px;color:var(--gray-600);">${c.telefono||'<span style="color:var(--gray-300);">—</span>'}</td>
+      <td style="font-size:11px;color:var(--gray-600);max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${c.correo||''}">${c.correo||'<span style="color:var(--gray-300);">—</span>'}</td>
+      <td>${otsC>0?`<span class="badge b-teal">${otsC} OT</span>`:'<span style="color:var(--gray-300);font-size:11px;">—</span>'}</td>
+      <td><div style="display:flex;gap:4px;">
+        <button class="icon-btn" onclick="editarCliente('${key}')"><i class="ti ti-edit" style="font-size:12px;"></i></button>
+        <button class="icon-btn del" onclick="eliminarCliente('${key}')" ${puedeEliminar?'':'disabled style="opacity:.4;cursor:not-allowed;" title="Tiene OTs"'}><i class="ti ti-trash" style="font-size:12px;"></i></button>
+      </div></td>
+    </tr>`;
+  }).join('');
+  if(lista.length>100){
+    tb.innerHTML+=`<tr><td colspan="6" style="text-align:center;padding:12px;font-size:11px;color:var(--gray-400);">Mostrando 100 de ${lista.length}. Refine la búsqueda para ver más.</td></tr>`;
+  }
+};
+
+// Exponer buscarCodCli para uso global
+window.buscarCodCli=buscarCodCli;
 </script>
 </body>
 </html>
+<script>
+// ── CATÁLOGO DE CLIENTES ──────────────────────────────────────────
+// Estas funciones se agregan fuera del módulo para evitar conflictos de scope
+// pero usan las variables globales expuestas via window por el módulo
+window.guardarCliente=async function(){
+  const g=id=>document.getElementById(id);
+  const cod=(g('cli-cod').value||'').trim();
+  const nom=(g('cli-nom').value||'').trim();
+  const tel=(g('cli-tel').value||'').trim();
+  const email=(g('cli-email').value||'').trim();
+  if(!cod||!nom){window._mElCliente('Complete código y nombre del cliente.','var(--rose-dark)');return;}
+  g('cli-btn-g').disabled=true;
+  await window._cliGuardar(cod,nom,tel,email);
+  g('cli-btn-g').disabled=false;
+};
+window.cancelarEditCliente=function(){window._cliCancelar();};
+window.editarCliente=function(key){window._cliEditar(key);};
+window.eliminarCliente=function(key){window._cliEliminar(key);};
+window.rClientes=function(){window._cliRender();};
+</script>
