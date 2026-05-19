@@ -1109,6 +1109,46 @@ function selOT(key,pi){
   const hH=hist.length?`<div class="sep"></div><div class="card-t"><i class="ti ti-history" style="font-size:14px;color:var(--teal);"></i>Historial de Cambios</div>${hist.slice().reverse().map((h,i)=>`<div class="tl-item"><div class="tl-dot" style="background:${i===0?'var(--teal)':'var(--gray-300)'};"></div><div><span style="font-size:11px;">${h.accion}</span><br><span style="font-size:10px;color:var(--gray-400);">${h.ts}</span></div></div>`).join('')}`:'';
   const isTec=pi==='tb-panel';
   const editable=isEditable(o);
+  const esRetrabajo=o.retrabajo&&o.retrabajo!=='No'; // OT que viene de retrabajo
+
+  // OT BLOQUEADA PERMANENTE: finalizada Y ya tuvo retrabajo → no se puede reabrir
+  if(o.finalizada&&o.retrabajo!=='No'){
+    g(pi).innerHTML=`<div class="card" style="margin-top:12px;border-top:3px solid #3D3D3D;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px;">
+        <div>
+          <span style="font-family:'Space Grotesk',sans-serif;font-size:16px;font-weight:700;">${o.boleta}</span>
+          <span class="badge b-slate" style="margin-left:8px;font-size:10px;"><i class="ti ti-lock" style="font-size:10px;margin-right:3px;vertical-align:-1px;"></i>Finalizado con Retrabajo</span>
+        </div>
+        <div style="display:flex;gap:6px;">
+          <button class="btn btn-sky" onclick="printOT('${key}','cliente')" style="font-size:12px;padding:7px 12px;"><i class="ti ti-user" style="font-size:13px;"></i>Copia Cliente</button>
+          <button class="btn btn-ghost" onclick="printOT('${key}','interno')" style="font-size:12px;padding:7px 12px;"><i class="ti ti-building" style="font-size:13px;"></i>Doc. Interno</button>
+        </div>
+      </div>
+      <div style="background:#FFFBEB;border:1.5px solid #F59E0B;border-radius:8px;padding:12px 16px;margin-bottom:14px;display:flex;align-items:flex-start;gap:10px;">
+        <i class="ti ti-lock" style="font-size:20px;color:#D97706;flex-shrink:0;margin-top:2px;"></i>
+        <div>
+          <div style="font-size:13px;font-weight:700;color:#92400E;">OT Cerrada Definitivamente</div>
+          <div style="font-size:11px;color:#92400E;margin-top:3px;">Esta OT fue procesada con retrabajo y finalizó. No puede ser modificada ni reactivada nuevamente. Si el equipo requiere una nueva intervención, registre una nueva OT en Recepción.</div>
+        </div>
+      </div>
+      <div class="fsec"><i class="ti ti-id"></i>Información de la OT</div>
+      <div class="fgrid">
+        <div class="fg"><label>Código UM</label><input type="text" value="${o.um}" readonly style="background:var(--gray-100);color:var(--gray-600);cursor:not-allowed;"></div>
+        <div class="fg"><label>Cliente</label><input type="text" value="${o.cliente}" readonly style="background:var(--gray-100);color:var(--gray-600);cursor:not-allowed;"></div>
+        <div class="fg"><label>Estado</label><input type="text" value="${o.estado}" readonly style="background:var(--gray-100);color:var(--gray-600);cursor:not-allowed;"></div>
+        <div class="fg"><label>Técnico</label><input type="text" value="${o.tec||'—'}" readonly style="background:var(--gray-100);color:var(--gray-600);cursor:not-allowed;"></div>
+        <div class="fg"><label>Fecha Ingreso</label><input type="text" value="${o.fechaIn||'—'}" readonly style="background:var(--gray-100);color:var(--gray-600);cursor:not-allowed;"></div>
+        <div class="fg"><label>Fecha Salida</label><input type="text" value="${o.fechaSal||'—'}" readonly style="background:var(--gray-100);color:var(--gray-600);cursor:not-allowed;"></div>
+        <div class="fg"><label>Retrabajo</label><input type="text" value="${o.retrabajo}" readonly style="background:var(--gray-100);color:var(--gray-600);cursor:not-allowed;"></div>
+      </div>
+      <div class="fg" style="margin-top:8px;"><label>Diagnóstico Original</label><textarea readonly style="min-height:56px;background:var(--gray-100);color:var(--gray-600);cursor:not-allowed;resize:none;">${o.diagnostico||'—'}</textarea></div>
+      ${o.diagRetrabajo?`<div class="fg" style="margin-top:8px;"><label>Diagnóstico de Retrabajo</label><textarea readonly style="min-height:56px;background:var(--gray-100);color:var(--gray-600);cursor:not-allowed;resize:none;">${o.diagRetrabajo}</textarea></div>`:''}
+      ${hH}
+    </div>`;
+    g(pi).style.display='block';
+    g(pi).scrollIntoView({behavior:'smooth',block:'nearest'});
+    return;
+  }
 
   // OT BLOQUEADA: finalizada y retrabajo = No → todo readonly, solo retrabajo para reactivar
   if(o.finalizada&&o.retrabajo==='No'){
@@ -1242,44 +1282,54 @@ function selOT(key,pi){
   ${estInfo}
   ${cronoHTML}
   ${isTec?`<div class="fsec" style="color:#059669;"><i class="ti ti-user-cog" style="font-size:12px;color:#059669;"></i>Técnico que atiende esta OT</div>${tecSelector}`:''}
-  <div class="fsec" style="color:var(--sky);"><i class="ti ti-user" style="font-size:12px;color:var(--sky);"></i>Datos de Recepción</div>
+  <div class="fsec" style="color:var(--sky);"><i class="ti ti-user" style="font-size:12px;color:var(--sky);"></i>Datos de Recepción <span style="font-size:9px;font-weight:400;color:var(--gray-400);margin-left:6px;">(solo lectura — modificar desde pestaña Recepción)</span></div>
   <div class="fgrid">
-    <div class="fg"><label>Código UM</label><input id="e-um-${pi}" type="text" value="${o.um||''}"></div>
-    <div class="fg"><label>Código Cliente</label><input id="e-codcli-${pi}" type="text" value="${o.codcli||''}"></div>
-    <div class="fg"><label>Boleta</label><input id="e-boleta-${pi}" type="text" value="${o.boleta||''}"></div>
-    <div class="fg"><label>Cliente</label><input id="e-cliente-${pi}" type="text" value="${o.cliente||''}"></div>
+    <div class="fg"><label>Código UM</label><input type="text" value="${o.um||''}" readonly style="background:var(--gray-100);color:var(--gray-600);cursor:not-allowed;border-color:var(--gray-100);"></div>
+    <div class="fg"><label>Código Cliente</label><input type="text" value="${o.codcli||''}" readonly style="background:var(--gray-100);color:var(--gray-600);cursor:not-allowed;border-color:var(--gray-100);"></div>
+    <div class="fg"><label>Boleta</label><input type="text" value="${o.boleta||''}" readonly style="background:var(--gray-100);color:var(--gray-600);cursor:not-allowed;border-color:var(--gray-100);"></div>
+    <div class="fg"><label>Cliente</label><input type="text" value="${o.cliente||''}" readonly style="background:var(--gray-100);color:var(--gray-600);cursor:not-allowed;border-color:var(--gray-100);"></div>
     <div class="fg"><label>Descripción (catálogo)</label><input type="text" value="${o.descCatalogo||'—'}" readonly style="background:var(--gray-100);color:var(--gray-600);cursor:not-allowed;border-color:var(--gray-100);"></div>
-    <div class="fg"><label>Tipo de Máquina (catálogo)</label><input type="text" value="${o.tipoMaq||'—'}" readonly style="background:var(--gray-100);color:var(--gray-600);cursor:not-allowed;border-color:var(--gray-100);"></div>
-    <div class="fg"><label>Accesorios</label><select id="e-acc-${pi}"><option${o.accesorios==='No'?' selected':''} value="No">No</option><option${o.accesorios==='Sí'?' selected':''} value="Sí">Sí</option></select></div>
-    <div class="fg"><label>Factura</label><select id="e-fac-${pi}"><option${o.factura==='No'?' selected':''} value="No">No</option><option${o.factura==='Sí'?' selected':''} value="Sí">Sí</option></select></div>
-    <div class="fg"><label>Fecha Ingreso</label><input id="e-fi-${pi}" type="date" value="${o.fechaIn||''}"></div>
+    <div class="fg"><label>Tipo de Máquina</label><input type="text" value="${o.tipoMaq||'—'}" readonly style="background:var(--gray-100);color:var(--gray-600);cursor:not-allowed;border-color:var(--gray-100);"></div>
+    <div class="fg"><label>Accesorios</label><input type="text" value="${o.accesorios||'No'}${o.accdesc?' — '+o.accdesc:''}" readonly style="background:var(--gray-100);color:var(--gray-600);cursor:not-allowed;border-color:var(--gray-100);"></div>
+    <div class="fg"><label>Factura</label><input type="text" value="${o.factura||'No'}" readonly style="background:var(--gray-100);color:var(--gray-600);cursor:not-allowed;border-color:var(--gray-100);"></div>
+    <div class="fg"><label>Fecha Ingreso</label><input type="text" value="${o.fechaIn||'—'}" readonly style="background:var(--gray-100);color:var(--gray-600);cursor:not-allowed;border-color:var(--gray-100);"></div>
   </div>
-  <div class="fg" style="margin-top:6px;"><label>Falla Reportada</label><textarea id="e-falla-${pi}" style="min-height:56px;">${o.falla||''}</textarea></div>
+  <div class="fg" style="margin-top:6px;"><label>Falla Reportada</label><textarea style="min-height:56px;background:var(--gray-100);color:var(--gray-600);cursor:not-allowed;resize:none;" readonly>${o.falla||''}</textarea></div>
   <div class="fsec" style="color:var(--teal);margin-top:14px;"><i class="ti ti-tool" style="font-size:12px;color:var(--teal);"></i>Cierre de OT — Técnico</div>
   <div class="fgrid">
-    <div class="fg"><label>Estado</label>
+    <div class="fg"><label class="req">Estado</label>
       <select id="e-est-${pi}" onchange="onEstadoChange('${pi}')">
         ${estadoOpts}
-      </select>
-    </div>
-    <div class="fg"><label>Retrabajo</label>
-      <select id="e-ret-${pi}">
-        <option${o.retrabajo==='No'?' selected':''} value="No">No</option>
-        <option${o.retrabajo==='Dañado en transporte'?' selected':''} value="Dañado en transporte">Dañado en transporte</option>
-        <option${o.retrabajo==='Cliente no recibe'?' selected':''} value="Cliente no recibe">Cliente no recibe</option>
-        <option${o.retrabajo==='Fallo de repuesto'?' selected':''} value="Fallo de repuesto">Fallo de repuesto</option>
       </select>
     </div>
     <div class="fg"><label>Fecha Salida</label><input id="e-fs-${pi}" type="date" value="${o.fechaSal||''}" onchange="onFechaSalChange('${pi}')"></div>
   </div>
   ${isTec?cotHTML:''}
-  <div class="fg" style="margin-top:6px;"><label>Diagnóstico Final del Técnico</label><textarea id="e-diag-${pi}" placeholder="Diagnóstico y trabajo realizado..." style="min-height:72px;">${o.diagnostico||''}</textarea></div>
+  <div class="fg" style="margin-top:6px;">
+    <label class="req">Diagnóstico Final del Técnico</label>
+    <textarea id="e-diag-${pi}" placeholder="Diagnóstico y trabajo realizado..." style="min-height:72px;" oninput="onDiagChange('${pi}')">${o.diagnostico||''}</textarea>
+  </div>
+  ${esRetrabajo?`
+  <div class="fg" style="margin-top:8px;">
+    <div style="background:var(--amber-light);border-left:3px solid var(--amber);border-radius:6px;padding:8px 12px;margin-bottom:6px;font-size:11px;font-weight:600;color:var(--amber-dark);">
+      <i class="ti ti-rotate-clockwise" style="font-size:13px;vertical-align:-2px;margin-right:4px;"></i>OT con Retrabajo — Diagnóstico de retrabajo obligatorio
+    </div>
+    <label class="req">Diagnóstico de Retrabajo</label>
+    <textarea id="e-diag-ret-${pi}" placeholder="Describa la causa del retrabajo y la nueva intervención realizada..." style="min-height:72px;border-color:var(--amber);">${o.diagRetrabajo||''}</textarea>
+  </div>`:'  <textarea id="e-diag-ret-${pi}" style="display:none;"></textarea>'}
   ${hH}
   <div id="btns-${pi}" style="margin-top:14px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
-    <button class="btn btn-success" id="btn-guardar-${pi}" onclick="guardar('${key}','${pi}',false)"
-      ${(isTec&&!o.tec)||(isTec&&o.estado==='En proceso')?'disabled style="opacity:.4;cursor:not-allowed;" data-bloqueado="1"':''}
-    ><i class="ti ti-check" style="font-size:14px;"></i>Guardar Cambios</button>
-    ${isTec&&o.estado==='En proceso'?`<span id="sin-cambios-${pi}" style="font-size:11px;color:var(--gray-400);font-style:italic;">Sin cambios — modifique algún campo para habilitar</span>`:''}
+    ${isTec&&o.tec?`
+      <div id="info-completar-${pi}" style="font-size:11px;color:var(--gray-400);font-style:italic;display:flex;align-items:center;gap:6px;width:100%;">
+        <i class="ti ti-info-circle" style="font-size:14px;color:var(--teal);flex-shrink:0;"></i>
+        Complete estado, diagnóstico y fecha de salida para habilitar el cierre de la OT
+      </div>
+    `:`
+      <button class="btn btn-success" id="btn-guardar-${pi}" onclick="guardar('${key}','${pi}',false)"
+        ${isTec&&!o.tec?'disabled style="opacity:.4;cursor:not-allowed;" data-bloqueado="1"':''}>
+        <i class="ti ti-check" style="font-size:14px;"></i>Guardar Cambios
+      </button>
+    `}
     <button class="btn btn-ghost" onclick="cerrar('${pi}')"><i class="ti ti-x" style="font-size:13px;"></i>Cancelar</button>
   </div>
   <div id="emsg-${pi}" style="font-size:12px;margin-top:8px;"></div>
@@ -1300,98 +1350,199 @@ window.selOT=selOT;
 function onEstadoChange(pi){
   const est=g(`e-est-${pi}`);if(!est)return;
   const val=est.value;
-  const btnG=g(`btn-guardar-${pi}`);
   const btnArea=g(`btns-${pi}`);
   if(!btnArea)return;
 
-  // Mostrar/ocultar cotización
+  // Mostrar/ocultar tabla de cotización
   const cotWrap=g(`cot-wrap-${pi}`);
   if(cotWrap)cotWrap.style.display=val==='Cotizado'?'block':'none';
 
-  // Limpiar aviso anterior de fecha y botón finalizar
-  const avisoExist=g(`aviso-fecha-${pi}`);
-  if(avisoExist)avisoExist.remove();
-  const bfExist=g(`btn-finalizar-${pi}`);
-  if(bfExist)bfExist.remove();
+  // Limpiar botones dinámicos anteriores
+  [`btn-finalizar-${pi}`,`btn-guardar-cot-${pi}`,`btn-guardar-esp-${pi}`,`aviso-fecha-${pi}`].forEach(id=>{
+    const el=g(id);if(el)el.remove();
+  });
 
-  // Si no hay técnico seleccionado en panel técnico → no habilitar nada más
+  // Verificar técnico
   const tecEl=g(`e-tec-${pi}`);
-  const hayTecnico=tecEl?tecEl.value.trim()!=='':true; // si no hay selector (rb-panel), asumir ok
-  if(!hayTecnico){
-    if(btnG)btnG.style.display='';
+  const hayTecnico=tecEl?tecEl.value.trim()!=='':	rue;
+  if(!hayTecnico)return;
+
+  const diagEl=g(`e-diag-${pi}`);
+  const fechaEl=g(`e-fs-${pi}`);
+  const tieneDiag=diagEl&&diagEl.value.trim().length>0;
+  const tieneFecha=fechaEl&&fechaEl.value.trim()!=='';
+  const esFinalReal=ESTADOS_FINALES.includes(val);
+  const esEspera=val==='Espera de repuesto';
+  const esCotizado=val==='Cotizado';
+  const esSegundaApertura=!!g(`info-completar-${pi}`);
+
+  if(esSegundaApertura){
+    // Segunda apertura: sin Guardar Cambios — solo botones específicos según condición
+    if(esEspera&&tieneDiag){
+      // Espera de repuesto + diagnóstico → Guardar Estado
+      if(!g(`btn-guardar-esp-${pi}`)){
+        const b=document.createElement('button');
+        b.className='btn btn-primary';b.id=`btn-guardar-esp-${pi}`;
+        b.innerHTML='<i class="ti ti-device-floppy" style="font-size:14px;"></i>Guardar Estado de Espera';
+        b.onclick=()=>guardarEstadoParcial(pi);
+        btnArea.insertBefore(b,btnArea.firstChild);
+      }
+    } else if(esCotizado&&tieneDiag){
+      // Cotizado + diagnóstico → Guardar Cotización
+      if(!g(`btn-guardar-cot-${pi}`)){
+        const b=document.createElement('button');
+        b.className='btn btn-primary';b.id=`btn-guardar-cot-${pi}`;
+        b.innerHTML='<i class="ti ti-receipt" style="font-size:14px;"></i>Guardar Cotización';
+        b.onclick=()=>guardarEstadoParcial(pi);
+        btnArea.insertBefore(b,btnArea.firstChild);
+      }
+      // Cotizado + diagnóstico + fecha → además Finalizar
+      if(tieneDiag&&tieneFecha&&!g(`btn-finalizar-${pi}`)){
+        const bf=document.createElement('button');
+        bf.className='btn btn-finalizar';bf.id=`btn-finalizar-${pi}`;
+        bf.innerHTML='<i class="ti ti-flag-check" style="font-size:14px;"></i>Finalizar OT';
+        bf.onclick=()=>pedirFinalizacion(pi);
+        btnArea.insertBefore(bf,btnArea.firstChild);
+      }
+    } else if(esFinalReal&&tieneDiag&&tieneFecha){
+      // Estado final + diagnóstico + fecha → solo Finalizar
+      if(!g(`btn-finalizar-${pi}`)){
+        const bf=document.createElement('button');
+        bf.className='btn btn-finalizar';bf.id=`btn-finalizar-${pi}`;
+        bf.innerHTML='<i class="ti ti-flag-check" style="font-size:14px;"></i>Finalizar OT';
+        bf.onclick=()=>pedirFinalizacion(pi);
+        btnArea.insertBefore(bf,btnArea.firstChild);
+      }
+    }
+    // Si no cumple condiciones → ningún botón de acción visible
     return;
   }
 
-  // Restaurar Guardar visible
+  // Primera apertura: flujo original con Guardar Cambios
+  const btnG=g(`btn-guardar-${pi}`);
   if(btnG)btnG.style.display='';
-
-  // Solo aplica lógica de Finalizar en estados finales
-  const esFinal=ESTADOS_FINALES.includes(val);
-  if(!esFinal)return;
-
-  // Es estado final: verificar si tiene fecha de salida
-  const fechaSalEl=g(`e-fs-${pi}`);
-  const tieneFecha=fechaSalEl&&fechaSalEl.value.trim()!=='';
-
+  if(!esFinalReal)return;
   if(tieneFecha){
-    // Tiene fecha → mostrar botón Finalizar, ocultar Guardar
     if(btnG)btnG.style.display='none';
-    const bf=document.createElement('button');
-    bf.className='btn btn-finalizar';
-    bf.id=`btn-finalizar-${pi}`;
-    bf.innerHTML='<i class="ti ti-flag-check" style="font-size:14px;"></i>Finalizar OT';
-    bf.onclick=()=>pedirFinalizacion(pi);
-    btnArea.insertBefore(bf,btnArea.firstChild);
+    if(!g(`btn-finalizar-${pi}`)){
+      const bf=document.createElement('button');
+      bf.className='btn btn-finalizar';bf.id=`btn-finalizar-${pi}`;
+      bf.innerHTML='<i class="ti ti-flag-check" style="font-size:14px;"></i>Finalizar OT';
+      bf.onclick=()=>pedirFinalizacion(pi);
+      btnArea.insertBefore(bf,btnArea.firstChild);
+    }
   } else {
-    // Sin fecha → mantener Guardar, mostrar aviso ámbar
     if(btnG)btnG.style.display='';
-    const aviso=document.createElement('div');
-    aviso.id=`aviso-fecha-${pi}`;
-    aviso.className='banner-fecha-req';
-    aviso.innerHTML=`<i class="ti ti-calendar-x" style="font-size:16px;flex-shrink:0;"></i><span>Debe registrar la <strong>Fecha de Salida</strong> antes de poder Finalizar esta OT.</span>`;
-    btnArea.insertAdjacentElement('afterend',aviso);
+    if(!g(`aviso-fecha-${pi}`)){
+      const aviso=document.createElement('div');
+      aviso.id=`aviso-fecha-${pi}`;aviso.className='banner-fecha-req';
+      aviso.innerHTML=`<i class="ti ti-calendar-x" style="font-size:16px;flex-shrink:0;"></i><span>Debe registrar la <strong>Fecha de Salida</strong> antes de poder Finalizar esta OT.</span>`;
+      btnArea.insertAdjacentElement('afterend',aviso);
+    }
   }
 }
 window.onEstadoChange=onEstadoChange;
 
-// Escuchar cambios en fecha de salida para actualizar botón en tiempo real
-function onFechaSalChange(pi){
-  const est=g(`e-est-${pi}`);
-  if(est&&ESTADOS_FINALES.includes(est.value)){
-    onEstadoChange(pi);
-  }
-}
+function onFechaSalChange(pi){onEstadoChange(pi);}
 window.onFechaSalChange=onFechaSalChange;
 
-// Modificación 5 — Detector de cambios reales en panel técnico
+function onDiagChange(pi){
+  if(g(`info-completar-${pi}`))onEstadoChange(pi);
+}
+window.onDiagChange=onDiagChange;
+
+// Guardar parcial — solo para Cotizado (guardar cotización) y Espera de repuesto
+async function guardarEstadoParcial(pi){
+  const key=g(pi)?.dataset?.otKey;if(!key)return;
+  const o=OTs[key];if(!o)return;
+  const errorVal=validarAntesDeGuardar(key,pi,false);
+  if(errorVal){const em=g(`emsg-${pi}`);if(em){em.style.color='var(--rose)';em.textContent=errorVal;}return;}
+  const nv=id=>g(id)?g(id).value.trim():'';
+  const estado=nv(`e-est-${pi}`)||o.estado;
+  const diag=nv(`e-diag-${pi}`)||o.diagnostico||'';
+  const diagRet=nv(`e-diag-ret-${pi}`)||o.diagRetrabajo||'';
+  let cots=o.cotizacion||[];
+  if(g(`cot-tbody-${pi}`))cots=recogerCotizacion(pi);
+  const ts=new Date().toLocaleString('es-CR',{timeZone:'America/Costa_Rica'});
+  const cambios=[`Estado: ${o.estado} → ${estado}`,'Guardado parcial'];
+  if(diag!==o.diagnostico)cambios.push('Diagnóstico actualizado');
+  try{
+    await update(ref(db,`OTs/${key}`),{
+      estado,diagnostico:diag,diagRetrabajo:diagRet,cotizacion:cots,
+      historial:[...(o.historial||[]),{ts,accion:cambios.join(' · ')}]
+    });
+    const em=g(`emsg-${pi}`);
+    if(em){em.style.color='var(--teal)';em.textContent='✓ Guardado correctamente. La OT sigue activa.';}
+  }catch(e){
+    const em=g(`emsg-${pi}`);
+    if(em){em.style.color='var(--rose)';em.textContent='Error: '+e.message;}
+  }
+}
+window.guardarEstadoParcial=guardarEstadoParcial;
+
+
+// ── VALIDACIÓN CENTRALIZADA — no puede ser burlada ──────────────
+// Se ejecuta en guardar() Y en finalizar ANTES de tocar Firebase
+function validarAntesDeGuardar(key, pi, esFinalizar=false){
+  const o=OTs[key];
+  if(!o)return'OT no encontrada. Actualice la página.';
+  const nv=id=>g(id)?g(id).value.trim():'';
+
+  // V1 — Técnico obligatorio siempre
+  const tec=nv(`e-tec-${pi}`)||o.tec||'';
+  if(!tec)return'Debe seleccionar el técnico que atiende esta OT.';
+
+  // V2 — Segunda apertura: diagnóstico obligatorio
+  const esPrimeraVez=!o.tec;
+  const esRetrabajo=o.retrabajo&&o.retrabajo!=='No';
+  const diag=nv(`e-diag-${pi}`)||o.diagnostico||'';
+  const diagRet=nv(`e-diag-ret-${pi}`)||o.diagRetrabajo||'';
+
+  if(!esPrimeraVez||esRetrabajo){
+    // Segunda apertura o retrabajo → diagnóstico obligatorio
+    if(!diag)return'El diagnóstico del técnico es obligatorio. Complete el campo antes de continuar.';
+    if(esRetrabajo&&!diagRet)return'Para OT con retrabajo debe registrar el diagnóstico de retrabajo.';
+  }
+
+  // V3 — Segunda apertura: estado debe cambiar de "En proceso"
+  const estadoActual=nv(`e-est-${pi}`)||o.estado;
+  if(!esPrimeraVez&&!esRetrabajo&&o.estado==='En proceso'&&estadoActual==='En proceso'){
+    return'Debe cambiar el estado de la OT antes de guardar. "En proceso" no es un estado de cierre.';
+  }
+  if(esRetrabajo&&estadoActual==='En proceso'&&esFinalizar){
+    return'Para finalizar el retrabajo debe seleccionar un estado de cierre.';
+  }
+
+  // V4 — Estado final requiere fecha de salida para finalizar
+  if(esFinalizar){
+    const fechaSal=nv(`e-fs-${pi}`)||o.fechaSal||'';
+    if(!fechaSal)return'Debe registrar la fecha de salida antes de finalizar la OT.';
+    if(ESTADOS_FINALES.includes(estadoActual)===false){
+      return'El estado seleccionado no es un estado de cierre válido para finalizar.';
+    }
+  }
+
+  return null; // null = sin errores
+}
+window.validarAntesDeGuardar=validarAntesDeGuardar;
 // Solo habilita Guardar si el técnico modificó algún campo respecto al valor de Firebase
 function initCambiosDetector(pi,o){
   const btnG=g(`btn-guardar-${pi}`);
-  const aviso=g(`sin-cambios-${pi}`);
   if(!btnG||!btnG.dataset.bloqueado)return;
-
+  // Solo campos técnicos editables — Recepción es readonly, Retrabajo eliminado
   const campos=[
-    {id:`e-est-${pi}`,   orig:o.estado||''},
-    {id:`e-diag-${pi}`,  orig:o.diagnostico||''},
-    {id:`e-ret-${pi}`,   orig:o.retrabajo||'No'},
-    {id:`e-fs-${pi}`,    orig:o.fechaSal||''},
-    {id:`e-falla-${pi}`, orig:o.falla||''},
-    {id:`e-acc-${pi}`,   orig:o.accesorios||'No'},
-    {id:`e-fi-${pi}`,    orig:o.fechaIn||''},
+    {id:`e-est-${pi}`,  orig:o.estado||''},
+    {id:`e-diag-${pi}`, orig:o.diagnostico||''},
+    {id:`e-fs-${pi}`,   orig:o.fechaSal||''},
   ];
-
   function verificarCambios(){
     const hayCambio=campos.some(c=>{
       const el=g(c.id);
       return el&&(el.value||'').trim()!==(c.orig||'').trim();
     });
-    if(hayCambio){
-      btnG.disabled=false;btnG.style.opacity='';btnG.style.cursor='';
-      if(aviso)aviso.style.display='none';
-    }else{
-      btnG.disabled=true;btnG.style.opacity='.4';btnG.style.cursor='not-allowed';
-      if(aviso)aviso.style.display='';
-    }
+    btnG.disabled=!hayCambio;
+    btnG.style.opacity=hayCambio?'':'.4';
+    btnG.style.cursor=hayCambio?'':'not-allowed';
   }
   campos.forEach(c=>{
     const el=g(c.id);
@@ -1424,11 +1575,20 @@ async function guardar(key,pi,finalizar=false){
   const nv=id=>g(id)?g(id).value:'';
   const cambios=[];
 
+  // ── VALIDACIÓN CENTRALIZADA (Puntos 1, 7) ──
+  const errorVal=validarAntesDeGuardar(key,pi,finalizar);
+  if(errorVal){
+    const em=g(`emsg-${pi}`);
+    if(em){em.style.color='var(--rose)';em.textContent=errorVal;}
+    else alert(errorVal);
+    return;
+  }
+
   // Si es finalización: usar datos existentes de Firebase, solo actualizar campos de cierre
   if(finalizar){
     const estadoSeleccionado=nv(`e-est-${pi}`)||o.estado;
     const diagSeleccionado=nv(`e-diag-${pi}`).trim()||o.diagnostico||'';
-    const retSeleccionado=nv(`e-ret-${pi}`)||o.retrabajo||'No';
+    const retSeleccionado=o.retrabajo||'No'; // retrabajo de Firebase — campo eliminado del formulario
     let cots=o.cotizacion||[];
     if(g(`cot-tbody-${pi}`))cots=recogerCotizacion(pi);
     const fechaSalVal=nv(`e-fs-${pi}`)||o.fechaSal||'';
@@ -1436,14 +1596,14 @@ async function guardar(key,pi,finalizar=false){
     const u={
       ...o, // conservar todos los datos existentes
       tec:tecVal,
-      estado:'Finalizado',
+      estado:estadoSeleccionado, // estado real del técnico (Reparado, Cambio, etc) — finalizada:true es el indicador de bloqueo
       diagnostico:diagSeleccionado,
       retrabajo:retSeleccionado,
       fechaSal:fechaSalVal,
       cotizacion:cots,
       finalizada:true,
     };
-    cambios.push(`Estado: ${o.estado||'—'} → Finalizado`);
+    cambios.push(`Estado: ${o.estado||'—'} → ${estadoSeleccionado} · OT FINALIZADA Y BLOQUEADA`);
     if(diagSeleccionado&&diagSeleccionado!==o.diagnostico)cambios.push('Diagnóstico registrado');
     cambios.push('OT FINALIZADA — bloqueada para edición');
     const ts=new Date().toLocaleString('es-CR',{timeZone:'America/Costa_Rica'});
@@ -1480,17 +1640,14 @@ async function guardar(key,pi,finalizar=false){
   let cots=o.cotizacion||[];
   if(g(`cot-tbody-${pi}`)){cots=recogerCotizacion(pi);}
   const u={
-    um:nv(`e-um-${pi}`).trim()||o.um,
-    codcli:nv(`e-codcli-${pi}`).trim()||o.codcli,
-    boleta:nv(`e-boleta-${pi}`).trim()||o.boleta,
-    cliente:nv(`e-cliente-${pi}`).trim()||o.cliente,
-    tipoMaq:o.tipoMaq, // solo lectura — no se edita desde el panel
-    descCatalogo:o.descCatalogo||'',
-    accesorios:nv(`e-acc-${pi}`)||o.accesorios,
-    factura:nv(`e-fac-${pi}`)||o.factura,
-    fechaIn:nv(`e-fi-${pi}`)||o.fechaIn,
-    falla:nv(`e-falla-${pi}`).trim()||o.falla,
-    diagnostico:nv(`e-diag-${pi}`).trim()||o.diagnostico,
+    // Datos de Recepción — siempre de Firebase (readonly en panel técnico)
+    um:o.um, codcli:o.codcli, boleta:o.boleta, cliente:o.cliente,
+    tipoMaq:o.tipoMaq, descCatalogo:o.descCatalogo||'',
+    accesorios:o.accesorios, factura:o.factura, fechaIn:o.fechaIn,
+    falla:o.falla,
+    // Datos editables por el técnico
+    diagnostico:nv(`e-diag-${pi}`).trim()||o.diagnostico||'',
+    diagRetrabajo:nv(`e-diag-ret-${pi}`).trim()||o.diagRetrabajo||'',
     estado:nv(`e-est-${pi}`)||o.estado,
     retrabajo:nv(`e-ret-${pi}`)||o.retrabajo,
     fechaSal:nv(`e-fs-${pi}`)||o.fechaSal,
@@ -1685,19 +1842,20 @@ function printOT(key,tipo='cliente'){
   const cotTotal=cots.reduce((s,c)=>s+(parseFloat(c.costo)||0),0);
   const cotTable=cots.length?`<table class="cot-print"><thead><tr><th>Código</th><th>Descripción</th><th>Costo (₡)</th></tr></thead><tbody>${cots.map(c=>`<tr><td>${c.codigo||'—'}</td><td>${c.descripcion||'—'}</td><td style="text-align:right;">₡${(parseFloat(c.costo)||0).toLocaleString('es-CR',{minimumFractionDigits:2})}</td></tr>`).join('')}<tr style="background:#F0FDFA;font-weight:700;"><td colspan="2" style="text-align:right;padding:6px 8px;">Total Cotización:</td><td style="text-align:right;padding:6px 8px;color:#0F766E;">₡${cotTotal.toLocaleString('es-CR',{minimumFractionDigits:2})}</td></tr></tbody></table>`:'<p style="font-size:12px;color:#94A3B8;font-style:italic;">Sin cotización registrada</p>';
 
-  // Color del banner según estado
+  // Punto 4: usar siempre el estado real de la OT para el banner
+  // Si está finalizada usar o.estado (Reparado, Cambio, Cotizado, Nota de crédito)
+  // "Cambio" se muestra como "CAMBIO EN GARANTÍA" para mayor claridad al cliente
+  const estadoKey=o.estado||'Pendiente';
   const estadoColores={
-    'Cotizado':    {bg:'#1E3A5F',ac:'#3B82F6',lbl:'COTIZACIÓN'},
-    'Cambio':      {bg:'#7C2D12',ac:'#F97316',lbl:'CAMBIO'},
-    'Nota de crédito':{bg:'#1a1a1a',ac:'#6B7280',lbl:'NOTA DE CRÉDITO'},
-    'Reparado':    {bg:'#14532D',ac:'#22C55E',lbl:'REPARADO'},
-    'Finalizado':  {bg:'#14532D',ac:'#22C55E',lbl:'FINALIZADO'},
-    'En proceso':  {bg:'#0D9488',ac:'#CCFBF1',lbl:'EN PROCESO'},
+    'Cotizado':          {bg:'#1E3A5F',ac:'#93C5FD',lbl:'COTIZACIÓN'},
+    'Cambio':            {bg:'#7C2D12',ac:'#FED7AA',lbl:'CAMBIO EN GARANTÍA'},
+    'Nota de crédito':   {bg:'#1a1a1a',ac:'#D1D5DB',lbl:'NOTA DE CRÉDITO'},
+    'Reparado':          {bg:'#14532D',ac:'#86EFAC',lbl:'REPARADO'},
+    'En proceso':        {bg:'#0D9488',ac:'#CCFBF1',lbl:'EN PROCESO'},
     'Espera de repuesto':{bg:'#92400E',ac:'#FCD34D',lbl:'ESPERA DE REPUESTO'},
-    'Pendiente':   {bg:'#334155',ac:'#94A3B8',lbl:'PENDIENTE'},
+    'Pendiente':         {bg:'#334155',ac:'#94A3B8',lbl:'PENDIENTE'},
   };
-  const estadoKey=o.finalizada?'Finalizado':o.estado;
-  const ec=estadoColores[estadoKey]||{bg:'#1E293B',ac:'#94A3B8',lbl:(o.estado||'OT').toUpperCase()};
+  const ec=estadoColores[estadoKey]||{bg:'#1E293B',ac:'#94A3B8',lbl:estadoKey.toUpperCase()};
 
   // CSS compartido
   const CSS=`
@@ -1768,7 +1926,14 @@ function printOT(key,tipo='cliente'){
     </tbody></table>`;
 
   const secCot=(o.estado==='Cotizado'||cots.length)?`<div class="section">Cotización</div>${cotTable}`:'';
-  const secDiag=`<div class="section">Diagnóstico Final</div><div class="diag">${o.diagnostico||'Pendiente'}</div>`;
+  const secDiag=`
+    <div class="section">Diagnóstico Final</div>
+    <div class="diag">${o.diagnostico||'Pendiente'}</div>
+    ${o.diagRetrabajo?`
+    <div class="section" style="color:#D97706;border-color:#FDE68A;">Diagnóstico de Retrabajo</div>
+    <div class="diag" style="background:#FFFBEB;border-left-color:#F59E0B;">${o.diagRetrabajo}</div>`:''}
+    ${o.retrabajo&&o.retrabajo!=='No'?`<div style="background:#FFFBEB;border:1px solid #FDE68A;border-radius:4px;padding:5px 10px;font-size:10px;color:#92400E;margin-top:4px;"><strong>Retrabajo:</strong> ${o.retrabajo}</div>`:''}
+  `;
   const hist=(o.historial||[]).slice().reverse().map(h=>`<tr><td style="padding:4px 8px;font-size:10px;">${h.ts}</td><td style="padding:4px 8px;font-size:10px;">${h.accion}</td></tr>`).join('');
   const secHist=`<div class="section">Historial de Cambios</div><table><thead><tr><th>Fecha y Hora</th><th>Acción</th></tr></thead><tbody>${hist||'<tr><td colspan="2" style="font-style:italic;color:#94A3B8;">Sin cambios</td></tr>'}</tbody></table>`;
 
@@ -1792,11 +1957,15 @@ function printOT(key,tipo='cliente'){
     </div>`;
 
   const firmasInterno=`
-    <div class="firmas">
-      <div class="firma-box">Recepción</div>
-      <div class="firma-box">Técnico — ${o.tec||'_______________'}</div>
-      <div class="firma-box">Supervisor</div>
-      <div class="firma-box">Recibido / Copia</div>
+    <div class="firmas" style="gap:60px;">
+      <div class="firma-box">
+        <div style="font-size:10px;font-weight:700;color:#1E293B;margin-bottom:2px;">Encargado de Taller</div>
+        <div style="font-size:9px;color:#94A3B8;">Firma y sello</div>
+      </div>
+      <div class="firma-box">
+        <div style="font-size:10px;font-weight:700;color:#1E293B;margin-bottom:2px;">Gerencia Operativa</div>
+        <div style="font-size:9px;color:#94A3B8;">Autorización</div>
+      </div>
     </div>`;
 
   // Generar el HTML según el tipo de documento
