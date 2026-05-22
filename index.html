@@ -313,8 +313,78 @@ tr:last-child td{border-bottom:none;}
 @keyframes spin{to{transform:rotate(360deg)}}
 .loading-text{font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600;color:var(--gray-400);letter-spacing:.06em;text-transform:uppercase;}
 
+.login-screen{position:fixed;inset:0;background:linear-gradient(135deg,#0F172A 0%,#1E293B 60%,#0F172A 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;}
+.login-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:36px 40px;width:100%;max-width:400px;box-shadow:0 24px 64px rgba(0,0,0,.4);}
+.login-logo{text-align:center;margin-bottom:24px;}.login-logo img{height:56px;width:auto;object-fit:contain;}
+.login-title{font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:700;color:#fff;text-align:center;margin-bottom:4px;}
+.login-sub{font-size:12px;color:rgba(255,255,255,.35);text-align:center;margin-bottom:24px;}
+.login-fg{margin-bottom:14px;}.login-fg label{display:block;font-size:11px;font-weight:600;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px;}
+.login-fg input{width:100%;padding:10px 14px;background:rgba(255,255,255,.06);border:1.5px solid rgba(255,255,255,.1);border-radius:8px;color:#fff;font-size:13px;font-family:'Plus Jakarta Sans',sans-serif;box-sizing:border-box;transition:border-color .2s;}
+.login-fg input:focus{outline:none;border-color:var(--teal);}.login-fg input::placeholder{color:rgba(255,255,255,.2);}
+.login-btn{width:100%;padding:12px;background:var(--teal);color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:700;font-family:'Space Grotesk',sans-serif;cursor:pointer;transition:background .2s;margin-top:4px;}
+.login-btn:hover{background:var(--teal-dark);}.login-btn:disabled{opacity:.5;cursor:not-allowed;}
+.login-err{font-size:12px;color:#FCA5A5;text-align:center;margin-top:10px;min-height:18px;}
+.login-public{text-align:center;margin-top:16px;}.login-public a{font-size:11px;color:rgba(255,255,255,.3);cursor:pointer;text-decoration:none;transition:color .2s;}.login-public a:hover{color:var(--teal);}
+.tb-user{display:flex;align-items:center;gap:8px;border-left:1px solid rgba(255,255,255,.1);padding-left:12px;}
+.tb-user-name{font-size:11px;color:rgba(255,255,255,.6);max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.tb-user-perfil{font-size:9px;font-weight:700;color:var(--teal);text-transform:uppercase;letter-spacing:.07em;}
+.btn-logout{background:none;border:1.5px solid rgba(255,255,255,.15);border-radius:6px;padding:4px 10px;font-size:11px;color:rgba(255,255,255,.5);cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:all .2s;}
+.btn-logout:hover{border-color:var(--rose);color:var(--rose);}
+
 .two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
 @media(max-width:700px){.two-col{grid-template-columns:1fr;}}
+
+/* ── RESPONSIVE TABLET (≤ 900px) ── */
+@media(max-width:900px){
+  .topbar{padding:0 12px;gap:8px;}
+  .tb-sub{display:none;}
+  .tb-clock{display:none;}
+  .tb-user-name{max-width:80px;}
+  .nav-tabs{padding:0 8px;gap:2px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+  .nav-tabs::-webkit-scrollbar{display:none;}
+  .ntab{font-size:11px;padding:8px 10px;white-space:nowrap;flex-shrink:0;}
+  .dash-grid{grid-template-columns:1fr 1fr;}
+  .hero-grid{grid-template-columns:1fr 1fr;}
+  .fgrid{grid-template-columns:1fr 1fr;}
+  .tbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+  .tbl-wrap table{min-width:600px;}
+  .card{padding:14px;}
+  .tec-stats{flex-wrap:wrap;gap:8px;}
+  .fp-quick-btns{gap:4px;}
+  .fp-quick-btn{font-size:10px;padding:3px 8px;}
+}
+/* ── RESPONSIVE MÓVIL (≤ 480px) ── */
+@media(max-width:480px){
+  .topbar{padding:0 8px;height:48px;}
+  .tb-logo{font-size:13px;}
+  .tb-divider{display:none;}
+  #slabel{font-size:9px;}
+  .nav-tabs{padding:0 4px;gap:1px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+  .nav-tabs::-webkit-scrollbar{display:none;}
+  .ntab{font-size:10px;padding:6px 8px;white-space:nowrap;flex-shrink:0;}
+  .ntab i{font-size:14px;}
+  .content{padding:10px 8px;}
+  .ph h1{font-size:17px;}
+  .ph p{font-size:11px;}
+  .ph-icon{width:32px;height:32px;font-size:15px;}
+  .dash-grid{grid-template-columns:1fr;}
+  .hero-grid{grid-template-columns:1fr 1fr;}
+  .kpi-box{padding:12px 10px;}
+  .kv{font-size:24px;}
+  .fgrid{grid-template-columns:1fr;}
+  .two-col{grid-template-columns:1fr;}
+  .tec-stats{flex-wrap:wrap;gap:6px;}
+  .ts{min-width:50px;}
+  .ts-n{font-size:16px;}
+  .login-card{padding:24px 18px;margin:12px;}
+  .login-title{font-size:16px;}
+  .fp-quick-btns{display:grid;grid-template-columns:1fr 1fr;gap:4px;}
+  .export-wrap{flex-direction:column;gap:4px;}
+  .tbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+  .tbl-wrap table{min-width:560px;font-size:11px;}
+  .tbl-wrap th,.tbl-wrap td{padding:5px 6px;}
+}
+
 .tc-editing{background:var(--teal-faint);border:1px solid #99F6E4;border-radius:8px;padding:7px 12px;font-size:12px;color:var(--teal-dark);display:flex;align-items:center;gap:7px;margin-bottom:10px;font-weight:500;}
 
 /* MODAL ALERTA PERSONALIZADO */
@@ -341,12 +411,43 @@ tr:last-child td{border-bottom:none;}
   </div>
 </div>
 
+<!-- PANTALLA DE LOGIN -->
+<div id="login-screen" class="login-screen" style="display:flex;">
+  <div class="login-card">
+    <div class="login-logo">
+      <img id="login-logo-img" alt="Unidos Mayoreo" style="height:56px;width:auto;object-fit:contain;">
+    </div>
+    <div class="login-title">AELMODULOS</div>
+    <div class="login-sub">Sistema de Gestión de Taller · Acceso interno</div>
+    <div class="login-fg">
+      <label>Correo electrónico</label>
+      <input id="login-email" type="email" placeholder="correo@empresa.com" autocomplete="email"
+        onkeydown="if(event.key==='Enter')document.getElementById('login-pass').focus()">
+    </div>
+    <div class="login-fg">
+      <label>Contraseña</label>
+      <input id="login-pass" type="password" placeholder="••••••••" autocomplete="current-password"
+        onkeydown="if(event.key==='Enter')authLogin()">
+    </div>
+    <button class="login-btn" id="login-btn" onclick="authLogin()">
+      <i class="ti ti-login" style="font-size:14px;margin-right:6px;vertical-align:-2px;"></i>Ingresar al sistema
+    </button>
+    <div class="login-err" id="login-err"></div>
+    <div class="login-public">
+      <a onclick="authModoPublico()">
+        <i class="ti ti-search" style="font-size:11px;margin-right:3px;vertical-align:-1px;"></i>
+        Continuar solo con Consulta pública
+      </a>
+    </div>
+  </div>
+</div>
+
 <div id="loading-overlay" class="loading-overlay">
   <div class="spinner"></div>
   <div class="loading-text">Conectando sistema...</div>
 </div>
 
-<div class="topbar">
+<div class="topbar" id="main-topbar" style="display:none;">
   <div class="tb-brand">
     <div class="tb-logo"><span class="ael">AEL</span><span class="dot"></span><span class="mod">MODULOS</span></div>
     <div class="tb-divider"></div>
@@ -355,25 +456,37 @@ tr:last-child td{border-bottom:none;}
   <div class="tb-right">
     <div class="sync-wrap"><div class="sdot" id="sdot"></div><span id="slabel">Conectando...</span></div>
     <div class="tb-clock" id="tclock"></div>
+    <!-- Usuario activo — visible solo cuando hay sesión -->
+    <div class="tb-user" id="tb-user" style="display:none;">
+      <div>
+        <div class="tb-user-name" id="tb-user-name"></div>
+        <div class="tb-user-perfil" id="tb-user-perfil"></div>
+      </div>
+      <button class="btn-logout" onclick="authLogout()">
+        <i class="ti ti-logout" style="font-size:11px;margin-right:3px;vertical-align:-1px;"></i>Salir
+      </button>
+    </div>
   </div>
 </div>
 
-<div class="nav">
+<div class="nav" id="main-nav" style="display:none;">
   <button class="ntab active" id="btn-rec" onclick="showTab('rec')"><i class="ti ti-clipboard-plus"></i>Ingreso de Máquinas</button>
   <button class="ntab" id="btn-tec" onclick="showTab('tec')"><i class="ti ti-tool"></i>Gestión Técnica</button>
   <button class="ntab" id="btn-cod" onclick="showTab('cod')"><i class="ti ti-clock-check"></i>Tiempos por Código</button>
   <button class="ntab" id="btn-cli" onclick="showTab('cli')"><i class="ti ti-users"></i>Catálogo de Clientes</button>
   <button class="ntab" id="btn-tbl" onclick="showTab('tbl')"><i class="ti ti-table-options"></i>Registro de OT</button>
+  <button class="ntab" id="btn-cns" onclick="showTab('cns')"><i class="ti ti-search"></i>Consulta</button>
   <button class="ntab" id="btn-dash" onclick="showTab('dash')"><i class="ti ti-chart-bar"></i>Panel de Control</button>
 </div>
 
-<div class="content">
+<div class="content" id="main-content" style="display:none;">
 
 <!-- RECEPCIÓN -->
 <div id="tab-rec" class="tab-pane active">
   <div class="ph"><h1><span class="ph-icon"><i class="ti ti-clipboard-plus"></i></span>Ingreso de Máquinas al Taller</h1><p>Registro de nuevas órdenes de trabajo — Personal de Recepción</p></div>
   <div class="two-col">
-    <div class="card">
+    <div>
+      <div class="card">
       <div class="rtag rt-rec"><i class="ti ti-user-check" style="font-size:12px;"></i>Nueva Orden de Trabajo</div>
       <div class="fsec"><i class="ti ti-id"></i>Identificación</div>
       <div class="fgrid">
@@ -415,6 +528,7 @@ tr:last-child td{border-bottom:none;}
       </div>
       <p style="font-size:10px;color:var(--gray-400);margin-top:8px;">* Campos obligatorios</p>
     </div>
+    </div>
     <div>
       <div class="card">
         <div class="card-t"><i class="ti ti-search"></i>Buscar y Editar OT — Recepción</div>
@@ -424,6 +538,108 @@ tr:last-child td{border-bottom:none;}
           <button class="btn btn-ghost" onclick="limpiarB('rb')"><i class="ti ti-x" style="font-size:13px;"></i>Limpiar</button>
         </div>
         <div id="rb-results"></div><div id="rb-panel" style="display:none;"></div>
+      </div>
+
+      <!-- GESTIÓN DE COTIZACIONES — Recepción -->
+      <div class="card" style="margin-top:14px;">
+        <div class="rtag rt-cod" style="background:rgba(245,158,11,.15);color:var(--amber);border-color:rgba(245,158,11,.3);">
+          <i class="ti ti-receipt" style="font-size:12px;"></i>Gestión de Cotizaciones
+        </div>
+        <p style="font-size:11px;color:var(--gray-500);margin-bottom:12px;">
+          OTs en proceso de cotización · Habilitar · Completar · Registrar respuesta del cliente
+        </p>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+          <div class="fg" style="flex:1;min-width:120px;">
+            <label>Boleta</label>
+            <input id="gc-boleta" type="text" placeholder="Ej: 95" autocomplete="off"
+              onkeydown="if(event.key==='Enter'){event.preventDefault();gcBuscar();}">
+          </div>
+          <div class="fg" style="flex:1;min-width:130px;">
+            <label>Código Cliente</label>
+            <input id="gc-codcli" type="text" placeholder="Ej: 1001" autocomplete="off"
+              onkeydown="if(event.key==='Enter'){event.preventDefault();gcBuscar();}">
+          </div>
+          <button class="btn btn-primary" onclick="gcBuscar()" style="background:var(--amber);border-color:var(--amber);">
+            <i class="ti ti-search" style="font-size:13px;"></i>Buscar
+          </button>
+          <button class="btn btn-ghost" onclick="gcLimpiar()">
+            <i class="ti ti-x" style="font-size:13px;"></i>Limpiar
+          </button>
+        </div>
+        <div id="gc-msg" style="font-size:12px;min-height:16px;margin-bottom:6px;"></div>
+        <div id="gc-resultados" style="display:none;">
+          <div style="border:1px solid var(--gray-200);border-radius:8px;overflow:hidden;margin-bottom:10px;">
+            <div style="background:var(--gray-100);padding:8px 12px;display:flex;justify-content:space-between;align-items:center;">
+              <span style="font-size:10px;font-weight:700;color:var(--amber);text-transform:uppercase;letter-spacing:.06em;">
+                <i class="ti ti-list-check" style="margin-right:4px;"></i>OTs para gestión de cotización
+              </span>
+              <span id="gc-count" style="font-size:11px;color:var(--gray-400);"></span>
+            </div>
+            <div id="gc-lista" style="max-height:300px;overflow-y:auto;"></div>
+          </div>
+        </div>
+        <div id="gc-panel" style="display:none;"></div>
+      </div>
+
+      <div class="card" style="background:#0F172A;border:2px solid #334155;border-radius:12px;padding:0;overflow:hidden;">
+
+        <!-- Header slate con acento teal -->
+        <div style="background:#1E293B;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;border-left:4px solid #0D9488;">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <i class="ti ti-truck-delivery" style="font-size:20px;color:#0D9488;"></i>
+            <span style="font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:.07em;">Proceso de Despacho y Entrega</span>
+          </div>
+          <span style="font-size:10px;color:#64748B;">Reparado · Cambio · Cotizado</span>
+        </div>
+
+        <div style="padding:16px;">
+          <!-- Campos de búsqueda -->
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">
+            <div>
+              <label style="display:block;font-size:11px;font-weight:700;color:#94A3B8;text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px;">Boleta</label>
+              <input id="ds-boleta" type="text" placeholder="Ej: 95" autocomplete="off"
+                style="width:100%;padding:9px 12px;background:#fff;border:2px solid #CBD5E1;border-radius:8px;color:#111;font-size:13px;font-family:'Plus Jakarta Sans',sans-serif;box-sizing:border-box;"
+                onkeydown="if(event.key==='Enter'){event.preventDefault();dsBuscar();}">
+            </div>
+            <div>
+              <label style="display:block;font-size:11px;font-weight:700;color:#94A3B8;text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px;">Código Cliente</label>
+              <input id="ds-codcli" type="text" placeholder="Ej: 1001" autocomplete="off"
+                style="width:100%;padding:9px 12px;background:#fff;border:2px solid #CBD5E1;border-radius:8px;color:#111;font-size:13px;font-family:'Plus Jakarta Sans',sans-serif;box-sizing:border-box;"
+                onkeydown="if(event.key==='Enter'){event.preventDefault();dsBuscar();}">
+            </div>
+          </div>
+
+          <!-- Botones -->
+          <div style="display:flex;gap:8px;margin-bottom:12px;">
+            <button onclick="dsBuscar()"
+              style="flex:1;background:#0D9488;border:none;border-radius:8px;padding:10px;font-size:13px;font-weight:700;color:#fff;cursor:pointer;font-family:'Space Grotesk',sans-serif;display:flex;align-items:center;justify-content:center;gap:6px;">
+              <i class="ti ti-search" style="font-size:14px;"></i>Buscar OT
+            </button>
+            <button onclick="dsLimpiar()"
+              style="background:#475569;border:2px solid #64748B;border-radius:8px;padding:10px 16px;font-size:13px;font-weight:700;color:#fff;cursor:pointer;font-family:'Space Grotesk',sans-serif;display:flex;align-items:center;gap:6px;">
+              <i class="ti ti-x" style="font-size:14px;"></i>Limpiar
+            </button>
+          </div>
+
+          <!-- Mensaje -->
+          <div id="ds-msg" style="font-size:12px;font-weight:600;margin-bottom:8px;min-height:18px;"></div>
+
+          <!-- Resultados -->
+          <div id="ds-resultados" style="display:none;">
+            <div style="background:#1E293B;border:2px solid #334155;border-radius:10px;overflow:hidden;margin-bottom:10px;">
+              <div style="background:#334155;padding:8px 14px;display:flex;justify-content:space-between;align-items:center;">
+                <span style="font-size:11px;font-weight:700;color:#0D9488;">
+                  <i class="ti ti-list-check" style="margin-right:5px;font-size:12px;vertical-align:-1px;"></i>OTs para despacho / entrega
+                </span>
+                <span id="ds-count" style="background:#0D9488;padding:2px 10px;border-radius:10px;font-size:11px;font-weight:700;color:#fff;"></span>
+              </div>
+              <div id="ds-lista" style="max-height:280px;overflow-y:auto;"></div>
+            </div>
+          </div>
+
+          <!-- Panel de detalle -->
+          <div id="ds-panel" style="display:none;"></div>
+        </div>
       </div>
     </div>
   </div>
@@ -455,7 +671,15 @@ tr:last-child td{border-bottom:none;}
           <div class="fg"><label class="req">Código UM</label><input id="tc-um" type="text" placeholder="UM-001"></div>
           <div class="fg"><label class="req">Descripción</label><input id="tc-desc" type="text" placeholder="Motor taladro 1/2"></div>
           <div class="fg"><label class="req">Horas Estimadas</label><input id="tc-horas" type="number" min="0.5" step="0.5" placeholder="4"></div>
-          <div class="fg"><label class="req">Tipo de Máquina</label><select id="tc-cat"><option>Eléctrica</option><option>Combustión</option><option>Hidráulica</option><option>General</option></select></div>
+          <div class="fg"><label class="req">Tipo de Máquina</label><select id="tc-cat">
+            <option>Eléctrica</option>
+            <option>Combustión</option>
+            <option>Electro Hidráulico</option>
+            <option>Electro Neumático</option>
+            <option>Hidráulica</option>
+            <option>Hidráulico Aceite</option>
+            <option>Neumático</option>
+          </select></div>
           <div class="fg"><label>Observaciones</label><input id="tc-obs" type="text" placeholder="Opcional..."></div>
         </div>
         <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
@@ -468,7 +692,16 @@ tr:last-child td{border-bottom:none;}
         <div class="card-t"><i class="ti ti-search"></i>Buscar en Catálogo</div>
         <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;">
           <div class="fg" style="flex:1;min-width:130px;"><label>Código o descripción</label><input id="tc-search" type="text" placeholder="Buscar..." oninput="rCodigos()"></div>
-          <div class="fg"><label>Categoría</label><select id="tc-cat-f" onchange="rCodigos()"><option value="">Todas</option><option>Eléctrica</option><option>Combustión</option><option>Hidráulica</option><option>General</option></select></div>
+          <div class="fg"><label>Categoría</label><select id="tc-cat-f" onchange="rCodigos()">
+            <option value="">Todas</option>
+            <option>Eléctrica</option>
+            <option>Combustión</option>
+            <option>Electro Hidráulico</option>
+            <option>Electro Neumático</option>
+            <option>Hidráulica</option>
+            <option>Hidráulico Aceite</option>
+            <option>Neumático</option>
+          </select></div>
         </div>
       </div>
     </div>
@@ -541,6 +774,59 @@ tr:last-child td{border-bottom:none;}
       <thead><tr><th>Cód. UM</th><th>Boleta</th><th>Cliente</th><th>Descripción</th><th>Tipo</th><th>Falla</th><th>Diagnóstico</th><th>Técnico</th><th>Estado</th><th>Retrabajo</th><th>F. Ingreso</th><th>Inicio Rep.</th><th>F. Salida</th><th>Días</th><th>Est.</th><th>🔒</th><th></th></tr></thead>
       <tbody id="ot-tbody"><tr><td colspan="16" class="empty-row">Cargando...</td></tr></tbody>
     </table>
+  </div>
+</div>
+
+<!-- CONSULTA -->
+<div id="tab-cns" class="tab-pane">
+  <div class="ph">
+    <h1><span class="ph-icon"><i class="ti ti-search"></i></span>Consulta de Órdenes de Trabajo</h1>
+    <p>Consulte el estado de una OT ingresando la Boleta de Trámite o el Código de Cliente · Solo lectura</p>
+  </div>
+  <!-- TODO: Agregar validación de perfil/credenciales aquí cuando se implemente autenticación -->
+  <div class="two-col">
+    <!-- Panel de búsqueda -->
+    <div>
+      <div class="card">
+        <div class="rtag rt-cod"><i class="ti ti-search" style="font-size:12px;"></i>Buscar OT</div>
+        <div class="fg" style="margin-bottom:10px;">
+          <label>Boleta de Trámite UM</label>
+          <input id="cns-boleta" type="text" placeholder="Ej: 95" autocomplete="off"
+            oninput="cnsLimpiarResultados()"
+            onkeydown="if(event.key==='Enter'){event.preventDefault();cnsBuscar();}">
+        </div>
+        <div style="text-align:center;font-size:11px;color:var(--gray-400);margin:6px 0;">— o —</div>
+        <div class="fg" style="margin-bottom:12px;">
+          <label>Código de Cliente</label>
+          <input id="cns-codcli" type="text" placeholder="Ej: 1001" autocomplete="off"
+            oninput="cnsLimpiarResultados()"
+            onkeydown="if(event.key==='Enter'){event.preventDefault();cnsBuscar();}">
+        </div>
+        <button class="btn btn-primary" onclick="cnsBuscar()" style="width:100%;">
+          <i class="ti ti-search" style="font-size:14px;"></i>Consultar
+        </button>
+        <div id="cns-msg" style="font-size:12px;margin-top:8px;"></div>
+      </div>
+      <!-- Resultados -->
+      <div id="cns-resultados" style="display:none;">
+        <div class="card" style="padding:0;overflow:hidden;">
+          <div style="padding:10px 14px;background:var(--gray-100);border-bottom:1px solid var(--gray-200);display:flex;align-items:center;justify-content:space-between;">
+            <span style="font-size:11px;font-weight:700;color:var(--slate);text-transform:uppercase;letter-spacing:.06em;">Resultados</span>
+            <span id="cns-count" style="font-size:11px;color:var(--gray-400);"></span>
+          </div>
+          <div id="cns-lista" style="max-height:480px;overflow-y:auto;"></div>
+        </div>
+      </div>
+    </div>
+    <!-- Panel de detalle -->
+    <div>
+      <div id="cns-detalle" style="display:none;"></div>
+      <div id="cns-placeholder" class="card" style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:280px;text-align:center;gap:12px;">
+        <i class="ti ti-clipboard-search" style="font-size:48px;color:var(--gray-200);"></i>
+        <div style="font-size:13px;color:var(--gray-400);">Busque una OT para ver su detalle</div>
+        <div style="font-size:11px;color:var(--gray-300);">Use la boleta de trámite o código de cliente</div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -641,10 +927,15 @@ tr:last-child td{border-bottom:none;}
       <div style="height:4px;background:var(--gray-100);border-radius:2px;margin-top:10px;overflow:hidden;"><div id="bar-espera" style="height:100%;border-radius:2px;background:#E8B113;width:0%;transition:width .6s;"></div></div>
     </div>
     <div class="kpi-box" id="kpi-ciclo" style="border-top:3px solid #3D3D3D;">
-      <div class="kl">Ciclo promedio</div>
+      <div class="kl"><i class="ti ti-clock-play"></i>Ciclo Promedio</div>
       <div class="kv" id="d-ciclo">—</div>
-      <div class="ks" id="d-ciclo-s">días en taller</div>
+      <div class="ks" id="d-ciclo-s">horas promedio/OT</div>
       <div style="height:4px;background:var(--gray-100);border-radius:2px;margin-top:10px;overflow:hidden;"><div id="bar-ciclo" style="height:100%;border-radius:2px;width:0%;transition:width .6s;"></div></div>
+    </div>
+    <div class="kpi-box" id="kpi-eficiencia" style="border-top:3px solid var(--emerald);">
+      <div class="kl"><i class="ti ti-chart-pie"></i>Eficiencia Taller</div>
+      <div class="kv" id="d-eficiencia">—</div>
+      <div class="ks" id="d-eficiencia-s">OT cerradas en tiempo</div>
     </div>
     <div class="kpi-box" style="border-top:3px solid #3D3D3D;"><div class="kl">Catálogo</div><div class="kv" id="d-codigos">—</div><div class="ks">códigos UM</div></div>
   </div>
@@ -801,37 +1092,275 @@ tr:last-child td{border-bottom:none;}
 
 <script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import{getDatabase,ref,push,onValue,update,remove}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
-const fc={apiKey:"AIzaSyDOl9tblEjRneTu4LkDgE8n5VMeKX40HKI",authDomain:"modulo-taller-4032f.firebaseapp.com",databaseURL:"https://modulo-taller-4032f-default-rtdb.firebaseio.com",projectId:"modulo-taller-4032f",storageBucket:"modulo-taller-4032f.firebasestorage.app",messagingSenderId:"375555657071",appId:"1:375555657071:web:c9c29e0ee92c225f8dac9a"};
-const app=initializeApp(fc);const db=getDatabase(app);
+import{getDatabase,ref,push,onValue,update,remove,get}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+import{getAuth,signInWithEmailAndPassword,signOut,onAuthStateChanged}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+const fc={apiKey:"AIzaSyCtGRIMCUWCvubaAFTFBptvreJ5FMWySIM",authDomain:"taller-unidos-mayoreo.firebaseapp.com",databaseURL:"https://taller-unidos-mayoreo-default-rtdb.firebaseio.com",projectId:"taller-unidos-mayoreo",storageBucket:"taller-unidos-mayoreo.firebasestorage.app",messagingSenderId:"46127340640",appId:"1:46127340640:web:09aa6ed68c67a0cb4cb705"};
+const app=initializeApp(fc);const db=getDatabase(app);const auth=getAuth(app);
+
+// Logo de Unidos Mayoreo en pantalla de login — base64 directo
+(function(){
+  const loginLogo=document.getElementById('login-logo-img');
+  if(loginLogo)loginLogo.src="data:image/png;base64,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";
+})();
+let authUser=null;       // usuario de Firebase Auth
+let authPerfil=null;     // objeto {nombre, perfil, activo} de la DB
+let modoPublico=false;   // true cuando entra solo a Consulta sin login
+
+// Revelar el módulo SOLO después de autenticación confirmada — evita FOUC
+function mostrarModulo(){
+  const els=['main-topbar','main-nav','main-content'];
+  els.forEach(id=>{const el=document.getElementById(id);if(el)el.style.display='';});
+}
+function ocultarModulo(){
+  const els=['main-topbar','main-nav','main-content'];
+  els.forEach(id=>{const el=document.getElementById(id);if(el)el.style.display='none';});
+}
+
 
 let OTs={},CODIGOS={},CLIENTES={},editKey=null,filtroActivo=null;
 let editClienteKey=null;
 let modalCallback=null;
 // Flag por prefijo de panel: si true → limpiar al salir de la pestaña
 const panelGuardado={tb:false,rb:false};
-const J=8;
+const J=10; // Jornada laboral L-V 7am-5pm = 10 horas/día
+
+// Convertir horas a días laborales (J=10h/día)
+// h2d: horas → días con 1 decimal
+// h2h: horas → string legible "Xh" o "Xh (Y.Yd)"
+// formatTiempo: número de horas → "Xh" simple
+function formatH(h){
+  if(!h||h===0)return'—';
+  const hrs=parseFloat(h);
+  if(isNaN(hrs))return'—';
+  return hrs%1===0?`${hrs}h`:`${hrs.toFixed(1)}h`;
+}
+function formatHD(h){
+  // Muestra horas + días entre paréntesis cuando es >= 1 día
+  if(!h||h===0)return'—';
+  const hrs=parseFloat(h);
+  if(isNaN(hrs))return'—';
+  const dias=(hrs/J);
+  const hStr=hrs%1===0?`${hrs}h`:`${hrs.toFixed(1)}h`;
+  if(dias>=1) return`${hStr} (${dias.toFixed(1)}d)`;
+  return hStr;
+}
 const CRITICO_DIAS=10;
 const TECNICOS=['Gerald Duran Ardon','Alberto Fallas Granados','Viach Vargas Hidalgo','Heiner Leon Beita'];
 const ESTADOS_TEC=['En proceso','Reparado','Cotizado','Espera de repuesto','Cambio','Nota de crédito'];
-const ESTADOS_FINALES=['Reparado','Cotizado','Cambio','Nota de crédito'];
+const ESTADOS_FINALES=['Reparado','Cambio','Nota de crédito','No procede','Cotización rechazada'];
+// Nota: 'Cotizado' sale de ESTADOS_FINALES — es estado intermedio del proceso de cotización
+// OTs históricas con Cotizado+finalizada:true se respetan por el campo finalizada
+const ESTADOS_COTIZACION=['Cotizado','Pendiente aprobación']; // intermedios — no finalizan OT
 const MESES_ES=['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
 
 function clock(){const n=new Date();document.getElementById('tclock').textContent=n.toLocaleTimeString('es-CR',{hour:'2-digit',minute:'2-digit',timeZone:'America/Costa_Rica'});}
 setInterval(clock,1000);clock();
 
 const g=id=>document.getElementById(id);
-function showTab(t){
-  // Antes de cambiar, limpiar pestañas que tuvieron guardado exitoso
+// ── PERMISOS POR PERFIL ──────────────────────────────────────────
+const PERFILES_TABS={
+  administrador: ['rec','tec','cod','cli','tbl','cns','dash'],
+  gerencia:      ['tbl','cns','dash'],
+  recepcion:     ['rec','cns'],
+  tecnico:       ['tec','cns'],
+  consulta:      ['cns'], // modo público sin login
+};
+const PERFILES_LABEL={
+  administrador:'Administrador',gerencia:'Gerencia',
+  recepcion:'Recepción',tecnico:'Técnico',consulta:'Consulta Pública',
+};
+
+// Tabs con info pública para mostrar en nav sin login
+const TABS_SIEMPRE_VISIBLES=['cns'];
+
+// ── CONTROL DE VISIBILIDAD DE TABS ──────────────────────────────
+function aplicarPerfilUI(){
+  const perfil=modoPublico?'consulta':(authPerfil?authPerfil.perfil:'consulta');
+  const tabsPermitidos=PERFILES_TABS[perfil]||['cns'];
+
+  // Nav: mostrar/ocultar pestañas según perfil
+  ['rec','tec','cod','cli','tbl','cns','dash'].forEach(t=>{
+    const btn=g('btn-'+t);if(!btn)return;
+    const visible=tabsPermitidos.includes(t);
+    btn.style.display=visible?'':'none';
+  });
+
+  // Mostrar/ocultar chip de usuario en topbar
+  const tbUser=g('tb-user');
+  if(tbUser){
+    if(authUser&&!modoPublico){
+      tbUser.style.display='flex';
+      const nombre=authPerfil?authPerfil.nombre:(authUser.email||'');
+      const perfilLabel=PERFILES_LABEL[perfil]||perfil;
+      g('tb-user-name').textContent=nombre;
+      g('tb-user-perfil').textContent=perfilLabel;
+    } else {
+      tbUser.style.display='none';
+    }
+  }
+
+  // Ir a la primera pestaña permitida
+  const primera=tabsPermitidos[0]||'cns';
+  showTabSinAuth(primera);
+}
+
+// showTab sin verificación de auth (uso interno)
+function showTabSinAuth(t){
   if(panelGuardado.tb){limpiarB('tb');panelGuardado.tb=false;}
   if(panelGuardado.rb){limpiarB('rb');panelGuardado.rb=false;}
-  ['rec','tec','cod','cli','tbl','dash'].forEach(x=>{
-    g('tab-'+x).classList.toggle('active',x===t);
-    g('btn-'+x).classList.toggle('active',x===t);
+  ['rec','tec','cod','cli','tbl','cns','dash'].forEach(x=>{
+    const tab=g('tab-'+x);const btn=g('btn-'+x);
+    if(tab)tab.classList.toggle('active',x===t);
+    if(btn)btn.classList.toggle('active',x===t);
   });
-  if(t==='dash')uDash();if(t==='tbl')rTabla();if(t==='cod')rCodigos();if(t==='cli')rClientes();
+  if(t==='dash')uDash();if(t==='tbl')rTabla();
+  if(t==='cod')rCodigos();if(t==='cli')rClientes();
+}
+
+// showTab pública — verifica permisos antes de cambiar
+function showTab(t){
+  const perfil=modoPublico?'consulta':(authPerfil?authPerfil.perfil:'consulta');
+  const permitidos=PERFILES_TABS[perfil]||['cns'];
+  if(!permitidos.includes(t)){
+    // No tiene permiso — redirigir a consulta
+    showTabSinAuth('cns');return;
+  }
+  showTabSinAuth(t);
 }
 window.showTab=showTab;
+
+// ── FUNCIONES DE AUTENTICACIÓN ───────────────────────────────────
+async function authLogin(){
+  const email=(g('login-email').value||'').trim();
+  const pass=g('login-pass').value||'';
+  const errEl=g('login-err');
+  const btn=g('login-btn');
+
+  if(!email||!pass){
+    errEl.textContent='Ingrese correo y contraseña.';
+    return;
+  }
+  btn.disabled=true;
+  btn.textContent='Verificando...';
+  errEl.textContent='';
+
+  try{
+    await signInWithEmailAndPassword(auth,email,pass);
+    // onAuthStateChanged maneja el resto — no limpiar nada aquí
+  }catch(e){
+    // Limpiar SOLO la contraseña — mantener el correo digitado
+    const passEl=g('login-pass');
+    if(passEl){passEl.value='';passEl.focus();}
+
+    let msg='Credenciales incorrectas. Verifique e intente nuevamente.';
+    if(e.code==='auth/user-not-found'||e.code==='auth/wrong-password'||e.code==='auth/invalid-credential')
+      msg='Correo o contraseña incorrectos. Verifique los datos.';
+    else if(e.code==='auth/too-many-requests')
+      msg='Demasiados intentos fallidos. Espere unos minutos e intente de nuevo.';
+    else if(e.code==='auth/user-disabled')
+      msg='Esta cuenta está desactivada. Contacte al administrador.';
+    else if(e.code==='auth/invalid-email')
+      msg='El formato del correo no es válido.';
+    errEl.textContent=msg;
+  }finally{
+    // SIEMPRE rehabilitar el botón sin importar qué pasó
+    btn.disabled=false;
+    btn.innerHTML='<i class="ti ti-login" style="font-size:14px;margin-right:6px;vertical-align:-2px;"></i>Ingresar al sistema';
+  }
+}
+window.authLogin=authLogin;
+
+function authModoPublico(){
+  modoPublico=true;
+  authUser=null;authPerfil=null;
+  g('login-screen').style.display='none';
+  mostrarModulo();
+  initListeners(true);
+  aplicarPerfilUI();
+}
+window.authModoPublico=authModoPublico;
+
+async function authLogout(){
+  try{await signOut(auth);}catch(e){}
+  authUser=null;authPerfil=null;modoPublico=false;
+  listenersInicializados=false;
+  ocultarModulo();
+  // Limpiar campos del login
+  const emailEl=g('login-email');
+  const passEl=g('login-pass');
+  const errEl=g('login-err');
+  const btnEl=g('login-btn');
+  if(passEl)passEl.value='';
+  if(errEl)errEl.textContent='';
+  if(btnEl){
+    btnEl.disabled=false;
+    btnEl.innerHTML='<i class="ti ti-login" style="font-size:14px;margin-right:6px;vertical-align:-2px;"></i>Ingresar al sistema';
+  }
+  // Ocultar pestañas y mostrar login
+  ['rec','tec','cod','cli','tbl','dash'].forEach(t=>{
+    const btn=g('btn-'+t);if(btn)btn.style.display='none';
+  });
+  g('login-screen').style.display='flex';
+  // Enfocar campo de correo
+  setTimeout(()=>{if(emailEl)emailEl.focus();},100);
+}
+window.authLogout=authLogout;
+
+// ── LISTENER PRINCIPAL DE AUTH ───────────────────────────────────
+onAuthStateChanged(auth,async user=>{
+  if(user){
+    authUser=user;modoPublico=false;
+    // Leer perfil desde la DB
+    try{
+      const snap=await get(ref(db,'usuarios/'+user.uid));
+      const data=snap.val();
+      if(data&&data.activo!==false){
+        authPerfil=data;
+        g('login-screen').style.display='none';
+        mostrarModulo();
+        initListeners(false); // cargar todos los listeners con auth
+        aplicarPerfilUI();
+      } else if(data&&data.activo===false){
+        // Usuario explícitamente desactivado
+        await signOut(auth);
+        g('login-screen').style.display='flex';
+        const btn=g('login-btn');
+        if(btn){btn.disabled=false;btn.innerHTML='<i class="ti ti-login" style="font-size:14px;margin-right:6px;vertical-align:-2px;"></i>Ingresar al sistema';}
+        g('login-err').textContent='Esta cuenta está desactivada. Contacte al administrador.';
+        authUser=null;authPerfil=null;
+      } else {
+        // No hay perfil en DB todavía — puede ser admin configurando el sistema
+        // Dar acceso como administrador temporal si el correo contiene 'admin'
+        const esAdmin=user.email&&user.email.toLowerCase().includes('admin');
+        authPerfil={
+          nombre: user.email.split('@')[0],
+          perfil: esAdmin?'administrador':'consulta',
+          activo: true
+        };
+        g('login-screen').style.display='none';
+        mostrarModulo();
+        initListeners(false);
+        aplicarPerfilUI();
+        // Mostrar aviso si no se encontró perfil
+        if(!esAdmin){
+          console.warn('Perfil no encontrado en DB para UID:',user.uid);
+        }
+      }
+    }catch(e){
+      console.error('Error leyendo perfil:',e);
+      authPerfil={nombre:user.email.split('@')[0],perfil:'consulta',activo:true};
+      g('login-screen').style.display='none';
+      mostrarModulo();
+      initListeners(false);
+      aplicarPerfilUI();
+    }
+  } else {
+    // Sin sesión → mostrar pantalla de login
+    if(!modoPublico){
+      g('login-screen').style.display='flex';
+    }
+  }
+});
 function tog(s,d,v){g(d).style.display=g(s).value===v?'block':'none';}
 window.tog=tog;
 
@@ -844,7 +1373,7 @@ function isEditable(o){
   if(!o.finalizada)return true;
   return o.retrabajo&&o.retrabajo!=='No';
 }
-function h2d(h){return h>0?(h/J).toFixed(1):0;}
+function h2d(h){return h>0?parseFloat((h/J).toFixed(2)):0;}
 function mEl(id,t,c,dur=3000){const el=g(id);if(!el)return;el.style.color=c;el.textContent=t;if(dur)setTimeout(()=>{if(el)el.textContent='';},dur);}
 function eBadge(e){const m={'En proceso':'b-teal','Reparado':'b-emerald','Cotizado':'b-amber','Espera de repuesto':'b-amber','Cambio':'b-rose','Nota de crédito':'b-rose','Finalizado':'b-slate','Pendiente':'b-slate'};return`<span class="badge ${m[e]||'b-slate'}">${e||'—'}</span>`;}
 function avatarLetters(nm){if(!nm)return'?';const parts=nm.split(' ');return(parts[0][0]+(parts[1]?parts[1][0]:'')).toUpperCase();}
@@ -875,19 +1404,73 @@ function cerrarModal(){
 }
 window.cerrarModal=cerrarModal;
 
-// Firebase
-onValue(ref(db,'OTs'),s=>{
-  OTs=s.val()||{};rTabla();if(g('tab-dash').classList.contains('active'))uDash();poblarFiltros();
-  g('loading-overlay').style.display='none';g('sdot').className='sdot on';
-  g('slabel').textContent='En línea · '+new Date().toLocaleTimeString('es-CR',{hour:'2-digit',minute:'2-digit',timeZone:'America/Costa_Rica'});
-},()=>{g('sdot').className='sdot err';g('slabel').textContent='Error';g('loading-overlay').style.display='none';});
-onValue(ref(db,'codigos'),s=>{CODIGOS=s.val()||{};rCodigos();});
-onValue(ref(db,'clientes'),s=>{
-  CLIENTES=s.val()||{};
-  if(g('tab-cli')&&g('tab-cli').classList.contains('active')){
-    if(window._cliRender)window._cliRender();
+// Firebase — listeners se inicializan DESPUÉS del login exitoso
+// Para modo público solo se cargan codigos y clientes (tienen .read:true)
+// Para usuarios autenticados se cargan todos
+let listenersInicializados=false;
+
+function initListeners(soloPublico=false){
+  if(listenersInicializados)return;
+  listenersInicializados=true;
+
+  // Codigos y clientes — públicos, siempre disponibles
+  onValue(ref(db,'codigos'),s=>{CODIGOS=s.val()||{};rCodigos();});
+  onValue(ref(db,'clientes'),s=>{
+    CLIENTES=s.val()||{};
+    if(g('tab-cli')&&g('tab-cli').classList.contains('active')){
+      if(window._cliRender)window._cliRender();
+    }
+  });
+
+  if(soloPublico){
+    // Modo público — cargar OTs con feedback de estado
+    const sdot = g('sdot');
+    const slabel = g('slabel');
+    if(sdot) sdot.className='sdot';
+    if(slabel) slabel.textContent='Cargando datos...';
+
+    onValue(ref(db,'OTs'),s=>{
+      OTs=s.val()||{};
+      // Notificar que OTs está listo
+      window._otsListasParaConsulta = true;
+      if(sdot) sdot.className='sdot on';
+      if(slabel) slabel.textContent='Consulta pública';
+      // Si hay una búsqueda pendiente, ejecutarla ahora
+      if(window._cnsBusquedaPendiente){
+        window._cnsBusquedaPendiente = false;
+        cnsBuscar();
+      }
+    },()=>{
+      // Error de reglas Firebase — OTs no accesible sin auth
+      window._otsListasParaConsulta = false;
+      if(sdot) sdot.className='sdot err';
+      if(slabel) slabel.textContent='Error de permisos';
+      // Mostrar error en la pestaña de consulta
+      const msgEl = g('cns-msg');
+      if(msgEl){
+        msgEl.style.color='var(--rose)';
+        msgEl.textContent='⚠ No se pueden cargar las órdenes. Verifique las reglas de Firebase (OTs debe tener .read: true).';
+      }
+    });
+    g('loading-overlay').style.display='none';
+    return;
   }
-});
+
+  // Usuario autenticado — cargar OTs
+  onValue(ref(db,'OTs'),s=>{
+    OTs=s.val()||{};
+    rTabla();
+    if(g('tab-dash').classList.contains('active'))uDash();
+    poblarFiltros();
+    g('loading-overlay').style.display='none';
+    g('sdot').className='sdot on';
+    g('slabel').textContent='En línea · '+new Date().toLocaleTimeString('es-CR',{hour:'2-digit',minute:'2-digit',timeZone:'America/Costa_Rica'});
+  },()=>{
+    g('sdot').className='sdot err';
+    g('slabel').textContent='Error de conexión';
+    g('loading-overlay').style.display='none';
+  });
+}
 
 // Variable que guarda el dato del catálogo encontrado para el código UM actual
 let codUMActual = null; // {desc, cat} o null
@@ -1103,7 +1686,7 @@ function selOT(key,pi){
   document.querySelectorAll('.sr-row').forEach(el=>el.classList.remove('selected'));
   const sr=g('sr-'+pi+'-'+key);if(sr)sr.classList.add('selected');
   const cc=Object.values(CODIGOS).find(c=>(c.um||'').toLowerCase()===(o.um||'').toLowerCase());
-  const estInfo=cc?`<div class="banner bn-teal"><i class="ti ti-clock" style="font-size:14px;flex-shrink:0;"></i>Catálogo: <strong>${cc.horas}h</strong> = <strong>${h2d(cc.horas)} días laborales</strong></div>`
+  const estInfo=cc?`<div class="banner bn-teal"><i class="ti ti-clock" style="font-size:14px;flex-shrink:0;"></i>Catálogo: <strong>${formatH(cc.horas)}</strong> estimadas <span style="opacity:.7;font-size:11px;">(${h2d(cc.horas)}d · J=10h/día L-V)</span></div>`
     :`<div class="banner bn-amber"><i class="ti ti-alert-triangle" style="font-size:14px;flex-shrink:0;"></i>Código UM no encontrado en catálogo.</div>`;
   const hist=o.historial||[];
   const hH=hist.length?`<div class="sep"></div><div class="card-t"><i class="ti ti-history" style="font-size:14px;color:var(--teal);"></i>Historial de Cambios</div>${hist.slice().reverse().map((h,i)=>`<div class="tl-item"><div class="tl-dot" style="background:${i===0?'var(--teal)':'var(--gray-300)'};"></div><div><span style="font-size:11px;">${h.accion}</span><br><span style="font-size:10px;color:var(--gray-400);">${h.ts}</span></div></div>`).join('')}`:'';
@@ -1353,18 +1936,55 @@ function onEstadoChange(pi){
   const btnArea=g(`btns-${pi}`);
   if(!btnArea)return;
 
-  // Mostrar/ocultar tabla de cotización
+  // Mostrar/ocultar tabla de cotización antigua (compatibilidad historial)
   const cotWrap=g(`cot-wrap-${pi}`);
-  if(cotWrap)cotWrap.style.display=val==='Cotizado'?'block':'none';
+  if(cotWrap)cotWrap.style.display='none'; // ya no se usa en el nuevo flujo
 
   // Limpiar botones dinámicos anteriores
   [`btn-finalizar-${pi}`,`btn-guardar-cot-${pi}`,`btn-guardar-esp-${pi}`,`aviso-fecha-${pi}`].forEach(id=>{
     const el=g(id);if(el)el.remove();
   });
 
+  // Mostrar/ocultar campo causaNC — solo cuando selecciona Nota de crédito
+  let ncWrap=g(`nc-causa-wrap-${pi}`);
+  if(val==='Nota de crédito'){
+    if(!ncWrap){
+      ncWrap=document.createElement('div');
+      ncWrap.id=`nc-causa-wrap-${pi}`;
+      ncWrap.style.cssText='background:rgba(244,63,94,.08);border:1.5px solid rgba(244,63,94,.3);border-radius:8px;padding:12px;margin-top:10px;';
+      ncWrap.innerHTML=`
+        <div style="font-size:11px;font-weight:700;color:var(--rose);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;">
+          <i class="ti ti-file-invoice" style="font-size:13px;margin-right:4px;"></i>Causa de Nota de Crédito — Obligatorio
+        </div>
+        <div class="fg">
+          <label class="req">Seleccione la causa</label>
+          <select id="e-causa-nc-${pi}">
+            <option value="">Seleccionar causa...</option>
+            <option value="Solicitud del cliente"${OTs[g(pi)?.dataset?.otKey]?.causaNC==='Solicitud del cliente'?' selected':''}>Solicitud del cliente</option>
+            <option value="Sin saldo en inventario"${OTs[g(pi)?.dataset?.otKey]?.causaNC==='Sin saldo en inventario'?' selected':''}>Sin saldo en inventario</option>
+          </select>
+        </div>`;
+      const fsEl=g(`e-fs-${pi}`);
+      if(fsEl&&fsEl.parentNode&&fsEl.parentNode.parentNode)
+        fsEl.parentNode.parentNode.appendChild(ncWrap);
+    }
+    ncWrap.style.display='block';
+  } else {
+    if(ncWrap)ncWrap.style.display='none';
+  }
+
+  // Limpiar sección cotización si cambia de Cotizado a otro estado
+  if(val!=='Cotizado'){
+    const cotSec=g(`cot-sec-${pi}`);
+    if(cotSec)cotSec.style.display='none';
+  } else {
+    const cotSec=g(`cot-sec-${pi}`);
+    if(cotSec)cotSec.style.display='block';
+  }
+
   // Verificar técnico
   const tecEl=g(`e-tec-${pi}`);
-  const hayTecnico=tecEl?tecEl.value.trim()!=='':	rue;
+  const hayTecnico=tecEl?tecEl.value.trim()!=='':true;
   if(!hayTecnico)return;
 
   const diagEl=g(`e-diag-${pi}`);
@@ -1388,21 +2008,39 @@ function onEstadoChange(pi){
         btnArea.insertBefore(b,btnArea.firstChild);
       }
     } else if(esCotizado&&tieneDiag){
-      // Cotizado + diagnóstico → Guardar Cotización
+      // Cotizado + diagnóstico → mostrar campo descripción técnica y botón guardar cotización
+      // Verificar si ya tiene descripción técnica
+      const descTecEl=g(`e-cot-desc-tec-${pi}`);
+      if(!descTecEl){
+        // Agregar sección descripción técnica del repuesto
+        const cotSecEl=g(`cot-sec-${pi}`)||document.createElement('div');
+        if(!g(`cot-sec-${pi}`)){
+          cotSecEl.id=`cot-sec-${pi}`;
+          cotSecEl.style.cssText='background:rgba(245,158,11,.08);border:1.5px solid rgba(245,158,11,.3);border-radius:8px;padding:12px;margin-top:10px;';
+          cotSecEl.innerHTML=`
+            <div style="font-size:11px;font-weight:700;color:var(--amber);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;">
+              <i class="ti ti-tool" style="font-size:13px;margin-right:4px;"></i>Información técnica para cotización
+            </div>
+            <div class="fg" style="margin-bottom:8px;">
+              <label class="req">Descripción del repuesto / trabajo requerido</label>
+              <textarea id="e-cot-desc-tec-${pi}" rows="3" placeholder="Describa técnicamente qué repuesto o trabajo se necesita para reparar la herramienta..."
+                style="resize:vertical;">${OTs[g(pi).dataset.otKey]?.cotDescTecnico||''}</textarea>
+            </div>
+            <div class="fg">
+              <label>Código sugerido (opcional — referencial)</label>
+              <input type="text" id="e-cot-cod-sug-${pi}" placeholder="Ej: COD-123" value="${OTs[g(pi).dataset.otKey]?.cotCodSugerido||''}">
+            </div>
+          `;
+          const diagEl=g(`e-diag-${pi}`);
+          if(diagEl&&diagEl.parentNode)diagEl.parentNode.parentNode.appendChild(cotSecEl);
+        }
+      }
       if(!g(`btn-guardar-cot-${pi}`)){
         const b=document.createElement('button');
         b.className='btn btn-primary';b.id=`btn-guardar-cot-${pi}`;
-        b.innerHTML='<i class="ti ti-receipt" style="font-size:14px;"></i>Guardar Cotización';
+        b.innerHTML='<i class="ti ti-receipt" style="font-size:14px;"></i>Enviar a Recepción para Cotización';
         b.onclick=()=>guardarEstadoParcial(pi);
         btnArea.insertBefore(b,btnArea.firstChild);
-      }
-      // Cotizado + diagnóstico + fecha → además Finalizar
-      if(tieneDiag&&tieneFecha&&!g(`btn-finalizar-${pi}`)){
-        const bf=document.createElement('button');
-        bf.className='btn btn-finalizar';bf.id=`btn-finalizar-${pi}`;
-        bf.innerHTML='<i class="ti ti-flag-check" style="font-size:14px;"></i>Finalizar OT';
-        bf.onclick=()=>pedirFinalizacion(pi);
-        btnArea.insertBefore(bf,btnArea.firstChild);
       }
     } else if(esFinalReal&&tieneDiag&&tieneFecha){
       // Estado final + diagnóstico + fecha → solo Finalizar
@@ -1461,21 +2099,40 @@ async function guardarEstadoParcial(pi){
   const estado=nv(`e-est-${pi}`)||o.estado;
   const diag=nv(`e-diag-${pi}`)||o.diagnostico||'';
   const diagRet=nv(`e-diag-ret-${pi}`)||o.diagRetrabajo||'';
-  let cots=o.cotizacion||[];
-  if(g(`cot-tbody-${pi}`))cots=recogerCotizacion(pi);
   const ts=new Date().toLocaleString('es-CR',{timeZone:'America/Costa_Rica'});
-  const cambios=[`Estado: ${o.estado} → ${estado}`,'Guardado parcial'];
-  if(diag!==o.diagnostico)cambios.push('Diagnóstico actualizado');
+
+  // Campos nuevos de cotización
+  const cotDescTecnico=nv(`e-cot-desc-tec-${pi}`)||o.cotDescTecnico||'';
+  const cotCodSugerido=nv(`e-cot-cod-sug-${pi}`)||o.cotCodSugerido||'';
+
+  const upd={
+    estado,
+    diagnostico:diag,
+    diagRetrabajo:diagRet||o.diagRetrabajo||'',
+    historial:[...(o.historial||[]),{ts,accion:`Estado: ${o.estado||'—'} → ${estado}${estado==='Cotizado'?' · Enviado a Recepción para cotización':''}`}],
+  };
+
+  // Si es Cotizado guardar descripción técnica del técnico
+  if(estado==='Cotizado'){
+    upd.cotDescTecnico=cotDescTecnico;
+    upd.cotCodSugerido=cotCodSugerido;
+    // OT NO se finaliza — queda activa esperando a Recepción
+    upd.finalizada=false;
+  }
+
   try{
-    await update(ref(db,`OTs/${key}`),{
-      estado,diagnostico:diag,diagRetrabajo:diagRet,cotizacion:cots,
-      historial:[...(o.historial||[]),{ts,accion:cambios.join(' · ')}]
-    });
+    await update(ref(db,`OTs/${key}`),upd);
     const em=g(`emsg-${pi}`);
-    if(em){em.style.color='var(--teal)';em.textContent='✓ Guardado correctamente. La OT sigue activa.';}
+    if(em){
+      em.style.color='var(--teal)';
+      em.textContent=estado==='Cotizado'
+        ?'✓ Información enviada a Recepción. La OT queda en proceso de cotización.'
+        :'✓ Estado guardado correctamente.';
+    }
+    setTimeout(()=>{if(em)em.textContent='';},4000);
   }catch(e){
     const em=g(`emsg-${pi}`);
-    if(em){em.style.color='var(--rose)';em.textContent='Error: '+e.message;}
+    if(em){em.style.color='var(--rose)';em.textContent='Error al guardar: '+e.message;}
   }
 }
 window.guardarEstadoParcial=guardarEstadoParcial;
@@ -1499,7 +2156,6 @@ function validarAntesDeGuardar(key, pi, esFinalizar=false){
   const diagRet=nv(`e-diag-ret-${pi}`)||o.diagRetrabajo||'';
 
   if(!esPrimeraVez||esRetrabajo){
-    // Segunda apertura o retrabajo → diagnóstico obligatorio
     if(!diag)return'El diagnóstico del técnico es obligatorio. Complete el campo antes de continuar.';
     if(esRetrabajo&&!diagRet)return'Para OT con retrabajo debe registrar el diagnóstico de retrabajo.';
   }
@@ -1507,22 +2163,35 @@ function validarAntesDeGuardar(key, pi, esFinalizar=false){
   // V3 — Segunda apertura: estado debe cambiar de "En proceso"
   const estadoActual=nv(`e-est-${pi}`)||o.estado;
   if(!esPrimeraVez&&!esRetrabajo&&o.estado==='En proceso'&&estadoActual==='En proceso'){
-    return'Debe cambiar el estado de la OT antes de guardar. "En proceso" no es un estado de cierre.';
+    return'Debe cambiar el estado de la OT antes de guardar.';
   }
   if(esRetrabajo&&estadoActual==='En proceso'&&esFinalizar){
     return'Para finalizar el retrabajo debe seleccionar un estado de cierre.';
   }
 
-  // V4 — Estado final requiere fecha de salida para finalizar
+  // V4 — Finalizar: fecha de salida obligatoria
   if(esFinalizar){
     const fechaSal=nv(`e-fs-${pi}`)||o.fechaSal||'';
     if(!fechaSal)return'Debe registrar la fecha de salida antes de finalizar la OT.';
-    if(ESTADOS_FINALES.includes(estadoActual)===false){
+    if(!ESTADOS_FINALES.includes(estadoActual)){
       return'El estado seleccionado no es un estado de cierre válido para finalizar.';
     }
   }
 
-  return null; // null = sin errores
+  // V5 — Nota de crédito: causa obligatoria + diagnóstico + fecha al finalizar
+  if(estadoActual==='Nota de crédito'&&esFinalizar){
+    const causaNC=nv(`e-causa-nc-${pi}`)||o.causaNC||'';
+    if(!causaNC)return'Debe seleccionar la causa de la Nota de Crédito (Solicitud del cliente / Sin saldo en inventario).';
+    if(!diag)return'El diagnóstico final es obligatorio para Nota de Crédito.';
+  }
+
+  // V6 — Cotizado: descripción técnica del repuesto obligatoria
+  if(estadoActual==='Cotizado'&&!esPrimeraVez){
+    const descTec=nv(`e-cot-desc-tec-${pi}`)||o.cotDescTecnico||'';
+    if(!descTec)return'Debe describir el repuesto o trabajo requerido para iniciar la cotización.';
+  }
+
+  return null;
 }
 window.validarAntesDeGuardar=validarAntesDeGuardar;
 // Solo habilita Guardar si el técnico modificó algún campo respecto al valor de Firebase
@@ -1593,15 +2262,19 @@ async function guardar(key,pi,finalizar=false){
     if(g(`cot-tbody-${pi}`))cots=recogerCotizacion(pi);
     const fechaSalVal=nv(`e-fs-${pi}`)||o.fechaSal||'';
     const tecVal=nv(`e-tec-${pi}`)||o.tec||'';
+    // Guardar causaNC si aplica
+    const causaNCVal=nv(`e-causa-nc-${pi}`)||o.causaNC||'';
     const u={
-      ...o, // conservar todos los datos existentes
+      ...o,
       tec:tecVal,
-      estado:estadoSeleccionado, // estado real del técnico (Reparado, Cambio, etc) — finalizada:true es el indicador de bloqueo
+      estado:estadoSeleccionado,
       diagnostico:diagSeleccionado,
       retrabajo:retSeleccionado,
       fechaSal:fechaSalVal,
       cotizacion:cots,
       finalizada:true,
+      // Campos nuevos
+      causaNC:estadoSeleccionado==='Nota de crédito'?causaNCVal:(o.causaNC||''),
     };
     cambios.push(`Estado: ${o.estado||'—'} → ${estadoSeleccionado} · OT FINALIZADA Y BLOQUEADA`);
     if(diagSeleccionado&&diagSeleccionado!==o.diagnostico)cambios.push('Diagnóstico registrado');
@@ -1785,11 +2458,19 @@ window.eliminarCodigo=eliminarCodigo;
 
 function rCodigos(){
   const ft=g('tc-search')?g('tc-search').value.toLowerCase():'',fc=g('tc-cat-f')?g('tc-cat-f').value:'';
-  const cb={Eléctrica:'b-sky',Combustión:'b-amber',Hidráulica:'b-purple',General:'b-emerald'};
+  const cb={
+    'Eléctrica':'b-sky',
+    'Combustión':'b-amber',
+    'Hidráulica':'b-purple',
+    'Electro Hidráulico':'b-teal',
+    'Electro Neumático':'b-emerald',
+    'Hidráulico Aceite':'b-rose',
+    'Neumático':'b-slate',
+  };
   const lista=Object.entries(CODIGOS).filter(([k,c])=>{const oT=!ft||((c.um||'').toLowerCase().includes(ft)||(c.desc||'').toLowerCase().includes(ft));const oC=!fc||c.cat===fc;return oT&&oC;});
   const tb=g('tc-tbody');if(!tb)return;
   if(!lista.length){tb.innerHTML=`<tr><td colspan="7" class="empty-row">No hay códigos${ft||fc?' que coincidan':' registrados'}.</td></tr>`;return;}
-  tb.innerHTML=lista.map(([k,c])=>`<tr><td style="font-family:'Space Grotesk',sans-serif;font-weight:700;">${c.um}</td><td>${c.desc}</td><td><span class="badge ${cb[c.cat]||'b-slate'}">${c.cat}</span></td><td><strong>${c.horas}h</strong></td><td><span class="badge b-teal">${h2d(c.horas)}d</span></td><td style="font-size:10px;color:var(--gray-400);">${c.obs||'—'}</td><td><div style="display:flex;gap:4px;"><button class="icon-btn" onclick="editarCodigo('${k}')"><i class="ti ti-edit" style="font-size:12px;"></i></button><button class="icon-btn del" onclick="eliminarCodigo('${k}')"><i class="ti ti-trash" style="font-size:12px;"></i></button></div></td></tr>`).join('');
+  tb.innerHTML=lista.map(([k,c])=>`<tr><td style="font-family:'Space Grotesk',sans-serif;font-weight:700;">${c.um}</td><td>${c.desc}</td><td><span class="badge ${cb[c.cat]||'b-slate'}">${c.cat}</span></td><td><strong>${formatH(c.horas)}</strong></td><td><span class="badge b-teal">${h2d(c.horas)}d</span></td><td style="font-size:10px;color:var(--gray-400);">${c.obs||'—'}</td><td><div style="display:flex;gap:4px;"><button class="icon-btn" onclick="editarCodigo('${k}')"><i class="ti ti-edit" style="font-size:12px;"></i></button><button class="icon-btn del" onclick="eliminarCodigo('${k}')"><i class="ti ti-trash" style="font-size:12px;"></i></button></div></td></tr>`).join('');
 }
 window.rCodigos=rCodigos;
 
@@ -2528,16 +3209,49 @@ function uDash(){
   const ciclos=arr.filter(o=>o.fechaSal).map(o=>cDays(o)).filter(d=>d!==null);
   let cicloVal='—';
   if(ciclos.length){
-    const a=parseFloat((ciclos.reduce((x,y)=>x+y,0)/ciclos.length).toFixed(1));
-    cicloVal=a+'d';
+    const aDias=parseFloat((ciclos.reduce((x,y)=>x+y,0)/ciclos.length).toFixed(1));
+    const aHoras=parseFloat((aDias*J).toFixed(1));
+    cicloVal=formatHD(aHoras); // mix horas + días
     g('d-ciclo').textContent=cicloVal;
-    const ok=a<=5;
-    g('d-ciclo-s').textContent=ok?'✓ Dentro de meta':'⚠ Meta: ≤5 días';
+    const ok=aDias<=5;
+    g('d-ciclo-s').textContent=ok?'✓ Dentro de meta (≤5d)':'⚠ Meta: ≤5 días';
     g('d-ciclo-s').style.color=ok?'var(--emerald)':'var(--rose)';
     g('kpi-ciclo').className='kpi-box '+(ok?'kb':'kc');
     const barCiclo=g('bar-ciclo');
-    if(barCiclo){barCiclo.style.width=Math.min(Math.round(a/10*100),100)+'%';barCiclo.style.background=ok?'var(--emerald)':'var(--rose)';}
+    if(barCiclo){barCiclo.style.width=Math.min(Math.round(aDias/10*100),100)+'%';barCiclo.style.background=ok?'var(--emerald)':'var(--rose)';}
   } else {g('d-ciclo').textContent='—';g('d-ciclo-s').textContent='Sin datos cerrados';}
+
+  // KPI Eficiencia del Taller (nuevo)
+  const otsConCod=arr.filter(o=>o.fechaSal&&(o.finalizada||ESTADOS_FINALES.includes(o.estado)));
+  let eficienciaTotal=null;
+  let enTiempoTotal=0, excedenTotal=0;
+  otsConCod.forEach(o=>{
+    const cod=Object.values(CODIGOS).find(c=>(c.um||'').toLowerCase()===(o.um||'').toLowerCase());
+    if(!cod)return;
+    const eD=parseFloat(h2d(cod.horas));
+    const real=cDays(o);
+    if(real===null)return;
+    if(real<=eD) enTiempoTotal++;
+    else excedenTotal++;
+  });
+  const totalConCod=enTiempoTotal+excedenTotal;
+  if(totalConCod>0){
+    eficienciaTotal=Math.round((enTiempoTotal/totalConCod)*100);
+  }
+  const efEl=g('d-eficiencia');
+  const efSub=g('d-eficiencia-s');
+  const kpiEf=g('kpi-eficiencia');
+  if(efEl){
+    efEl.textContent=eficienciaTotal!==null?(eficienciaTotal+'%'):'—';
+    if(efSub&&eficienciaTotal!==null){
+      const ef=eficienciaTotal;
+      efSub.textContent=ef>=70?'✓ Taller óptimo':ef>=40?'⚠ En atención':'✗ Taller crítico';
+      efSub.style.color=ef>=70?'var(--emerald)':ef>=40?'var(--amber)':'var(--rose)';
+    }
+    if(kpiEf&&eficienciaTotal!==null){
+      kpiEf.className='kpi-box '+(eficienciaTotal>=70?'kb':eficienciaTotal>=40?'ka':'kc');
+    }
+  }
 
   // Tarjeta integrada — distribución visual
   if(g('dist-total-label'))g('dist-total-label').textContent=total+' órdenes de trabajo';
@@ -2569,25 +3283,156 @@ function uDash(){
 
   renderChart(arr);
 
-  // Rendimiento técnicos
-  const tD={};TECNICOS.forEach(u=>{tD[u]={est:0,real:0,n:0,enT:0,exc:0,sinCod:0};});
-  arr.forEach(o=>{if(!o.tec||!tD[o.tec])return;const td=tD[o.tec];td.n++;const cod=Object.values(CODIGOS).find(c=>(c.um||'').toLowerCase()===(o.um||'').toLowerCase());const real=cDays(o);if(cod){const eD=parseFloat(h2d(cod.horas));td.est+=eD;if(real!==null){td.real+=real;if(real>eD)td.exc++;else td.enT++;}}else{td.sinCod++;if(real!==null)td.real+=real;}});
+  // Rendimiento técnicos — rediseño ingeniería industrial
+  const tD={};
+  TECNICOS.forEach(u=>{
+    tD[u]={
+      est:0,         // días estimados acumulados (solo OTs con catálogo cerradas)
+      real:0,        // días reales acumulados (solo cerradas)
+      realAct:0,     // días en curso (activas)
+      diasExceso:0,  // suma de días excedidos en OTs que superaron estimado
+      n:0,           // total OTs
+      nCerradas:0,   // OTs cerradas con código de catálogo
+      nActivas:0,    // OTs activas (sin fecha salida)
+      enT:0,         // OTs cerradas en tiempo
+      exc:0,         // OTs cerradas que exceden
+      sinCod:0       // OTs sin código de catálogo
+    };
+  });
+
+  arr.forEach(o=>{
+    if(!o.tec||!tD[o.tec])return;
+    const td=tD[o.tec];
+    td.n++;
+    const esCerrada=o.fechaSal&&(o.finalizada||ESTADOS_FINALES.includes(o.estado));
+    const esActiva=!esCerrada;
+    if(esActiva) td.nActivas++;
+
+    const cod=Object.values(CODIGOS).find(c=>(c.um||'').toLowerCase()===(o.um||'').toLowerCase());
+    const real=esCerrada?cDays(o):null;
+    const realTransc=cDays(o)||0;
+
+    if(cod){
+      const eD=parseFloat(h2d(cod.horas));
+      if(esCerrada&&real!==null){
+        td.nCerradas++;
+        td.real+=real;
+        td.est+=eD;
+        if(real>eD){
+          td.exc++;
+          td.diasExceso+=(real-eD); // acumular días de exceso
+        } else {
+          td.enT++;
+        }
+      } else if(esActiva){
+        td.realAct+=realTransc;
+      }
+    } else {
+      td.sinCod++;
+      if(esCerrada&&real!==null) td.real+=real;
+      else if(esActiva) td.realAct+=realTransc;
+    }
+  });
+
   const tC=Object.entries(tD).filter(([,s])=>s.n>0);
+
   g('d-rendimiento').innerHTML=tC.length?tC.map(([nm,s])=>{
-    const ini=inicialesTec(nm);const pct=s.est>0?Math.min(Math.round((s.real/s.est)*100),200):null;
-    const col=pct===null?'var(--gray-300)':pct<=100?'var(--emerald)':pct<=130?'var(--amber)':'var(--rose)';
-    const eb=pct===null?'b-slate':pct<=100?'b-emerald':pct<=130?'b-amber':'b-rose';
-    const el=pct===null?'Sin estimado':pct<=100?`${pct}% — En tiempo`:`${pct}% — Excede`;
-    return`<div class="tec-card"><div class="tec-hdr"><div class="tec-nm"><div class="avatar">${ini}</div>${nm}</div><span class="badge ${eb}">${el}</span></div>
-    <div class="tec-stats">
-      <div class="ts"><div class="ts-n" style="color:var(--sky);">${s.est>0?s.est.toFixed(1):'—'}</div><div class="ts-l">días est.</div></div>
-      <div class="ts"><div class="ts-n" style="color:${col};">${s.real>0?s.real.toFixed(1):'—'}</div><div class="ts-l">días reales</div></div>
-      <div class="ts"><div class="ts-n">${s.n}</div><div class="ts-l">OT total</div></div>
-      <div class="ts"><div class="ts-n" style="color:var(--emerald);">${s.enT}</div><div class="ts-l">en tiempo</div></div>
-      <div class="ts"><div class="ts-n" style="color:var(--rose);">${s.exc}</div><div class="ts-l">exceden</div></div>
-      ${s.sinCod>0?`<div class="ts"><div class="ts-n" style="color:var(--amber);">${s.sinCod}</div><div class="ts-l">sin catálogo</div></div>`:''}
-    </div>
-    ${s.est>0?`<div class="perf-bar"><div class="perf-fill" style="width:${Math.min(pct,100)}%;background:${col};"></div></div>`:''}
+    const ini=inicialesTec(nm);
+
+    // KPI: promedio días por OT cerrada
+    const promReal=s.nCerradas>0?(s.real/s.nCerradas).toFixed(1):null;
+    const promEst=s.nCerradas>0?(s.est/s.nCerradas).toFixed(1):null;
+    const promExceso=s.exc>0?(s.diasExceso/s.exc).toFixed(1):null;
+
+    // % cumplimiento = OTs en tiempo / total OTs cerradas con catálogo
+    const pctCumplimiento=s.nCerradas>0?Math.round((s.enT/s.nCerradas)*100):null;
+
+    // Semáforo por % de cumplimiento
+    let semaforo, semaforoLabel, semaforoColor, barColor, badgeClass;
+    if(pctCumplimiento===null){
+      semaforo='⚪'; semaforoLabel='Sin cierres';
+      semaforoColor='var(--gray-400)'; barColor='var(--gray-200)'; badgeClass='b-slate';
+    } else if(pctCumplimiento>=70){
+      semaforo='🟢'; semaforoLabel='Óptimo';
+      semaforoColor='var(--emerald)'; barColor='var(--emerald)'; badgeClass='b-emerald';
+    } else if(pctCumplimiento>=40){
+      semaforo='🟡'; semaforoLabel='Atención';
+      semaforoColor='var(--amber)'; barColor='var(--amber)'; badgeClass='b-amber';
+    } else {
+      semaforo='🔴'; semaforoLabel='Crítico';
+      semaforoColor='var(--rose)'; barColor='var(--rose)'; badgeClass='b-rose';
+    }
+
+    const barWidth=pctCumplimiento!==null?Math.min(pctCumplimiento,100):0;
+
+    return`<div class="tec-card">
+      <!-- Header técnico -->
+      <div class="tec-hdr">
+        <div class="tec-nm">
+          <div class="avatar">${ini}</div>
+          ${nm}
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span style="font-size:18px;line-height:1;">${semaforo}</span>
+          <span class="badge ${badgeClass}">${semaforoLabel}${pctCumplimiento!==null?' · '+pctCumplimiento+'%':''}</span>
+        </div>
+      </div>
+
+      <!-- KPIs principales -->
+      <div class="tec-stats">
+        <div class="ts">
+          <div class="ts-n" style="color:var(--sky);">${s.nCerradas}</div>
+          <div class="ts-l">OT cerradas</div>
+        </div>
+        <div class="ts">
+          <div class="ts-n" style="color:var(--emerald);">${s.enT}</div>
+          <div class="ts-l">en tiempo</div>
+        </div>
+        <div class="ts">
+          <div class="ts-n" style="color:var(--rose);">${s.exc}</div>
+          <div class="ts-l">exceden</div>
+        </div>
+        <div class="ts">
+          <div class="ts-n" style="color:var(--amber);">${s.nActivas}</div>
+          <div class="ts-l">activas</div>
+        </div>
+        <div class="ts">
+          <div class="ts-n">${s.n}</div>
+          <div class="ts-l">OT total</div>
+        </div>
+      </div>
+
+      <!-- Métricas de tiempo -->
+      ${(promReal||promExceso)?`
+      <div style="display:flex;gap:16px;flex-wrap:wrap;margin-top:8px;padding:8px 10px;background:var(--gray-50);border-radius:6px;border:1px solid var(--gray-100);">
+        ${promReal?`<div style="font-size:11px;color:var(--gray-600);">
+          <span style="font-weight:700;color:var(--slate);">Promedio por OT:</span>
+          <span style="color:${semaforoColor};font-weight:700;"> ${formatHD(parseFloat(promReal)*J)} real</span>
+          ${promEst?`<span style="color:var(--gray-400);"> vs ${formatH(parseFloat(promEst)*J)} estimado</span>`:''}
+        </div>`:''}
+        ${promExceso?`<div style="font-size:11px;color:var(--rose);">
+          <span style="font-weight:700;">Exceso promedio: </span>${formatH(parseFloat(promExceso)*J)} por OT que supera
+        </div>`:''}
+        ${s.realAct>0?`<div style="font-size:11px;color:var(--amber);">
+          <span style="font-weight:700;">En curso: </span>${s.realAct}d acumulados en activas
+        </div>`:''}
+      </div>`:''}
+
+      <!-- Barra de cumplimiento -->
+      ${pctCumplimiento!==null?`
+      <div style="margin-top:8px;">
+        <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--gray-400);margin-bottom:3px;">
+          <span>Cumplimiento del catálogo de tiempos</span>
+          <span style="font-weight:700;color:${semaforoColor};">${pctCumplimiento}%</span>
+        </div>
+        <div class="perf-bar">
+          <div class="perf-fill" style="width:${barWidth}%;background:${barColor};"></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:9px;color:var(--gray-300);margin-top:2px;">
+          <span>0%</span><span style="color:var(--amber);">40%</span><span style="color:var(--emerald);">70%</span><span>100%</span>
+        </div>
+      </div>`:''}
+
     </div>`;
   }).join(''):'<p style="font-size:12px;color:var(--gray-400);text-align:center;padding:14px 0;font-style:italic;">Sin OT con códigos de catálogo en este período.</p>';
 
@@ -2609,6 +3454,1023 @@ function uDash(){
   g('d-crit').innerHTML=crit.length?crit.sort((a,b)=>dSince(b.fechaIn)-dSince(a.fechaIn)).slice(0,8).map(o=>`<div class="crit-row"><div class="crit-left"><span style="font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700;">${o.boleta}</span><span style="font-size:11px;color:var(--gray-400);">${o.cliente}</span><span class="badge b-sky" style="font-size:10px;">${o.tec||'Sin técnico'}</span>${eBadge(o.estado)}</div><span class="badge b-rose">${dSince(o.fechaIn)}d</span></div>`).join(''):'<p style="font-size:12px;color:var(--gray-400);text-align:center;padding:14px 0;font-style:italic;">Sin OT críticas — buena gestión</p>';
 }
 window.uDash=uDash;
+
+// ══════════════════════════════════════════════════════════════════
+// MÓDULO DE DESPACHO Y ENTREGA — Pestaña Recepción
+// Estados válidos: Reparado, Cambio, Cotizado (NO Nota de crédito)
+// Flujo: fechaIn → fechaSal → fechaDespacho → fechaEntrega
+// Solo perfiles: recepcion, administrador
+// ══════════════════════════════════════════════════════════════════
+
+const DS_ESTADOS_VALIDOS = ['Reparado','Cambio','Cotizado','Cotización rechazada','No procede'];
+const DS_ESTADOS_BADGE = {
+  'pendiente_despacho': {label:'Pendiente Despacho', cls:'b-amber'},
+  'en_despacho':        {label:'En Despacho',        cls:'b-sky'},
+  'entregado':          {label:'Entregado',           cls:'b-emerald'},
+};
+
+function dsGetEstado(o){
+  if(o.fechaEntrega)   return 'entregado';
+  if(o.fechaDespacho)  return 'en_despacho';
+  return 'pendiente_despacho';
+}
+
+function dsOTAplica(o){
+  // OT debe estar finalizada, con estado válido, sin Nota de crédito
+  if(!o.finalizada) return false;
+  if(!DS_ESTADOS_VALIDOS.includes(o.estado)) return false;
+  return true;
+}
+
+function dsBuscar(){
+  const boleta = (g('ds-boleta').value||'').trim();
+  const codcli = (g('ds-codcli').value||'').trim();
+  const msgEl = g('ds-msg');
+  const resEl = g('ds-resultados');
+  const panEl = g('ds-panel');
+
+  if(!boleta && !codcli){
+    if(msgEl){msgEl.style.color='var(--rose)';msgEl.textContent='Ingrese boleta o código de cliente.';}
+    return;
+  }
+  if(msgEl)msgEl.textContent='';
+  if(panEl){panEl.style.display='none';panEl.innerHTML='';}
+
+  // Filtrar OTs que aplican al proceso de despacho
+  const resultados = Object.entries(OTs).filter(([k,o])=>{
+    if(!dsOTAplica(o)) return false;
+    if(boleta && codcli) return o.boleta===boleta || o.codcli===codcli;
+    if(boleta) return o.boleta===boleta;
+    if(codcli) return o.codcli===codcli;
+    return false;
+  }).sort((a,b)=>{
+    // Primero pendientes de despacho, luego en despacho, luego entregadas
+    const orden = {pendiente_despacho:0, en_despacho:1, entregado:2};
+    return (orden[dsGetEstado(a[1])]||0) - (orden[dsGetEstado(b[1])]||0);
+  });
+
+  const listaEl = g('ds-lista');
+  const countEl = g('ds-count');
+
+  if(!resultados.length){
+    if(msgEl){
+      msgEl.style.color='var(--amber)';
+      msgEl.textContent='No se encontraron OT finalizadas para despacho con esos datos.';
+    }
+    if(resEl)resEl.style.display='none';
+    return;
+  }
+
+  if(countEl)countEl.textContent=resultados.length+' OT';
+  if(resEl)resEl.style.display='block';
+
+  listaEl.innerHTML = resultados.map(([key,o])=>{
+    const est = dsGetEstado(o);
+    const badge = DS_ESTADOS_BADGE[est];
+    const leftColor = est==='entregado'?'#16A34A':est==='en_despacho'?'#2563EB':'#0D9488';
+    const badgeBg   = est==='entregado'?'#16A34A':est==='en_despacho'?'#2563EB':'#F59E0B';
+    const badgeTxt  = est==='pendiente_despacho'?'#111':'#fff';
+    return`<div onclick="dsVerPanel('${key}')"
+      style="padding:12px 16px;border-bottom:1px solid #1E293B;cursor:pointer;transition:background .15s;border-left:4px solid ${leftColor};background:#0F172A;"
+      onmouseover="this.style.background='#1E293B'"
+      onmouseout="this.style.background='#0F172A'">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;">
+        <div>
+          <div style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:13px;color:#F1F5F9;margin-bottom:3px;">
+            <i class="ti ti-file-invoice" style="font-size:12px;margin-right:4px;vertical-align:-1px;color:${leftColor};"></i>
+            Boleta: ${o.boleta||'—'}
+          </div>
+          <div style="font-size:11px;color:#94A3B8;margin-bottom:2px;">${o.cliente||'—'} · Cód: ${o.codcli||'—'}</div>
+          <div style="font-size:10px;color:#64748B;">
+            Ingreso: <strong style="color:#CBD5E1;">${o.fechaIn||'—'}</strong>
+            &nbsp;·&nbsp;Reparación: <strong style="color:#CBD5E1;">${o.fechaSal||'—'}</strong>
+          </div>
+        </div>
+        <span style="background:${badgeBg};color:${badgeTxt};font-size:10px;font-weight:700;padding:4px 10px;border-radius:6px;white-space:nowrap;flex-shrink:0;">${badge.label}</span>
+      </div>
+    </div>`;
+  }).join('');
+
+  // Si solo hay un resultado abrirlo directo
+  if(resultados.length===1) dsVerPanel(resultados[0][0]);
+}
+window.dsBuscar=dsBuscar;
+
+// Limpiar todo el cuadro de despacho
+function dsLimpiar(){
+  ['ds-boleta','ds-codcli'].forEach(id=>{const el=g(id);if(el)el.value='';});
+  const resEl=g('ds-resultados');if(resEl)resEl.style.display='none';
+  const panEl=g('ds-panel');if(panEl){panEl.style.display='none';panEl.innerHTML='';}
+  const msgEl=g('ds-msg');if(msgEl)msgEl.textContent='';
+  const listaEl=g('ds-lista');if(listaEl)listaEl.innerHTML='';
+  setTimeout(()=>{const bEl=g('ds-boleta');if(bEl)bEl.focus();},80);
+}
+window.dsLimpiar=dsLimpiar;
+
+function dsVerPanel(key){
+  const o = OTs[key];if(!o)return;
+  const panEl = g('ds-panel');if(!panEl)return;
+
+  const est = dsGetEstado(o);
+  const badge = DS_ESTADOS_BADGE[est];
+
+  // Determinar qué acción es la siguiente
+  const puedeDespacho  = !o.fechaDespacho;
+  const puedeEntrega   = !!o.fechaDespacho && !o.fechaEntrega;
+  const completada     = !!o.fechaEntrega;
+
+  // Fecha mínima para cada campo (respeta el orden lógico)
+  const minDespacho = o.fechaSal||o.fechaIn||'';
+  const minEntrega  = o.fechaDespacho||o.fechaSal||'';
+
+  panEl.innerHTML=`
+    <div style="background:#0F172A;border:2px solid #334155;border-radius:12px;overflow:hidden;margin-top:8px;">
+
+      <!-- Header slate -->
+      <div style="background:#1E293B;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;border-bottom:2px solid #334155;border-left:4px solid #0D9488;">
+        <div>
+          <div style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:15px;color:#F1F5F9;">
+            <i class="ti ti-file-invoice" style="font-size:14px;margin-right:6px;vertical-align:-2px;color:#0D9488;"></i>
+            Boleta: ${o.boleta}
+          </div>
+          <div style="font-size:11px;color:#64748B;margin-top:2px;">${o.cliente} · Estado: <strong style="color:#94A3B8;">${o.estado}</strong></div>
+        </div>
+        <span style="background:${badge.cls==='b-emerald'?'#16A34A':badge.cls==='b-sky'?'#2563EB':'#0D9488'};color:#fff;font-size:11px;font-weight:700;padding:5px 12px;border-radius:6px;">${badge.label}</span>
+      </div>
+
+      <div style="padding:16px;">
+
+        <!-- Título trazabilidad -->
+        <div style="font-size:11px;font-weight:700;color:#0D9488;text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;display:flex;align-items:center;gap:6px;">
+          <i class="ti ti-route" style="font-size:13px;"></i>Trazabilidad de la Orden
+        </div>
+
+        <!-- 4 pasos -->
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:16px;">
+          ${dsDateBadge('1','Ingreso Taller',    o.fechaIn,      true,  false)}
+          ${dsDateBadge('2','Reparación/Cierre', o.fechaSal,     !!o.fechaSal, false)}
+          ${dsDateBadge('3','En Despacho',       o.fechaDespacho,!!o.fechaDespacho, puedeDespacho&&!completada)}
+          ${dsDateBadge('4','Entregado Cliente', o.fechaEntrega, !!o.fechaEntrega,  puedeEntrega&&!completada)}
+        </div>
+
+        <!-- Formulario de acción -->
+        ${completada?`
+          <div style="background:#0F2A1A;border:2px solid #16A34A;border-radius:10px;padding:14px 16px;display:flex;align-items:center;gap:12px;">
+            <i class="ti ti-circle-check" style="font-size:28px;color:#4ADE80;flex-shrink:0;"></i>
+            <div>
+              <div style="font-size:14px;font-weight:700;color:#F1F5F9;">OT Completamente Entregada</div>
+              <div style="font-size:12px;color:#86EFAC;margin-top:3px;">Entregado al cliente el <strong>${o.fechaEntrega}</strong></div>
+            </div>
+          </div>
+        `:puedeDespacho?`
+          <div style="background:#1E293B;border:2px solid #334155;border-radius:10px;padding:14px 16px;">
+            <div style="font-size:12px;font-weight:700;color:#0D9488;text-transform:uppercase;letter-spacing:.06em;margin-bottom:12px;display:flex;align-items:center;gap:6px;">
+              <i class="ti ti-truck" style="font-size:16px;"></i>Registrar Salida a Despacho
+            </div>
+            <div style="display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;">
+              <div style="flex:1;min-width:150px;">
+                <label style="display:block;font-size:11px;font-weight:700;color:#94A3B8;margin-bottom:5px;">Fecha de Despacho <span style="color:#F87171;">*</span></label>
+                <input type="date" id="ds-fecha-despacho" min="${minDespacho}"
+                  style="width:100%;padding:9px 12px;background:#fff;border:2px solid #0D9488;border-radius:8px;color:#111;font-size:13px;font-family:'Plus Jakarta Sans',sans-serif;box-sizing:border-box;">
+              </div>
+              <button onclick="dsGuardar('${key}','despacho')"
+                style="background:#0D9488;border:none;border-radius:8px;padding:10px 20px;font-size:13px;font-weight:700;color:#fff;cursor:pointer;font-family:'Space Grotesk',sans-serif;white-space:nowrap;display:flex;align-items:center;gap:6px;">
+                <i class="ti ti-truck-delivery" style="font-size:15px;"></i>Confirmar Despacho
+              </button>
+            </div>
+            <div id="ds-panel-msg" style="font-size:12px;font-weight:600;margin-top:8px;min-height:18px;"></div>
+          </div>
+        `:puedeEntrega?`
+          <div style="background:#1E293B;border:2px solid #16A34A;border-radius:10px;padding:14px 16px;">
+            <div style="font-size:12px;font-weight:700;color:#4ADE80;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;display:flex;align-items:center;gap:6px;">
+              <i class="ti ti-package-export" style="font-size:16px;"></i>Confirmar Entrega al Cliente
+            </div>
+            <div style="background:#0F2A1A;border:1px solid #16A34A;border-radius:6px;padding:8px 12px;font-size:12px;color:#86EFAC;margin-bottom:12px;">
+              <i class="ti ti-calendar-check" style="margin-right:4px;"></i>
+              Despachado el <strong style="color:#fff;">${o.fechaDespacho}</strong> · Transportes confirma la entrega física al cliente
+            </div>
+            <div style="display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;">
+              <div style="flex:1;min-width:150px;">
+                <label style="display:block;font-size:11px;font-weight:700;color:#94A3B8;margin-bottom:5px;">Fecha de Entrega <span style="color:#F87171;">*</span></label>
+                <input type="date" id="ds-fecha-entrega" min="${minEntrega}"
+                  style="width:100%;padding:9px 12px;background:#fff;border:2px solid #16A34A;border-radius:8px;color:#111;font-size:13px;font-family:'Plus Jakarta Sans',sans-serif;box-sizing:border-box;">
+              </div>
+              <button onclick="dsGuardar('${key}','entrega')"
+                style="background:#16A34A;border:none;border-radius:8px;padding:10px 20px;font-size:13px;font-weight:700;color:#fff;cursor:pointer;font-family:'Space Grotesk',sans-serif;white-space:nowrap;display:flex;align-items:center;gap:6px;">
+                <i class="ti ti-circle-check" style="font-size:15px;"></i>Confirmar Entregado
+              </button>
+            </div>
+            <div id="ds-panel-msg" style="font-size:12px;font-weight:600;margin-top:8px;min-height:18px;"></div>
+          </div>
+        `:''}
+      </div>
+    </div>`;
+
+  panEl.style.display='block';
+  panEl.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+window.dsVerPanel=dsVerPanel;
+
+function dsDateBadge(num, label, fecha, activa, siguiente){
+  const bg      = activa?'#0F2D2A':siguiente?'#1E293B':'#0F172A';
+  const border  = activa?'#0D9488':siguiente?'#334155':'#1E293B';
+  const icon    = activa
+    ? '<i class="ti ti-circle-check" style="font-size:18px;color:#0D9488;"></i>'
+    : siguiente
+    ? '<i class="ti ti-clock" style="font-size:18px;color:#94A3B8;"></i>'
+    : `<span style="font-size:18px;font-weight:700;color:#334155;">${num}</span>`;
+  const lblCol  = activa?'#fff':siguiente?'#94A3B8':'#475569';
+  const fechaCol= activa?'#2DD4BF':'#64748B';
+  return`<div style="background:${bg};border:2px solid ${border};border-radius:10px;padding:10px 8px;text-align:center;">
+    <div style="margin-bottom:5px;">${icon}</div>
+    <div style="font-size:9px;font-weight:700;color:${lblCol};text-transform:uppercase;letter-spacing:.05em;line-height:1.3;">${label}</div>
+    <div style="font-size:11px;color:${fechaCol};margin-top:5px;font-weight:${activa?'700':'400'};">${fecha||'—'}</div>
+  </div>`;
+}
+window.dsDateBadge=dsDateBadge;
+
+// ══════════════════════════════════════════════════════════════════
+// MÓDULO GESTIÓN DE COTIZACIONES — Pestaña Recepción
+// Maneja: habilitar OTs No Procede, completar cotización formal,
+//         registrar respuesta del cliente (aprobación/rechazo)
+// Perfiles: recepcion, administrador
+// ══════════════════════════════════════════════════════════════════
+
+function gcLimpiar(){
+  ['gc-boleta','gc-codcli'].forEach(id=>{const el=g(id);if(el)el.value='';});
+  const res=g('gc-resultados');if(res)res.style.display='none';
+  const pan=g('gc-panel');if(pan){pan.style.display='none';pan.innerHTML='';}
+  const msg=g('gc-msg');if(msg)msg.textContent='';
+  const lista=g('gc-lista');if(lista)lista.innerHTML='';
+  setTimeout(()=>{const b=g('gc-boleta');if(b)b.focus();},80);
+}
+window.gcLimpiar=gcLimpiar;
+
+function gcBuscar(){
+  const boleta=(g('gc-boleta').value||'').trim();
+  const codcli=(g('gc-codcli').value||'').trim();
+  const msg=g('gc-msg');
+  if(!boleta&&!codcli){
+    if(msg){msg.style.color='var(--rose)';msg.textContent='Ingrese boleta o código de cliente.';}
+    return;
+  }
+  if(msg)msg.textContent='';
+
+  // Buscar OTs en estados de cotización O finalizadas con No Procede (para habilitar)
+  const resultados=Object.entries(OTs).filter(([k,o])=>{
+    const match=boleta?(o.boleta===boleta):(o.codcli===codcli);
+    if(!match)return false;
+    // Incluir: en proceso de cotización, pendiente aprobación, o No Procede finalizada
+    return o.estado==='Cotizado'||
+           o.estado==='Pendiente aprobación'||
+           (o.estado==='No procede'&&o.finalizada===true)||
+           (o.estado==='Cotización rechazada'&&!o.fechaDespacho); // para referencia
+  }).sort((a,b)=>new Date(b[1].fechaIn||'1900')-new Date(a[1].fechaIn||'1900'));
+
+  const listaEl=g('gc-lista');
+  const countEl=g('gc-count');
+  const resEl=g('gc-resultados');
+  const panEl=g('gc-panel');
+  if(panEl){panEl.style.display='none';panEl.innerHTML='';}
+
+  if(!resultados.length){
+    if(msg){msg.style.color='var(--amber)';msg.textContent='No se encontraron OTs en proceso de cotización con esos datos.';}
+    if(resEl)resEl.style.display='none';
+    return;
+  }
+
+  if(countEl)countEl.textContent=resultados.length+' OT';
+  if(resEl)resEl.style.display='block';
+
+  const estadoBadge={
+    'Cotizado':             {label:'Pendiente cotización',color:'#F59E0B',bg:'#FEF3C7'},
+    'Pendiente aprobación': {label:'Pendiente aprobación',color:'#2563EB',bg:'#EFF6FF'},
+    'No procede':           {label:'No Procede — Habilitar',color:'#6B7280',bg:'#F3F4F6'},
+    'Cotización rechazada': {label:'Cotización rechazada',color:'#DC2626',bg:'#FEF2F2'},
+  };
+
+  listaEl.innerHTML=resultados.map(([key,o])=>{
+    const eb=estadoBadge[o.estado]||{label:o.estado,color:'#6B7280',bg:'#F3F4F6'};
+    return`<div onclick="gcVerPanel('${key}')" style="padding:10px 14px;border-bottom:1px solid var(--gray-100);cursor:pointer;transition:background .15s;"
+      onmouseover="this.style.background='#FFFBEB'" onmouseout="this.style.background=''">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;">
+        <div>
+          <div style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:13px;color:var(--slate);">Boleta: ${o.boleta||'—'}</div>
+          <div style="font-size:11px;color:var(--gray-500);margin-top:2px;">${o.cliente||'—'} · ${o.codcli||'—'}</div>
+          ${o.cotDescTecnico?`<div style="font-size:10px;color:var(--teal);margin-top:2px;font-style:italic;"><i class="ti ti-tool" style="font-size:10px;"></i> ${o.cotDescTecnico.substring(0,60)}${o.cotDescTecnico.length>60?'...':''}</div>`:''}
+        </div>
+        <span style="background:${eb.bg};color:${eb.color};font-size:10px;font-weight:700;padding:3px 10px;border-radius:6px;flex-shrink:0;">${eb.label}</span>
+      </div>
+    </div>`;
+  }).join('');
+
+  if(resultados.length===1)gcVerPanel(resultados[0][0]);
+}
+window.gcBuscar=gcBuscar;
+
+function gcVerPanel(key){
+  const o=OTs[key];if(!o)return;
+  const panEl=g('gc-panel');if(!panEl)return;
+  panEl.style.display='block';
+
+  const cots=o.cotizacion||[];
+  const total=cots.reduce((s,c)=>s+(parseFloat(c.costo)||0),0);
+  const cotFilas=cots.map((c,i)=>`
+    <tr>
+      <td><input type="text" id="gc-cod-${key}-${i}" value="${c.codigo||''}" placeholder="CÓD-001"
+        onchange="gcActualizarTotal('${key}')"></td>
+      <td><input type="text" id="gc-desc-${key}-${i}" value="${c.descripcion||''}"
+        placeholder="${c.esManoObra?'Descripción mano de obra':'Descripción repuesto'}"
+        onchange="gcActualizarTotal('${key}')">
+        ${c.esManoObra?'<span style="font-size:9px;color:var(--teal);font-weight:700;margin-left:4px;">M.O.</span>':''}
+      </td>
+      <td><input type="text" id="gc-cant-${key}-${i}" value="${c.cantidad||'1'}"
+        onchange="gcActualizarTotal('${key}')" style="width:50px;"></td>
+      <td><input type="number" id="gc-costo-${key}-${i}" value="${c.costo||''}" placeholder="0.00"
+        step="0.01" min="0" onchange="gcActualizarTotal('${key}')"></td>
+      <td><button onclick="gcEliminarFila('${key}',${i})" style="background:none;border:none;cursor:pointer;color:var(--rose);">
+        <i class="ti ti-trash" style="font-size:13px;"></i></button></td>
+    </tr>`).join('');
+
+  // Determinar qué acción mostrar según el estado
+  const esCotizado = o.estado==='Cotizado' && !o.finalizada;
+  const esPendiente = o.estado==='Pendiente aprobación' && !o.finalizada;
+  const esNoProcede = o.estado==='No procede' && o.finalizada===true;
+
+  let accionHTML='';
+
+  if(esNoProcede){
+    // Opción para habilitar OT No Procede para cotización
+    accionHTML=`
+      <div style="background:#FEF3C7;border:1.5px solid #F59E0B;border-radius:10px;padding:14px 16px;">
+        <div style="font-size:12px;font-weight:700;color:#92400E;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;">
+          <i class="ti ti-lock-open" style="font-size:14px;margin-right:4px;"></i>Habilitar para Cotización
+        </div>
+        <div style="font-size:12px;color:#78350F;margin-bottom:10px;">
+          Esta OT está cerrada como <strong>No Procede</strong>. Si el cliente desea cotización,
+          habilítela para que el técnico registre los repuestos necesarios.
+        </div>
+        <div style="font-size:11px;color:#92400E;background:rgba(245,158,11,.2);border-radius:6px;padding:6px 10px;margin-bottom:10px;">
+          <i class="ti ti-info-circle" style="margin-right:4px;"></i>
+          La OT se asignará al técnico original: <strong>${o.tec||'No asignado'}</strong>
+        </div>
+        <button onclick="gcHabilitarParaCotizacion('${key}')"
+          style="background:#F59E0B;border:none;border-radius:8px;padding:10px 18px;font-size:13px;font-weight:700;color:#fff;cursor:pointer;font-family:'Space Grotesk',sans-serif;display:flex;align-items:center;gap:6px;">
+          <i class="ti ti-lock-open" style="font-size:14px;"></i>Habilitar para Cotización
+        </button>
+        <div id="gc-panel-msg-${key}" style="font-size:12px;margin-top:8px;min-height:16px;"></div>
+      </div>`;
+
+  } else if(esCotizado){
+    // Completar cotización formal (Recepción llena códigos, costos, mano de obra)
+    accionHTML=`
+      <div style="background:#FFFBEB;border:1.5px solid #F59E0B;border-radius:10px;padding:14px 16px;">
+        <div style="font-size:12px;font-weight:700;color:#92400E;text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px;">
+          <i class="ti ti-receipt" style="font-size:14px;margin-right:4px;"></i>Completar Cotización Formal
+        </div>
+
+        ${o.cotDescTecnico?`
+        <div style="background:rgba(13,148,136,.08);border:1px solid rgba(13,148,136,.3);border-radius:6px;padding:8px 12px;margin-bottom:12px;">
+          <div style="font-size:10px;font-weight:700;color:var(--teal);text-transform:uppercase;margin-bottom:4px;">
+            <i class="ti ti-tool" style="margin-right:4px;"></i>Información técnica del técnico
+          </div>
+          <div style="font-size:12px;color:var(--slate);">${o.cotDescTecnico}</div>
+          ${o.cotCodSugerido?`<div style="font-size:11px;color:var(--gray-500);margin-top:4px;">Código sugerido: <strong>${o.cotCodSugerido}</strong></div>`:''}
+        </div>`:''}
+
+        <div style="font-size:11px;font-weight:700;color:var(--gray-600);margin-bottom:6px;">Líneas de cotización:</div>
+        <div style="overflow-x:auto;margin-bottom:8px;">
+          <table style="width:100%;border-collapse:collapse;font-size:12px;" id="gc-tabla-${key}">
+            <thead><tr style="background:var(--gray-100);">
+              <th style="padding:6px 8px;text-align:left;font-size:10px;color:var(--gray-400);font-weight:700;">Código</th>
+              <th style="padding:6px 8px;text-align:left;font-size:10px;color:var(--gray-400);font-weight:700;">Descripción</th>
+              <th style="padding:6px 8px;text-align:left;font-size:10px;color:var(--gray-400);font-weight:700;width:60px;">Cant.</th>
+              <th style="padding:6px 8px;text-align:left;font-size:10px;color:var(--gray-400);font-weight:700;width:110px;">Costo ₡</th>
+              <th style="width:32px;"></th>
+            </tr></thead>
+            <tbody id="gc-tbody-${key}">${cotFilas}</tbody>
+          </table>
+        </div>
+        <div style="display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap;">
+          <button onclick="gcAgregarFila('${key}',false)"
+            style="background:none;border:1.5px solid var(--teal);border-radius:6px;padding:5px 12px;font-size:11px;font-weight:600;color:var(--teal);cursor:pointer;">
+            <i class="ti ti-plus" style="font-size:11px;"></i>Agregar repuesto
+          </button>
+          <button onclick="gcAgregarFila('${key}',true)"
+            style="background:none;border:1.5px solid var(--amber);border-radius:6px;padding:5px 12px;font-size:11px;font-weight:600;color:#92400E;cursor:pointer;">
+            <i class="ti ti-plus" style="font-size:11px;"></i>Agregar mano de obra
+          </button>
+        </div>
+        <div style="text-align:right;font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:700;color:var(--slate);margin-bottom:12px;">
+          Total: ₡<span id="gc-total-${key}">${total.toLocaleString('es-CR',{minimumFractionDigits:2})}</span>
+        </div>
+        <div class="fg" style="margin-bottom:10px;">
+          <label class="req">Fecha de envío al cliente</label>
+          <input type="date" id="gc-fecha-envio-${key}" value="${o.cotFechaEnvio||''}">
+        </div>
+        <button onclick="gcEnviarCotizacion('${key}')"
+          style="background:var(--amber);border:none;border-radius:8px;padding:10px 18px;font-size:13px;font-weight:700;color:#fff;cursor:pointer;font-family:'Space Grotesk',sans-serif;display:flex;align-items:center;gap:6px;width:100%;justify-content:center;">
+          <i class="ti ti-send" style="font-size:14px;"></i>Confirmar envío → Pendiente aprobación
+        </button>
+        <div id="gc-panel-msg-${key}" style="font-size:12px;margin-top:8px;min-height:16px;"></div>
+      </div>`;
+
+  } else if(esPendiente){
+    // Registrar respuesta del cliente
+    const fechaEnvio=o.cotFechaEnvio?`Enviada el ${o.cotFechaEnvio}`:'';
+    const resumenCot=cots.length?`<div style="background:var(--gray-50);border:1px solid var(--gray-200);border-radius:6px;padding:8px 12px;margin-bottom:10px;">
+      <div style="font-size:10px;font-weight:700;color:var(--gray-400);text-transform:uppercase;margin-bottom:6px;">Resumen cotización enviada</div>
+      ${cots.map(c=>`<div style="font-size:11px;display:flex;justify-content:space-between;padding:2px 0;">
+        <span>${c.descripcion||'—'}${c.esManoObra?' <span style="color:var(--teal);font-size:9px;font-weight:700;">M.O.</span>':''}</span>
+        <span style="font-weight:600;">₡${(parseFloat(c.costo)||0).toLocaleString('es-CR',{minimumFractionDigits:2})}</span>
+      </div>`).join('')}
+      <div style="border-top:1px solid var(--gray-200);margin-top:6px;padding-top:6px;font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700;color:var(--slate);display:flex;justify-content:space-between;">
+        <span>Total</span><span>₡${total.toLocaleString('es-CR',{minimumFractionDigits:2})}</span>
+      </div>
+    </div>`:'';
+
+    accionHTML=`
+      <div style="background:#EFF6FF;border:1.5px solid #2563EB;border-radius:10px;padding:14px 16px;">
+        <div style="font-size:12px;font-weight:700;color:#1D4ED8;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;">
+          <i class="ti ti-clock" style="font-size:14px;margin-right:4px;"></i>Pendiente respuesta del cliente
+        </div>
+        ${fechaEnvio?`<div style="font-size:11px;color:#3B82F6;margin-bottom:10px;">${fechaEnvio}</div>`:''}
+        ${resumenCot}
+        <div style="font-size:11px;font-weight:700;color:var(--slate);margin-bottom:8px;">Registrar respuesta del cliente:</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <button onclick="gcRegistrarRespuesta('${key}',true)"
+            style="flex:1;background:#16A34A;border:none;border-radius:8px;padding:10px;font-size:13px;font-weight:700;color:#fff;cursor:pointer;font-family:'Space Grotesk',sans-serif;display:flex;align-items:center;justify-content:center;gap:6px;min-width:140px;">
+            <i class="ti ti-circle-check" style="font-size:14px;"></i>Cliente APRUEBA
+          </button>
+          <button onclick="gcRegistrarRespuesta('${key}',false)"
+            style="flex:1;background:#DC2626;border:none;border-radius:8px;padding:10px;font-size:13px;font-weight:700;color:#fff;cursor:pointer;font-family:'Space Grotesk',sans-serif;display:flex;align-items:center;justify-content:center;gap:6px;min-width:140px;">
+            <i class="ti ti-x" style="font-size:14px;"></i>Cliente RECHAZA
+          </button>
+        </div>
+        <div id="gc-panel-msg-${key}" style="font-size:12px;margin-top:8px;min-height:16px;"></div>
+      </div>`;
+  }
+
+  panEl.innerHTML=`
+    <div style="border:1.5px solid var(--amber);border-radius:12px;overflow:hidden;margin-top:8px;">
+      <div style="background:var(--amber-dark);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+        <div>
+          <div style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:15px;color:#fff;">Boleta: ${o.boleta}</div>
+          <div style="font-size:11px;color:rgba(255,255,255,.7);margin-top:2px;">${o.cliente} · Estado: ${o.estado}</div>
+        </div>
+      </div>
+      <div style="padding:14px;">${accionHTML}</div>
+    </div>`;
+  panEl.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+window.gcVerPanel=gcVerPanel;
+
+function gcAgregarFila(key,esManoObra=false){
+  const tbody=g(`gc-tbody-${key}`);if(!tbody)return;
+  const idx=tbody.querySelectorAll('tr').length;
+  const tr=document.createElement('tr');
+  tr.innerHTML=`
+    <td><input type="text" id="gc-cod-${key}-${idx}" placeholder="${esManoObra?'—':'CÓD-001'}" ${esManoObra?'readonly style="background:var(--gray-50);"':''}></td>
+    <td><input type="text" id="gc-desc-${key}-${idx}" placeholder="${esManoObra?'Descripción mano de obra':'Descripción del repuesto'}" onchange="gcActualizarTotal('${key}')">
+      ${esManoObra?'<span style="font-size:9px;color:var(--teal);font-weight:700;margin-left:4px;">M.O.</span>':''}
+      <input type="hidden" id="gc-mo-${key}-${idx}" value="${esManoObra?'1':'0'}">
+    </td>
+    <td><input type="text" id="gc-cant-${key}-${idx}" value="1" style="width:50px;" onchange="gcActualizarTotal('${key}')"></td>
+    <td><input type="number" id="gc-costo-${key}-${idx}" placeholder="0.00" step="0.01" min="0" onchange="gcActualizarTotal('${key}')"></td>
+    <td><button onclick="this.closest('tr').remove();gcActualizarTotal('${key}')" style="background:none;border:none;cursor:pointer;color:var(--rose);">
+      <i class="ti ti-trash" style="font-size:13px;"></i></button></td>`;
+  tbody.appendChild(tr);
+}
+window.gcAgregarFila=gcAgregarFila;
+
+function gcActualizarTotal(key){
+  const tbody=g(`gc-tbody-${key}`);if(!tbody)return;
+  const rows=tbody.querySelectorAll('tr');
+  let total=0;
+  rows.forEach((tr,i)=>{
+    const costo=parseFloat(g(`gc-costo-${key}-${i}`)?.value||'0')||0;
+    const cant=parseFloat(g(`gc-cant-${key}-${i}`)?.value||'1')||1;
+    total+=costo*cant;
+  });
+  const totEl=g(`gc-total-${key}`);
+  if(totEl)totEl.textContent=total.toLocaleString('es-CR',{minimumFractionDigits:2});
+}
+window.gcActualizarTotal=gcActualizarTotal;
+
+function gcEliminarFila(key,idx){
+  // Se usa en filas prellenadas
+  const tbody=g(`gc-tbody-${key}`);if(!tbody)return;
+  const rows=tbody.querySelectorAll('tr');
+  if(rows[idx])rows[idx].remove();
+  gcActualizarTotal(key);
+}
+window.gcEliminarFila=gcEliminarFila;
+
+function gcRecogerLineas(key){
+  const tbody=g(`gc-tbody-${key}`);if(!tbody)return[];
+  const rows=tbody.querySelectorAll('tr');
+  const lineas=[];
+  rows.forEach((tr,i)=>{
+    const codigo=g(`gc-cod-${key}-${i}`)?.value?.trim()||'';
+    const descripcion=g(`gc-desc-${key}-${i}`)?.value?.trim()||'';
+    const cantidad=g(`gc-cant-${key}-${i}`)?.value?.trim()||'1';
+    const costo=parseFloat(g(`gc-costo-${key}-${i}`)?.value||'0')||0;
+    const esMO=g(`gc-mo-${key}-${i}`)?.value==='1';
+    if(descripcion||codigo)lineas.push({codigo,descripcion,cantidad,costo,esManoObra:esMO});
+  });
+  return lineas;
+}
+
+async function gcHabilitarParaCotizacion(key){
+  const o=OTs[key];if(!o)return;
+  const msgEl=g(`gc-panel-msg-${key}`);
+  // Verificar que es No Procede finalizada
+  if(o.estado!=='No procede'||!o.finalizada){
+    if(msgEl){msgEl.style.color='var(--rose)';msgEl.textContent='Solo se pueden habilitar OTs con estado No Procede.';}
+    return;
+  }
+  try{
+    const ts=new Date().toLocaleString('es-CR',{timeZone:'America/Costa_Rica'});
+    await update(ref(db,`OTs/${key}`),{
+      finalizada:false,
+      estado:'Cotizado',
+      cotizacion:[],
+      cotDescTecnico:'',
+      cotCodSugerido:'',
+      cotFechaEnvio:'',
+      cotAprobada:null,
+      historial:[...(o.historial||[]),{ts,accion:'OT habilitada para cotización por Recepción · Técnico asignado: '+(o.tec||'—')}],
+    });
+    if(msgEl){msgEl.style.color='var(--teal)';msgEl.textContent='✓ OT habilitada. El técnico podrá registrar los repuestos necesarios.';}
+    setTimeout(()=>gcLimpiar(),2500);
+  }catch(e){
+    if(msgEl){msgEl.style.color='var(--rose)';msgEl.textContent='Error: '+e.message;}
+  }
+}
+window.gcHabilitarParaCotizacion=gcHabilitarParaCotizacion;
+
+async function gcEnviarCotizacion(key){
+  const o=OTs[key];if(!o)return;
+  const msgEl=g(`gc-panel-msg-${key}`);
+  const fechaEnvio=g(`gc-fecha-envio-${key}`)?.value?.trim()||'';
+  if(!fechaEnvio){
+    if(msgEl){msgEl.style.color='var(--rose)';msgEl.textContent='Debe registrar la fecha de envío al cliente.';}
+    return;
+  }
+  const lineas=gcRecogerLineas(key);
+  if(!lineas.length){
+    if(msgEl){msgEl.style.color='var(--rose)';msgEl.textContent='Debe agregar al menos una línea de repuesto o mano de obra.';}
+    return;
+  }
+  try{
+    const ts=new Date().toLocaleString('es-CR',{timeZone:'America/Costa_Rica'});
+    await update(ref(db,`OTs/${key}`),{
+      estado:'Pendiente aprobación',
+      cotizacion:lineas,
+      cotFechaEnvio:fechaEnvio,
+      cotAprobada:null,
+      historial:[...(o.historial||[]),{ts,accion:`Cotización formal enviada al cliente el ${fechaEnvio} · ${lineas.length} línea(s) · Total: ₡${lineas.reduce((s,c)=>s+(parseFloat(c.costo)||0)*((parseFloat(c.cantidad)||1)),0).toLocaleString('es-CR')}`}],
+    });
+    if(msgEl){msgEl.style.color='var(--teal)';msgEl.textContent='✓ Cotización confirmada. OT en espera de respuesta del cliente.';}
+    setTimeout(()=>gcLimpiar(),2500);
+  }catch(e){
+    if(msgEl){msgEl.style.color='var(--rose)';msgEl.textContent='Error: '+e.message;}
+  }
+}
+window.gcEnviarCotizacion=gcEnviarCotizacion;
+
+async function gcRegistrarRespuesta(key,aprueba){
+  const o=OTs[key];if(!o)return;
+  const msgEl=g(`gc-panel-msg-${key}`);
+  try{
+    const ts=new Date().toLocaleString('es-CR',{timeZone:'America/Costa_Rica'});
+    if(aprueba){
+      // Cliente aprueba → reactivar OT para que técnico repare
+      await update(ref(db,`OTs/${key}`),{
+        estado:'En proceso',
+        finalizada:false,
+        cotAprobada:true,
+        cotFechaRespuesta:ts,
+        historial:[...(o.historial||[]),{ts,accion:'Cliente APROBÓ la cotización · OT reactivada para reparación · Técnico: '+(o.tec||'—')}],
+      });
+      if(msgEl){msgEl.style.color='var(--emerald)';msgEl.textContent='✓ Cliente aprobó. OT reactivada para el técnico.';}
+    } else {
+      // Cliente rechaza → OT finalizada como Cotización rechazada
+      await update(ref(db,`OTs/${key}`),{
+        estado:'Cotización rechazada',
+        finalizada:true,
+        cotAprobada:false,
+        cotFechaRespuesta:ts,
+        historial:[...(o.historial||[]),{ts,accion:'Cliente RECHAZÓ la cotización · OT finalizada como Cotización rechazada · Entra a proceso de despacho'}],
+      });
+      if(msgEl){msgEl.style.color='var(--rose)';msgEl.textContent='OT finalizada como rechazada. Entra al proceso de despacho/entrega.';}
+    }
+    setTimeout(()=>gcLimpiar(),2500);
+  }catch(e){
+    if(msgEl){msgEl.style.color='var(--rose)';msgEl.textContent='Error: '+e.message;}
+  }
+}
+window.gcRegistrarRespuesta=gcRegistrarRespuesta;
+
+async function dsGuardar(key, tipo){
+  const o=OTs[key];if(!o)return;
+  const msgEl=g('ds-panel-msg');
+
+  let fecha, campo, accion, labelExito;
+  if(tipo==='despacho'){
+    fecha=(g('ds-fecha-despacho')?.value||'');
+    campo='fechaDespacho';
+    accion='En Despacho — enviado a transportes';
+    labelExito='✓ Despacho registrado correctamente.';
+    if(!fecha){if(msgEl){msgEl.style.color='#FCA5A5';msgEl.textContent='Seleccione la fecha de despacho.';}return;}
+    if(o.fechaSal&&fecha<o.fechaSal){
+      if(msgEl){msgEl.style.color='#FCA5A5';msgEl.textContent='La fecha de despacho no puede ser anterior a la fecha de reparación ('+o.fechaSal+').';}return;
+    }
+  } else {
+    fecha=(g('ds-fecha-entrega')?.value||'');
+    campo='fechaEntrega';
+    accion='Entregado al cliente — proceso completado';
+    labelExito='✓ Entrega confirmada. OT completamente cerrada.';
+    if(!fecha){if(msgEl){msgEl.style.color='#FCA5A5';msgEl.textContent='Seleccione la fecha de entrega.';}return;}
+    if(o.fechaDespacho&&fecha<o.fechaDespacho){
+      if(msgEl){msgEl.style.color='#FCA5A5';msgEl.textContent='La fecha de entrega no puede ser anterior a la fecha de despacho ('+o.fechaDespacho+').';}return;
+    }
+  }
+
+  try{
+    const ts=new Date().toLocaleString('es-CR',{timeZone:'America/Costa_Rica'});
+    const nuevoHist=[...(o.historial||[]),{ts,accion}];
+    await update(ref(db,`OTs/${key}`),{[campo]:fecha,historial:nuevoHist});
+
+    // Mostrar mensaje de éxito en el panel
+    if(msgEl){msgEl.style.color='#6EE7B7';msgEl.textContent=labelExito;}
+
+    // Auto-reset: después de 2 segundos limpiar todo y dejar listo para nueva consulta
+    setTimeout(()=>{
+      dsLimpiar();
+      // Mostrar confirmación breve en el campo de mensaje principal
+      const mainMsg=g('ds-msg');
+      if(mainMsg){
+        mainMsg.style.color='#10B981';
+        mainMsg.textContent=labelExito+' Listo para la siguiente consulta.';
+        setTimeout(()=>{if(mainMsg)mainMsg.textContent='';},4000);
+      }
+    },2000);
+
+  }catch(e){
+    if(msgEl){msgEl.style.color='#FCA5A5';msgEl.textContent='Error al guardar: '+e.message;}
+  }
+}
+window.dsGuardar=dsGuardar;
+
+// ══════════════════════════════════════════════════════════════
+// PESTAÑA CONSULTA — Solo lectura, sin interferencia con módulo
+// Prefijo 'cns' en todas las funciones y variables locales
+// TODO: Agregar validación de perfil aquí cuando se implemente auth
+// ══════════════════════════════════════════════════════════════
+
+// Traducción de estados internos a lenguaje público para el cliente
+function cnsTraducirEstado(estado, finalizada, fechaDespacho, fechaEntrega){
+  if(fechaEntrega) return 'Entregado al cliente';
+  if(fechaDespacho) return 'En despacho — en camino';
+  if(finalizada){
+    const map={
+      'Reparado':             'Reparado — listo para retirar',
+      'Cambio':               'Cambio en garantía — listo para retirar',
+      'Cotizado':             'Reparado',
+      'Cotización rechazada': 'Cotización no aprobada — listo para retirar',
+      'No procede':           'Sin solución disponible',
+      'Nota de crédito':      'Nota de crédito procesada',
+    };
+    return map[estado]||'Finalizado';
+  }
+  const map={
+    'Pendiente':            'En espera de asignación',
+    'En proceso':           'En reparación',
+    'Cotizado':             'En proceso de cotización',
+    'Pendiente aprobación': 'Cotización enviada — pendiente su aprobación',
+    'Espera de repuesto':   'En espera de repuesto',
+    'Cambio':               'Procesando cambio en garantía',
+    'Nota de crédito':      'Nota de crédito procesada',
+    'Reparado':             'Reparado',
+  };
+  return map[estado]||estado;
+}
+
+
+// Color del badge por estado para la vista pública
+function cnsBadgeEstado(estado, finalizada, fechaDespacho, fechaEntrega){
+  if(fechaEntrega)  return 'b-emerald';
+  if(fechaDespacho) return 'b-sky';
+  if(finalizada)    return 'b-teal';
+  const map={
+    'Pendiente':'b-slate','En proceso':'b-teal','Cotizado':'b-amber',
+    'Espera de repuesto':'b-amber','Cambio':'b-rose','Nota de crédito':'b-slate','Reparado':'b-emerald',
+  };
+  return map[estado]||'b-slate';
+}
+
+function cnsLimpiarResultados(){
+  const res=g('cns-resultados');
+  if(res)res.style.display='none';
+  const det=g('cns-detalle');
+  if(det){det.style.display='none';det.innerHTML='';}
+  const ph=g('cns-placeholder');
+  if(ph)ph.style.display='';
+  const msg=g('cns-msg');
+  if(msg)msg.textContent='';
+}
+window.cnsLimpiarResultados=cnsLimpiarResultados;
+
+function cnsBuscar(){
+  const boleta=(g('cns-boleta').value||'').trim();
+  const codcli=(g('cns-codcli').value||'').trim();
+  const msg=g('cns-msg');
+
+  if(!boleta&&!codcli){
+    if(msg){msg.style.color='var(--rose)';msg.textContent='Ingrese una boleta o código de cliente para consultar.';}
+    return;
+  }
+
+  // Si estamos en modo público y OTs aún no cargó — esperar
+  if(modoPublico && !window._otsListasParaConsulta){
+    if(msg){msg.style.color='var(--amber)';msg.textContent='⏳ Cargando datos, espere un momento...';}
+    window._cnsBusquedaPendiente = true;
+    return;
+  }
+
+  if(msg)msg.textContent='';
+
+  // Búsqueda OR exacta — boleta exacta OR codcli exacto
+  const todasOTs=Object.entries(OTs);
+  let resultados=todasOTs.filter(([k,o])=>{
+    if(boleta&&codcli) return(o.boleta||'')=== boleta||(o.codcli||'')=== codcli;
+    if(boleta)         return(o.boleta||'')=== boleta;
+    if(codcli)         return(o.codcli||'')=== codcli;
+    return false;
+  });
+
+  // Ordenar por fechaIn DESC (más reciente primero)
+  resultados.sort((a,b)=>{
+    const fa=new Date(a[1].fechaIn||'1900-01-01');
+    const fb=new Date(b[1].fechaIn||'1900-01-01');
+    return fb-fa;
+  });
+
+  const resEl=g('cns-resultados');
+  const listaEl=g('cns-lista');
+  const countEl=g('cns-count');
+
+  if(!resultados.length){
+    if(msg){msg.style.color='var(--amber)';msg.textContent='No se encontraron OT con los datos ingresados.';}
+    if(resEl)resEl.style.display='none';
+    return;
+  }
+
+  if(countEl)countEl.textContent=resultados.length+' OT encontrada'+(resultados.length!==1?'s':'');
+
+  listaEl.innerHTML=resultados.map(([key,o])=>{
+    const estadoPublico=cnsTraducirEstado(o.estado,o.finalizada,o.fechaDespacho,o.fechaEntrega);
+    const badge=cnsBadgeEstado(o.estado,o.finalizada,o.fechaDespacho,o.fechaEntrega);
+    const fechaDisplay=o.fechaIn||'—';
+    const clienteDisplay=o.cliente||'—';
+    return`<div class="ot-row" onclick="cnsVerDetalle('${key}')" style="cursor:pointer;padding:10px 14px;border-bottom:1px solid var(--gray-100);transition:background .15s;" onmouseover="this.style.background='var(--teal-faint)'" onmouseout="this.style.background=''">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;">
+        <div>
+          <div style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:14px;color:var(--slate);">Boleta: ${o.boleta||'—'}</div>
+          <div style="font-size:11px;color:var(--gray-600);margin-top:2px;">${clienteDisplay}</div>
+          <div style="font-size:11px;color:var(--gray-400);margin-top:1px;"><i class="ti ti-calendar" style="font-size:10px;vertical-align:-1px;margin-right:2px;"></i>Ingreso: ${fechaDisplay}</div>
+        </div>
+        <span class="badge ${badge}" style="flex-shrink:0;">${estadoPublico}</span>
+      </div>
+    </div>`;
+  }).join('');
+
+  if(resEl)resEl.style.display='block';
+
+  // Si solo hay un resultado, mostrarlo directamente
+  if(resultados.length===1) cnsVerDetalle(resultados[0][0]);
+}
+window.cnsBuscar=cnsBuscar;
+
+function cnsVerDetalle(key){
+  const o=OTs[key];if(!o)return;
+  const det=g('cns-detalle');
+  const ph=g('cns-placeholder');
+  if(!det)return;
+  if(ph)ph.style.display='none';
+
+  const estadoPublico=cnsTraducirEstado(o.estado,o.finalizada,o.fechaDespacho,o.fechaEntrega);
+  const badge=cnsBadgeEstado(o.estado,o.finalizada,o.fechaDespacho,o.fechaEntrega);
+
+  // Historial simplificado — solo fechas y estados sin datos técnicos internos
+  const histSimple=(o.historial||[])
+    .filter(h=>h.accion&&(
+      h.accion.includes('OT creada')||
+      h.accion.includes('Estado:')||
+      h.accion.includes('REACTIVADA')||
+      h.accion.includes('FINALIZADA')
+    ))
+    .slice().reverse()
+    .map(h=>`<tr>
+      <td style="padding:5px 8px;font-size:11px;color:var(--gray-400);white-space:nowrap;">${h.ts||'—'}</td>
+      <td style="padding:5px 8px;font-size:11px;color:var(--slate);">${(h.accion||'').split('·')[0].trim()}</td>
+    </tr>`).join('');
+
+  // Cliente del catálogo
+  const cliKey=(o.codcli||'').replace(/[.#$[\]]/g,'_');
+  const cliData=CLIENTES[cliKey];
+  const cliNombre=cliData?cliData.nombre:(o.cliente||'—');
+  const cliTel=cliData?cliData.telefono:'';
+  const cliEmail=cliData?cliData.correo:'';
+
+  det.innerHTML=`
+    <div class="card" style="padding:0;overflow:hidden;">
+      <!-- Header con estado -->
+      <div style="background:#1E293B;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+        <div>
+          <div style="font-family:'Space Grotesk',sans-serif;font-size:16px;font-weight:700;color:#fff;">Boleta: ${o.boleta||'—'}</div>
+          <div style="font-size:11px;color:rgba(255,255,255,.5);margin-top:2px;">Orden de Trabajo · Solo lectura</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span class="badge ${badge}">${estadoPublico}</span>
+          <button class="btn btn-sky" onclick="cnsDescargarPDF('${key}')" style="font-size:11px;padding:6px 12px;">
+            <i class="ti ti-download" style="font-size:13px;"></i>Descargar PDF
+          </button>
+        </div>
+      </div>
+
+      <div style="padding:16px 18px;">
+
+        <!-- Datos del cliente -->
+        <div class="fsec"><i class="ti ti-user"></i>Datos del Cliente</div>
+        <div class="fgrid">
+          <div class="fg"><label>Código Cliente</label><input type="text" value="${o.codcli||'—'}" readonly style="background:var(--gray-100);color:var(--gray-600);cursor:default;"></div>
+          <div class="fg"><label>Nombre</label><input type="text" value="${cliNombre}" readonly style="background:var(--gray-100);color:var(--gray-600);cursor:default;"></div>
+          ${cliTel?`<div class="fg"><label>Teléfono</label><input type="text" value="${cliTel}" readonly style="background:var(--gray-100);color:var(--gray-600);cursor:default;"></div>`:''}
+          ${cliEmail?`<div class="fg"><label>Correo</label><input type="text" value="${cliEmail}" readonly style="background:var(--gray-100);color:var(--gray-600);cursor:default;"></div>`:''}
+        </div>
+
+        <!-- Datos de la OT -->
+        <div class="fsec" style="margin-top:12px;"><i class="ti ti-tool"></i>Información de la Orden de Trabajo</div>
+        <div class="fgrid">
+          <div class="fg"><label>Código UM</label><input type="text" value="${o.um||'—'}" readonly style="background:var(--gray-100);color:var(--gray-600);cursor:default;"></div>
+          <div class="fg"><label>Descripción</label><input type="text" value="${o.descCatalogo||'—'}" readonly style="background:var(--gray-100);color:var(--gray-600);cursor:default;"></div>
+          <div class="fg"><label>Tipo de Máquina</label><input type="text" value="${o.tipoMaq||'—'}" readonly style="background:var(--gray-100);color:var(--gray-600);cursor:default;"></div>
+          <div class="fg"><label>Estado Actual</label><input type="text" value="${estadoPublico}" readonly style="background:var(--gray-100);color:var(--gray-600);cursor:default;font-weight:600;"></div>
+          <div class="fg"><label>Fecha de Ingreso</label><input type="text" value="${o.fechaIn||'—'}" readonly style="background:var(--gray-100);color:var(--gray-600);cursor:default;"></div>
+          <div class="fg"><label>Fecha de Salida</label><input type="text" value="${o.fechaSal||'Pendiente'}" readonly style="background:var(--gray-100);color:var(--gray-600);cursor:default;"></div>
+          ${o.fechaDespacho?`<div class="fg"><label>Fecha de Despacho</label><input type="text" value="${o.fechaDespacho}" readonly style="background:#EFF6FF;color:#1D4ED8;cursor:default;font-weight:600;"></div>`:''}
+          ${o.fechaEntrega?`<div class="fg"><label>Fecha de Entrega</label><input type="text" value="${o.fechaEntrega}" readonly style="background:#F0FDF4;color:#166534;cursor:default;font-weight:600;"></div>`:''}
+          <div class="fg"><label>Accesorios</label><input type="text" value="${o.accesorios||'No'}${o.accdesc?' — '+o.accdesc:''}" readonly style="background:var(--gray-100);color:var(--gray-600);cursor:default;"></div>
+          <div class="fg"><label>Factura</label><input type="text" value="${o.factura||'No'}" readonly style="background:var(--gray-100);color:var(--gray-600);cursor:default;"></div>
+        </div>
+
+        <!-- Falla reportada -->
+        <div class="fg" style="margin-top:8px;">
+          <label>Falla Reportada por el Cliente</label>
+          <textarea readonly style="min-height:56px;background:var(--gray-100);color:var(--gray-600);cursor:default;resize:none;">${o.falla||'No registrada'}</textarea>
+        </div>
+
+        <!-- Diagnóstico final -->
+        ${o.diagnostico?`
+        <div class="fg" style="margin-top:8px;">
+          <label>Diagnóstico Final</label>
+          <textarea readonly style="min-height:56px;background:#F0FDFA;border-color:#99F6E4;color:var(--slate);cursor:default;resize:none;">${o.diagnostico}</textarea>
+        </div>`:''}
+
+        <!-- Historial simplificado -->
+        ${histSimple?`
+        <div class="fsec" style="margin-top:12px;"><i class="ti ti-history"></i>Historial de Estado</div>
+        <div style="border:1px solid var(--gray-200);border-radius:8px;overflow:hidden;">
+          <table style="width:100%;border-collapse:collapse;">
+            <thead><tr style="background:var(--gray-100);">
+              <th style="padding:6px 8px;text-align:left;font-size:10px;color:var(--gray-400);font-weight:700;text-transform:uppercase;letter-spacing:.06em;">Fecha y Hora</th>
+              <th style="padding:6px 8px;text-align:left;font-size:10px;color:var(--gray-400);font-weight:700;text-transform:uppercase;letter-spacing:.06em;">Evento</th>
+            </tr></thead>
+            <tbody>${histSimple}</tbody>
+          </table>
+        </div>`:''}
+
+      </div>
+    </div>`;
+
+  det.style.display='block';
+  det.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+window.cnsVerDetalle=cnsVerDetalle;
+
+function cnsDescargarPDF(key){
+  const o=OTs[key];if(!o)return;
+
+  // Datos del cliente del catálogo
+  const cliKey=(o.codcli||'').replace(/[.#$[\]]/g,'_');
+  const cliData=CLIENTES[cliKey];
+  const cliNombre=cliData?cliData.nombre:(o.cliente||'—');
+  const cliTel=cliData?cliData.telefono:'';
+  const cliEmail=cliData?cliData.correo:'';
+  const estadoPublico=cnsTraducirEstado(o.estado,o.finalizada,o.fechaDespacho,o.fechaEntrega);
+
+  // Logo base64
+  const logoEl=document.querySelector('img[alt="Unidos Mayoreo"]');
+  const logoSrc=logoEl?logoEl.src:'';
+
+  // Historial simplificado para PDF
+  const histSimplePDF=(o.historial||[])
+    .filter(h=>h.accion&&(
+      h.accion.includes('OT creada')||
+      h.accion.includes('Estado:')||
+      h.accion.includes('REACTIVADA')||
+      h.accion.includes('FINALIZADA')
+    ))
+    .slice().reverse()
+    .map(h=>`<tr><td>${h.ts||'—'}</td><td>${(h.accion||'').split('·')[0].trim()}</td></tr>`)
+    .join('');
+
+  const htmlPDF=`<!DOCTYPE html><html><head><meta charset="UTF-8">
+  <title>Consulta OT ${o.boleta}</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    body{font-family:'Plus Jakarta Sans',sans-serif;color:#1E293B;padding:24px;max-width:720px;margin:auto;font-size:12px;position:relative;}
+    .watermark{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-35deg);font-size:52px;font-weight:900;color:rgba(0,0,0,.04);white-space:nowrap;pointer-events:none;font-family:'Space Grotesk',sans-serif;letter-spacing:.08em;z-index:0;}
+    .header{display:flex;align-items:center;justify-content:space-between;margin-bottom:0;}
+    .estado-banner{background:#1E293B;color:#fff;padding:14px 20px;border-radius:8px 8px 0 0;}
+    .estado-titulo{font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:700;color:#CCFBF1;line-height:1;}
+    .estado-sub{font-size:10px;color:rgba(255,255,255,.5);margin-top:3px;}
+    .doc-header{display:flex;align-items:center;justify-content:space-between;background:#F8FAFC;border:1px solid #E2E8F0;border-top:none;padding:10px 20px;margin-bottom:14px;border-radius:0 0 8px 8px;}
+    .informativo{background:#FEF3C7;border:1px solid #F59E0B;color:#92400E;border-radius:4px;padding:5px 10px;font-size:10px;font-weight:700;display:inline-block;margin-bottom:10px;}
+    .logo{height:40px;width:auto;object-fit:contain;}
+    .section{margin:12px 0 6px;font-family:'Space Grotesk',sans-serif;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#0D9488;border-bottom:1px solid #CCFBF1;padding-bottom:3px;}
+    .row{display:flex;gap:14px;margin-bottom:4px;}.col{flex:1;}
+    .field{margin-bottom:7px;}.lbl{font-size:9px;font-weight:700;color:#94A3B8;text-transform:uppercase;letter-spacing:.06em;margin-bottom:1px;}.val{font-size:12px;border-bottom:1px solid #E2E8F0;padding-bottom:3px;min-height:18px;}
+    .falla{background:#FFFBEB;border-left:3px solid #F59E0B;padding:7px;min-height:28px;font-size:11px;}
+    .diag{background:#F0FDFA;border-left:3px solid #0D9488;padding:7px;min-height:28px;font-size:11px;}
+    table{width:100%;border-collapse:collapse;font-size:10px;margin-top:6px;}
+    th{background:#1E293B;color:#fff;padding:5px 8px;text-align:left;font-size:9px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;}
+    td{border-bottom:1px solid #F1F5F9;padding:4px 8px;}
+    .footer{margin-top:16px;font-size:9px;color:#94A3B8;text-align:center;border-top:1px solid #E2E8F0;padding-top:8px;}
+    @media print{body{padding:12px;}}
+  </style></head><body>
+  <div class="watermark">SOLO INFORMATIVO</div>
+  <div class="informativo">DOCUMENTO INFORMATIVO — SIN VALIDEZ OFICIAL</div>
+  <div class="estado-banner">
+    <div class="estado-titulo">${estadoPublico.toUpperCase()}</div>
+    <div class="estado-sub">Consulta de Orden de Trabajo · Boleta: ${o.boleta} · ${new Date().toLocaleString('es-CR',{timeZone:'America/Costa_Rica'})}</div>
+  </div>
+  <div class="doc-header">
+    <div style="font-size:11px;color:#64748B;"><strong>${o.um||'—'}</strong> · ${cliNombre} · ${o.codcli||'—'}</div>
+    ${logoSrc?`<img src="${logoSrc}" class="logo" alt="Unidos Mayoreo">`:''}
+  </div>
+
+  <div class="section">Datos del Cliente</div>
+  <div class="row">
+    <div class="col"><div class="field"><div class="lbl">Código Cliente</div><div class="val">${o.codcli||'—'}</div></div></div>
+    <div class="col"><div class="field"><div class="lbl">Nombre</div><div class="val">${cliNombre}</div></div></div>
+    ${cliTel?`<div class="col"><div class="field"><div class="lbl">Teléfono</div><div class="val">${cliTel}</div></div></div>`:''}
+  </div>
+  ${cliEmail?`<div class="field"><div class="lbl">Correo</div><div class="val">${cliEmail}</div></div>`:''}
+
+  <div class="section">Información de la Orden</div>
+  <div class="row">
+    <div class="col"><div class="field"><div class="lbl">Código UM</div><div class="val">${o.um||'—'}</div></div></div>
+    <div class="col"><div class="field"><div class="lbl">Boleta</div><div class="val">${o.boleta||'—'}</div></div></div>
+    <div class="col"><div class="field"><div class="lbl">Estado</div><div class="val" style="font-weight:700;">${estadoPublico}</div></div></div>
+  </div>
+  <div class="row">
+    <div class="col"><div class="field"><div class="lbl">Descripción</div><div class="val">${o.descCatalogo||'—'}</div></div></div>
+    <div class="col"><div class="field"><div class="lbl">Tipo de Máquina</div><div class="val">${o.tipoMaq||'—'}</div></div></div>
+  </div>
+  <div class="row">
+    <div class="col"><div class="field"><div class="lbl">Fecha de Ingreso</div><div class="val">${o.fechaIn||'—'}</div></div></div>
+    <div class="col"><div class="field"><div class="lbl">Fecha de Salida</div><div class="val">${o.fechaSal||'Pendiente'}</div></div></div>
+    <div class="col"><div class="field"><div class="lbl">Accesorios</div><div class="val">${o.accesorios||'No'}${o.accdesc?' — '+o.accdesc:''}</div></div></div>
+  </div>
+  ${o.fechaDespacho||o.fechaEntrega?`
+  <div class="row">
+    ${o.fechaDespacho?`<div class="col"><div class="field"><div class="lbl" style="color:#1D4ED8;">Fecha de Despacho</div><div class="val" style="color:#1D4ED8;font-weight:600;">${o.fechaDespacho}</div></div></div>`:''}
+    ${o.fechaEntrega?`<div class="col"><div class="field"><div class="lbl" style="color:#166534;">Fecha de Entrega</div><div class="val" style="color:#166534;font-weight:600;">${o.fechaEntrega}</div></div></div>`:''}
+  </div>`:''}
+
+  <div class="section">Falla Reportada</div>
+  <div class="falla">${o.falla||'No registrada'}</div>
+
+  ${o.diagnostico?`<div class="section">Diagnóstico Final</div><div class="diag">${o.diagnostico}</div>`:''}
+
+  ${histSimplePDF?`
+  <div class="section">Historial de Estado</div>
+  <table><thead><tr><th>Fecha y Hora</th><th>Evento</th></tr></thead>
+  <tbody>${histSimplePDF}</tbody></table>`:''}
+
+  <div class="footer">
+    Documento generado el ${new Date().toLocaleString('es-CR',{timeZone:'America/Costa_Rica'})} · AELMODULOS Sistema de Gestión de Taller · Solo lectura sin validez oficial
+  </div>
+  </body></html>`;
+
+  // Descarga directa como Blob — no abre ventana de impresión
+  const blob=new Blob([htmlPDF],{type:'text/html;charset=utf-8;'});
+  descargarBlob(blob,`Consulta_OT_${o.boleta||key}.html`);
+}
+window.cnsDescargarPDF=cnsDescargarPDF;
 
 // ── CATÁLOGO DE CLIENTES — funciones internas del módulo ──────────
 // editClienteKey ya declarado en variables globales arriba
