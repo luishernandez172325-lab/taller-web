@@ -1162,6 +1162,7 @@ function formatHD(h){
 }
 const CRITICO_DIAS=10;
 const TECNICOS=['Gerald Duran Ardon','Alberto Fallas Granados','Viach Vargas Hidalgo','Heiner Leon Beita'];
+const DS_ESTADOS_VALIDOS=['Reparado','Cambio','Cotizado','No reparada','Cotizado sin reparar'];
 const ESTADOS_TEC=['En proceso','Reparado','Cotizado','Espera de repuesto','Cambio','Nota de crédito','No reparada'];
 const ESTADOS_FINALES=['Reparado','Cotizado','Cambio','Nota de crédito','No reparada','Cotizado sin reparar'];
 const MESES_ES=['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
@@ -1243,7 +1244,7 @@ function showTab(t){
 window.showTab=showTab;
 
 // ── FUNCIONES DE AUTENTICACIÓN ───────────────────────────────────
-async function authLogin(){
+async async function authLogin(){
   const email=(g('login-email').value||'').trim();
   const pass=g('login-pass').value||'';
   const errEl=g('login-err');
@@ -3450,9 +3451,6 @@ function uDash(){
   act.forEach(o=>{const d=dSince(o.fechaIn);if(d===null)return;if(d<=5)sg++;else if(d<=CRITICO_DIAS)sy++;else sr++;});
   g('s-g').textContent=sg;g('s-y').textContent=sy;g('s-r').textContent=sr;
 
-  let sg=0,sy=0,sr=0;
-  act.forEach(o=>{const d=dSince(o.fechaIn);if(d===null)return;if(d<=5)sg++;else if(d<=CRITICO_DIAS)sy++;else sr++;});
-  g('s-g').textContent=sg;g('s-y').textContent=sy;g('s-r').textContent=sr;
 
   renderChart(arr);
 
@@ -3633,9 +3631,7 @@ window.uDash=uDash;
 // Estados válidos: Reparado, Cambio, Cotizado (NO Nota de crédito)
 // Flujo: fechaIn → fechaSal → fechaDespacho → fechaEntrega
 // Solo perfiles: recepcion, administrador
-// ══════════════════════════════════════════════════════════════════
-
-const DS_ESTADOS_VALIDOS = ['Reparado','Cambio','Cotizado','No reparada','Cotizado sin reparar'];
+// Módulo Gestión de Cotizaciones
 const DS_ESTADOS_BADGE = {
   'pendiente_despacho': {label:'Pendiente Despacho', cls:'b-amber'},
   'en_despacho':        {label:'En Despacho',        cls:'b-sky'},
